@@ -1,0 +1,46 @@
+Resources:
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.usersTableName}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: tenantId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: TenantIdIndex
+          KeySchema:
+            - AttributeName: tenantId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  TenantsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.tenantsTableName}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: tenantId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: tenantId
+          KeyType: HASH
+
+Outputs:
+  UsersTableArn:
+    Description: ARN of the Users table
+    Value: !GetAtt UsersTable.Arn
+    Export:
+      Name: ${self:service}-UsersTableArn
+
+  TenantsTableArn:
+    Description: ARN of the Tenants table
+    Value: !GetAtt TenantsTable.Arn
+    Export:
+      Name: ${self:service}-TenantsTableArn 
