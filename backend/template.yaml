@@ -1,0 +1,108 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless SaaS application backend
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 256
+    Runtime: python3.9
+    Environment:
+      Variables:
+        USERS_TABLE: !Ref UsersTable
+        TENANTS_TABLE: !Ref TenantsTable
+        JWT_SECRET: !Ref JwtSecret
+
+Parameters:
+  JwtSecret:
+    Type: String
+    NoEcho: true
+    Description: Secret key for JWT token generation
+
+Resources:
+  # DynamoDB Tables
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-users
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: tenantId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: TenantIdIndex
+          KeySchema:
+            - AttributeName: tenantId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  TenantsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-tenants
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: tenantId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: tenantId
+          KeyType: HASH
+
+  # Lambda Functions
+  AuthHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: auth.lambda_handler
+      Events:
+        Login:
+          Type: Api
+          Properties:
+            Path: /auth/login
+            Method: post
+
+  TenantSignupFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: tenant_signup.lambda_handler
+      Events:
+        Signup:
+          Type: Api
+          Properties:
+            Path: /auth/signup
+            Method: post
+
+  GetUserDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: get_user_data.lambda_handler
+      Events:
+        GetUser:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: get
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
+
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+
+  UsersTableName:
+    Description: Name of the Users table
+    Value: !Ref UsersTable
+
+  TenantsTableName:
+    Description: Name of the Tenants table
+    Value: !Ref TenantsTable 
