@@ -65,7 +65,7 @@
         {"shape":"ResourceInUseException"},
         {"shape":"TooManyTagsException"}
       ],
-      "documentation":"<p>Creates a campaign that deploys a solution version. When a client calls the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html\">GetRecommendations</a> and <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetPersonalizedRanking.html\">GetPersonalizedRanking</a> APIs, a campaign is specified in the request.</p> <p> <b>Minimum Provisioned TPS and Auto-Scaling</b> </p> <important> <p> A high <code>minProvisionedTPS</code> will increase your bill. We recommend starting with 1 for <code>minProvisionedTPS</code> (the default). Track your usage using Amazon CloudWatch metrics, and increase the <code>minProvisionedTPS</code> as necessary.</p> </important> <p>A transaction is a single <code>GetRecommendations</code> or <code>GetPersonalizedRanking</code> call. Transactions per second (TPS) is the throughput and unit of billing for Amazon Personalize. The minimum provisioned TPS (<code>minProvisionedTPS</code>) specifies the baseline throughput provisioned by Amazon Personalize, and thus, the minimum billing charge. </p> <p> If your TPS increases beyond <code>minProvisionedTPS</code>, Amazon Personalize auto-scales the provisioned capacity up and down, but never below <code>minProvisionedTPS</code>. There's a short time delay while the capacity is increased that might cause loss of transactions.</p> <p>The actual TPS used is calculated as the average requests/second within a 5-minute window. You pay for maximum of either the minimum provisioned TPS or the actual TPS. We recommend starting with a low <code>minProvisionedTPS</code>, track your usage using Amazon CloudWatch metrics, and then increase the <code>minProvisionedTPS</code> as necessary.</p> <p> <b>Status</b> </p> <p>A campaign can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li> <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>To get the campaign status, call <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeCampaign.html\">DescribeCampaign</a>.</p> <note> <p>Wait until the <code>status</code> of the campaign is <code>ACTIVE</code> before asking the campaign for recommendations.</p> </note> <p class=\"title\"> <b>Related APIs</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListCampaigns.html\">ListCampaigns</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeCampaign.html\">DescribeCampaign</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_UpdateCampaign.html\">UpdateCampaign</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DeleteCampaign.html\">DeleteCampaign</a> </p> </li> </ul>",
+      "documentation":"<p>Creates a campaign that deploys a solution version. When a client calls the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html\">GetRecommendations</a> and <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetPersonalizedRanking.html\">GetPersonalizedRanking</a> APIs, a campaign is specified in the request.</p> <p> <b>Minimum Provisioned TPS and Auto-Scaling</b> </p> <p>A transaction is a single <code>GetRecommendations</code> or <code>GetPersonalizedRanking</code> call. Transactions per second (TPS) is the throughput and unit of billing for Amazon Personalize. The minimum provisioned TPS (<code>minProvisionedTPS</code>) specifies the baseline throughput provisioned by Amazon Personalize, and thus, the minimum billing charge. </p> <p> If your TPS increases beyond <code>minProvisionedTPS</code>, Amazon Personalize auto-scales the provisioned capacity up and down, but never below <code>minProvisionedTPS</code>. There's a short time delay while the capacity is increased that might cause loss of transactions.</p> <p>The actual TPS used is calculated as the average requests/second within a 5-minute window. You pay for maximum of either the minimum provisioned TPS or the actual TPS. We recommend starting with a low <code>minProvisionedTPS</code>, track your usage using Amazon CloudWatch metrics, and then increase the <code>minProvisionedTPS</code> as necessary.</p> <p> <b>Status</b> </p> <p>A campaign can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li> <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>To get the campaign status, call <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeCampaign.html\">DescribeCampaign</a>.</p> <note> <p>Wait until the <code>status</code> of the campaign is <code>ACTIVE</code> before asking the campaign for recommendations.</p> </note> <p class=\"title\"> <b>Related APIs</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListCampaigns.html\">ListCampaigns</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeCampaign.html\">DescribeCampaign</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_UpdateCampaign.html\">UpdateCampaign</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DeleteCampaign.html\">DeleteCampaign</a> </p> </li> </ul>",
       "idempotent":true
     },
     "CreateDataset":{
@@ -176,23 +176,6 @@
       ],
       "documentation":"<p>Creates a recommendation filter. For more information, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/filter.html\">Filtering recommendations and user segments</a>.</p>"
     },
-    "CreateMetricAttribution":{
-      "name":"CreateMetricAttribution",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"CreateMetricAttributionRequest"},
-      "output":{"shape":"CreateMetricAttributionResponse"},
-      "errors":[
-        {"shape":"InvalidInputException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ResourceAlreadyExistsException"},
-        {"shape":"ResourceInUseException"},
-        {"shape":"LimitExceededException"}
-      ],
-      "documentation":"<p>Creates a metric attribution. A metric attribution creates reports on the data that you import into Amazon Personalize. Depending on how you imported the data, you can view reports in Amazon CloudWatch or Amazon S3. For more information, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/measuring-recommendation-impact.html\">Measuring impact of recommendations</a>.</p>"
-    },
     "CreateRecommender":{
       "name":"CreateRecommender",
       "http":{
@@ -209,7 +192,7 @@
         {"shape":"ResourceInUseException"},
         {"shape":"TooManyTagsException"}
       ],
-      "documentation":"<p>Creates a recommender with the recipe (a Domain dataset group use case) you specify. You create recommenders for a Domain dataset group and specify the recommender's Amazon Resource Name (ARN) when you make a <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html\">GetRecommendations</a> request. </p> <p> <b>Minimum recommendation requests per second</b> </p> <important> <p>A high <code>minRecommendationRequestsPerSecond</code> will increase your bill. We recommend starting with 1 for <code>minRecommendationRequestsPerSecond</code> (the default). Track your usage using Amazon CloudWatch metrics, and increase the <code>minRecommendationRequestsPerSecond</code> as necessary.</p> </important> <p>When you create a recommender, you can configure the recommender's minimum recommendation requests per second. The minimum recommendation requests per second (<code>minRecommendationRequestsPerSecond</code>) specifies the baseline recommendation request throughput provisioned by Amazon Personalize. The default minRecommendationRequestsPerSecond is <code>1</code>. A recommendation request is a single <code>GetRecommendations</code> operation. Request throughput is measured in requests per second and Amazon Personalize uses your requests per second to derive your requests per hour and the price of your recommender usage. </p> <p> If your requests per second increases beyond <code>minRecommendationRequestsPerSecond</code>, Amazon Personalize auto-scales the provisioned capacity up and down, but never below <code>minRecommendationRequestsPerSecond</code>. There's a short time delay while the capacity is increased that might cause loss of requests.</p> <p> Your bill is the greater of either the minimum requests per hour (based on minRecommendationRequestsPerSecond) or the actual number of requests. The actual request throughput used is calculated as the average requests/second within a one-hour window. We recommend starting with the default <code>minRecommendationRequestsPerSecond</code>, track your usage using Amazon CloudWatch metrics, and then increase the <code>minRecommendationRequestsPerSecond</code> as necessary. </p> <p> <b>Status</b> </p> <p>A recommender can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li> <p>STOP PENDING &gt; STOP IN_PROGRESS &gt; INACTIVE &gt; START PENDING &gt; START IN_PROGRESS &gt; ACTIVE</p> </li> <li> <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>To get the recommender status, call <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeRecommender.html\">DescribeRecommender</a>.</p> <note> <p>Wait until the <code>status</code> of the recommender is <code>ACTIVE</code> before asking the recommender for recommendations.</p> </note> <p class=\"title\"> <b>Related APIs</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListRecommenders.html\">ListRecommenders</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeRecommender.html\">DescribeRecommender</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_UpdateRecommender.html\">UpdateRecommender</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DeleteRecommender.html\">DeleteRecommender</a> </p> </li> </ul>",
+      "documentation":"<p>Creates a recommender with the recipe (a Domain dataset group use case) you specify. You create recommenders for a Domain dataset group and specify the recommender's Amazon Resource Name (ARN) when you make a <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html\">GetRecommendations</a> request. </p> <p> <b>Minimum recommendation requests per second</b> </p> <p>When you create a recommender, you can configure the recommender's minimum recommendation requests per second. The minimum recommendation requests per second (<code>minRecommendationRequestsPerSecond</code>) specifies the baseline recommendation request throughput provisioned by Amazon Personalize. The default minRecommendationRequestsPerSecond is <code>1</code>. A recommendation request is a single <code>GetRecommendations</code> operation. Request throughput is measured in requests per second and Amazon Personalize uses your requests per second to derive your requests per hour and the price of your recommender usage. </p> <p> If your requests per second increases beyond <code>minRecommendationRequestsPerSecond</code>, Amazon Personalize auto-scales the provisioned capacity up and down, but never below <code>minRecommendationRequestsPerSecond</code>. There's a short time delay while the capacity is increased that might cause loss of requests.</p> <p> Your bill is the greater of either the minimum requests per hour (based on minRecommendationRequestsPerSecond) or the actual number of requests. The actual request throughput used is calculated as the average requests/second within a one-hour window. We recommend starting with the default <code>minRecommendationRequestsPerSecond</code>, track your usage using Amazon CloudWatch metrics, and then increase the <code>minRecommendationRequestsPerSecond</code> as necessary. </p> <p> <b>Status</b> </p> <p>A recommender can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li> <p>STOP PENDING &gt; STOP IN_PROGRESS &gt; INACTIVE &gt; START PENDING &gt; START IN_PROGRESS &gt; ACTIVE</p> </li> <li> <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>To get the recommender status, call <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeRecommender.html\">DescribeRecommender</a>.</p> <note> <p>Wait until the <code>status</code> of the recommender is <code>ACTIVE</code> before asking the recommender for recommendations.</p> </note> <p class=\"title\"> <b>Related APIs</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListRecommenders.html\">ListRecommenders</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeRecommender.html\">DescribeRecommender</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_UpdateRecommender.html\">UpdateRecommender</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DeleteRecommender.html\">DeleteRecommender</a> </p> </li> </ul>",
       "idempotent":true
     },
     "CreateSchema":{
@@ -244,7 +227,7 @@
         {"shape":"ResourceInUseException"},
         {"shape":"TooManyTagsException"}
       ],
-      "documentation":"<p>Creates the configuration for training a model. A trained model is known as a solution version. After the configuration is created, you train the model (create a solution version) by calling the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateSolutionVersion.html\">CreateSolutionVersion</a> operation. Every time you call <code>CreateSolutionVersion</code>, a new version of the solution is created.</p> <p>After creating a solution version, you check its accuracy by calling <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_GetSolutionMetrics.html\">GetSolutionMetrics</a>. When you are satisfied with the version, you deploy it using <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateCampaign.html\">CreateCampaign</a>. The campaign provides recommendations to a client through the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html\">GetRecommendations</a> API.</p> <p>To train a model, Amazon Personalize requires training data and a recipe. The training data comes from the dataset group that you provide in the request. A recipe specifies the training algorithm and a feature transformation. You can specify one of the predefined recipes provided by Amazon Personalize. </p> <note> <p>Amazon Personalize doesn't support configuring the <code>hpoObjective</code> for solution hyperparameter optimization at this time.</p> </note> <p> <b>Status</b> </p> <p>A solution can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li> <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>To get the status of the solution, call <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolution.html\">DescribeSolution</a>. Wait until the status shows as ACTIVE before calling <code>CreateSolutionVersion</code>.</p> <p class=\"title\"> <b>Related APIs</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListSolutions.html\">ListSolutions</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateSolutionVersion.html\">CreateSolutionVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolution.html\">DescribeSolution</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DeleteSolution.html\">DeleteSolution</a> </p> </li> </ul> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListSolutionVersions.html\">ListSolutionVersions</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolutionVersion.html\">DescribeSolutionVersion</a> </p> </li> </ul>"
+      "documentation":"<p>Creates the configuration for training a model. A trained model is known as a solution. After the configuration is created, you train the model (create a solution) by calling the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateSolutionVersion.html\">CreateSolutionVersion</a> operation. Every time you call <code>CreateSolutionVersion</code>, a new version of the solution is created.</p> <p>After creating a solution version, you check its accuracy by calling <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_GetSolutionMetrics.html\">GetSolutionMetrics</a>. When you are satisfied with the version, you deploy it using <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateCampaign.html\">CreateCampaign</a>. The campaign provides recommendations to a client through the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_RS_GetRecommendations.html\">GetRecommendations</a> API.</p> <p>To train a model, Amazon Personalize requires training data and a recipe. The training data comes from the dataset group that you provide in the request. A recipe specifies the training algorithm and a feature transformation. You can specify one of the predefined recipes provided by Amazon Personalize. Alternatively, you can specify <code>performAutoML</code> and Amazon Personalize will analyze your data and select the optimum USER_PERSONALIZATION recipe for you.</p> <note> <p>Amazon Personalize doesn't support configuring the <code>hpoObjective</code> for solution hyperparameter optimization at this time.</p> </note> <p> <b>Status</b> </p> <p>A solution can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> <li> <p>DELETE PENDING &gt; DELETE IN_PROGRESS</p> </li> </ul> <p>To get the status of the solution, call <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolution.html\">DescribeSolution</a>. Wait until the status shows as ACTIVE before calling <code>CreateSolutionVersion</code>.</p> <p class=\"title\"> <b>Related APIs</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListSolutions.html\">ListSolutions</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateSolutionVersion.html\">CreateSolutionVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolution.html\">DescribeSolution</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DeleteSolution.html\">DeleteSolution</a> </p> </li> </ul> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListSolutionVersions.html\">ListSolutionVersions</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolutionVersion.html\">DescribeSolutionVersion</a> </p> </li> </ul>"
     },
     "CreateSolutionVersion":{
       "name":"CreateSolutionVersion",
@@ -259,8 +242,7 @@
         {"shape":"ResourceNotFoundException"},
         {"shape":"LimitExceededException"},
         {"shape":"ResourceInUseException"},
-        {"shape":"TooManyTagsException"},
-        {"shape":"ResourceAlreadyExistsException"}
+        {"shape":"TooManyTagsException"}
       ],
       "documentation":"<p>Trains or retrains an active solution in a Custom dataset group. A solution is created using the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateSolution.html\">CreateSolution</a> operation and must be in the ACTIVE state before calling <code>CreateSolutionVersion</code>. A new version of the solution is created every time you call this operation.</p> <p> <b>Status</b> </p> <p>A solution version can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING</p> </li> <li> <p>CREATE IN_PROGRESS</p> </li> <li> <p>ACTIVE</p> </li> <li> <p>CREATE FAILED</p> </li> <li> <p>CREATE STOPPING</p> </li> <li> <p>CREATE STOPPED</p> </li> </ul> <p>To get the status of the version, call <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolutionVersion.html\">DescribeSolutionVersion</a>. Wait until the status shows as ACTIVE before calling <code>CreateCampaign</code>.</p> <p>If the status shows as CREATE FAILED, the response includes a <code>failureReason</code> key, which describes why the job failed.</p> <p class=\"title\"> <b>Related APIs</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListSolutionVersions.html\">ListSolutionVersions</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolutionVersion.html\">DescribeSolutionVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_ListSolutions.html\">ListSolutions</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateSolution.html\">CreateSolution</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolution.html\">DescribeSolution</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DeleteSolution.html\">DeleteSolution</a> </p> </li> </ul>"
     },
@@ -337,21 +319,6 @@
         {"shape":"ResourceInUseException"}
       ],
       "documentation":"<p>Deletes a filter.</p>"
-    },
-    "DeleteMetricAttribution":{
-      "name":"DeleteMetricAttribution",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DeleteMetricAttributionRequest"},
-      "errors":[
-        {"shape":"InvalidInputException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ResourceInUseException"}
-      ],
-      "documentation":"<p>Deletes a metric attribution.</p>",
-      "idempotent":true
     },
     "DeleteRecommender":{
       "name":"DeleteRecommender",
@@ -562,20 +529,6 @@
       ],
       "documentation":"<p>Describes a filter's properties.</p>",
       "idempotent":true
-    },
-    "DescribeMetricAttribution":{
-      "name":"DescribeMetricAttribution",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DescribeMetricAttributionRequest"},
-      "output":{"shape":"DescribeMetricAttributionResponse"},
-      "errors":[
-        {"shape":"InvalidInputException"},
-        {"shape":"ResourceNotFoundException"}
-      ],
-      "documentation":"<p>Describes a metric attribution.</p>"
     },
     "DescribeRecipe":{
       "name":"DescribeRecipe",
@@ -801,36 +754,6 @@
       "documentation":"<p>Lists all filters that belong to a given dataset group.</p>",
       "idempotent":true
     },
-    "ListMetricAttributionMetrics":{
-      "name":"ListMetricAttributionMetrics",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"ListMetricAttributionMetricsRequest"},
-      "output":{"shape":"ListMetricAttributionMetricsResponse"},
-      "errors":[
-        {"shape":"InvalidInputException"},
-        {"shape":"InvalidNextTokenException"}
-      ],
-      "documentation":"<p>Lists the metrics for the metric attribution.</p>",
-      "idempotent":true
-    },
-    "ListMetricAttributions":{
-      "name":"ListMetricAttributions",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"ListMetricAttributionsRequest"},
-      "output":{"shape":"ListMetricAttributionsResponse"},
-      "errors":[
-        {"shape":"InvalidInputException"},
-        {"shape":"InvalidNextTokenException"}
-      ],
-      "documentation":"<p>Lists metric attributions.</p>",
-      "idempotent":true
-    },
     "ListRecipes":{
       "name":"ListRecipes",
       "http":{
@@ -919,7 +842,7 @@
         {"shape":"ResourceNotFoundException"},
         {"shape":"ResourceInUseException"}
       ],
-      "documentation":"<p>Get a list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> attached to a resource.</p>"
+      "documentation":"<p>Get a list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> attached to a resource.</p>"
     },
     "StartRecommender":{
       "name":"StartRecommender",
@@ -999,7 +922,7 @@
         {"shape":"TooManyTagKeysException"},
         {"shape":"ResourceInUseException"}
       ],
-      "documentation":"<p>Remove <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> that are attached to a resource.</p>"
+      "documentation":"<p>Remove <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> that are attached to a resource.</p>"
     },
     "UpdateCampaign":{
       "name":"UpdateCampaign",
@@ -1017,22 +940,6 @@
       "documentation":"<p>Updates a campaign by either deploying a new solution or changing the value of the campaign's <code>minProvisionedTPS</code> parameter.</p> <p>To update a campaign, the campaign status must be ACTIVE or CREATE FAILED. Check the campaign status using the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeCampaign.html\">DescribeCampaign</a> operation.</p> <note> <p>You can still get recommendations from a campaign while an update is in progress. The campaign will use the previous solution version and campaign configuration to generate recommendations until the latest campaign update status is <code>Active</code>. </p> </note> <p>For more information on campaigns, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateCampaign.html\">CreateCampaign</a>.</p>",
       "idempotent":true
     },
-    "UpdateMetricAttribution":{
-      "name":"UpdateMetricAttribution",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"UpdateMetricAttributionRequest"},
-      "output":{"shape":"UpdateMetricAttributionResponse"},
-      "errors":[
-        {"shape":"InvalidInputException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ResourceInUseException"},
-        {"shape":"ResourceAlreadyExistsException"}
-      ],
-      "documentation":"<p>Updates a metric attribution.</p>"
-    },
     "UpdateRecommender":{
       "name":"UpdateRecommender",
       "http":{
@@ -1046,7 +953,7 @@
         {"shape":"ResourceNotFoundException"},
         {"shape":"ResourceInUseException"}
       ],
-      "documentation":"<p>Updates the recommender to modify the recommender configuration. If you update the recommender to modify the columns used in training, Amazon Personalize automatically starts a full retraining of the models backing your recommender. While the update completes, you can still get recommendations from the recommender. The recommender uses the previous configuration until the update completes. To track the status of this update, use the <code>latestRecommenderUpdate</code> returned in the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeRecommender.html\">DescribeRecommender</a> operation. </p>",
+      "documentation":"<p>Updates the recommender to modify the recommender configuration.</p>",
       "idempotent":true
     }
   },
@@ -1308,7 +1215,7 @@
         },
         "numResults":{
           "shape":"NumBatchResults",
-          "documentation":"<p>The number of predicted users generated by the batch segment job for each line of input data. The maximum number of users per segment is 5 million.</p>"
+          "documentation":"<p>The number of predicted users generated by the batch segment job for each line of input data.</p>"
         },
         "jobInput":{
           "shape":"BatchSegmentJobInput",
@@ -1410,7 +1317,7 @@
         },
         "minProvisionedTPS":{
           "shape":"TransactionsPerSecond",
-          "documentation":"<p>Specifies the requested minimum provisioned transactions (recommendations) per second. A high <code>minProvisionedTPS</code> will increase your bill. We recommend starting with 1 for <code>minProvisionedTPS</code> (the default). Track your usage using Amazon CloudWatch metrics, and increase the <code>minProvisionedTPS</code> as necessary.</p>"
+          "documentation":"<p>Specifies the requested minimum provisioned transactions (recommendations) per second.</p>"
         },
         "campaignConfig":{
           "shape":"CampaignConfig",
@@ -1540,15 +1447,6 @@
       "member":{"shape":"CategoricalValue"},
       "max":100
     },
-    "ColumnName":{
-      "type":"string",
-      "max":150
-    },
-    "ColumnNamesList":{
-      "type":"list",
-      "member":{"shape":"ColumnName"},
-      "max":50
-    },
     "ContinuousHyperParameterRange":{
       "type":"structure",
       "members":{
@@ -1624,7 +1522,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the batch inference job.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the batch inference job.</p>"
         }
       }
     },
@@ -1661,7 +1559,7 @@
         },
         "numResults":{
           "shape":"NumBatchResults",
-          "documentation":"<p>The number of predicted users generated by the batch segment job for each line of input data. The maximum number of users per segment is 5 million.</p>"
+          "documentation":"<p>The number of predicted users generated by the batch segment job for each line of input data.</p>"
         },
         "jobInput":{
           "shape":"BatchSegmentJobInput",
@@ -1677,7 +1575,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the batch segment job.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the batch segment job.</p>"
         }
       }
     },
@@ -1707,7 +1605,7 @@
         },
         "minProvisionedTPS":{
           "shape":"TransactionsPerSecond",
-          "documentation":"<p>Specifies the requested minimum provisioned transactions (recommendations) per second that Amazon Personalize will support. A high <code>minProvisionedTPS</code> will increase your bill. We recommend starting with 1 for <code>minProvisionedTPS</code> (the default). Track your usage using Amazon CloudWatch metrics, and increase the <code>minProvisionedTPS</code> as necessary.</p>"
+          "documentation":"<p>Specifies the requested minimum provisioned transactions (recommendations) per second that Amazon Personalize will support.</p>"
         },
         "campaignConfig":{
           "shape":"CampaignConfig",
@@ -1715,7 +1613,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the campaign.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the campaign.</p>"
         }
       }
     },
@@ -1759,7 +1657,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the dataset export job.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the dataset export job.</p>"
         }
       }
     },
@@ -1794,7 +1692,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the dataset group.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the dataset group.</p>"
         }
       }
     },
@@ -1838,15 +1736,11 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the dataset import job.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the dataset import job.</p>"
         },
         "importMode":{
           "shape":"ImportMode",
           "documentation":"<p>Specify how to add the new records to an existing dataset. The default import mode is <code>FULL</code>. If you haven't imported bulk records into the dataset previously, you can only specify <code>FULL</code>.</p> <ul> <li> <p>Specify <code>FULL</code> to overwrite all existing bulk data in your dataset. Data you imported individually is not replaced.</p> </li> <li> <p>Specify <code>INCREMENTAL</code> to append the new records to the existing data in your dataset. Amazon Personalize replaces any record with the same ID with the new one.</p> </li> </ul>"
-        },
-        "publishAttributionMetricsToS3":{
-          "shape":"Boolean",
-          "documentation":"<p>If you created a metric attribution, specify whether to publish metrics for this import job to Amazon S3</p>"
         }
       }
     },
@@ -1886,7 +1780,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the dataset.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the dataset.</p>"
         }
       }
     },
@@ -1916,7 +1810,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the event tracker.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the event tracker.</p>"
         }
       }
     },
@@ -1955,7 +1849,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the filter.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the filter.</p>"
         }
       }
     },
@@ -1965,42 +1859,6 @@
         "filterArn":{
           "shape":"Arn",
           "documentation":"<p>The ARN of the new filter.</p>"
-        }
-      }
-    },
-    "CreateMetricAttributionRequest":{
-      "type":"structure",
-      "required":[
-        "name",
-        "datasetGroupArn",
-        "metrics",
-        "metricsOutputConfig"
-      ],
-      "members":{
-        "name":{
-          "shape":"Name",
-          "documentation":"<p>A name for the metric attribution.</p>"
-        },
-        "datasetGroupArn":{
-          "shape":"Arn",
-          "documentation":"<p>The Amazon Resource Name (ARN) of the destination dataset group for the metric attribution.</p>"
-        },
-        "metrics":{
-          "shape":"MetricAttributes",
-          "documentation":"<p>A list of metric attributes for the metric attribution. Each metric attribute specifies an event type to track and a function. Available functions are <code>SUM()</code> or <code>SAMPLECOUNT()</code>. For SUM() functions, provide the dataset type (either Interactions or Items) and column to sum as a parameter. For example SUM(Items.PRICE).</p>"
-        },
-        "metricsOutputConfig":{
-          "shape":"MetricAttributionOutput",
-          "documentation":"<p>The output configuration details for the metric attribution.</p>"
-        }
-      }
-    },
-    "CreateMetricAttributionResponse":{
-      "type":"structure",
-      "members":{
-        "metricAttributionArn":{
-          "shape":"Arn",
-          "documentation":"<p>The Amazon Resource Name (ARN) for the new metric attribution.</p>"
         }
       }
     },
@@ -2030,7 +1888,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the recommender.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the recommender.</p>"
         }
       }
     },
@@ -2090,7 +1948,7 @@
         },
         "performAutoML":{
           "shape":"PerformAutoML",
-          "documentation":"<important> <p>We don't recommend enabling automated machine learning. Instead, match your use case to the available Amazon Personalize recipes. For more information, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/determining-use-case.html\">Determining your use case.</a> </p> </important> <p>Whether to perform automated machine learning (AutoML). The default is <code>false</code>. For this case, you must specify <code>recipeArn</code>.</p> <p>When set to <code>true</code>, Amazon Personalize analyzes your training data and selects the optimal USER_PERSONALIZATION recipe and hyperparameters. In this case, you must omit <code>recipeArn</code>. Amazon Personalize determines the optimal recipe by running tests with different values for the hyperparameters. AutoML lengthens the training process as compared to selecting a specific recipe.</p>"
+          "documentation":"<p>Whether to perform automated machine learning (AutoML). The default is <code>false</code>. For this case, you must specify <code>recipeArn</code>.</p> <p>When set to <code>true</code>, Amazon Personalize analyzes your training data and selects the optimal USER_PERSONALIZATION recipe and hyperparameters. In this case, you must omit <code>recipeArn</code>. Amazon Personalize determines the optimal recipe by running tests with different values for the hyperparameters. AutoML lengthens the training process as compared to selecting a specific recipe.</p>"
         },
         "recipeArn":{
           "shape":"Arn",
@@ -2110,7 +1968,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the solution.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the solution.</p>"
         }
       }
     },
@@ -2127,10 +1985,6 @@
       "type":"structure",
       "required":["solutionArn"],
       "members":{
-        "name":{
-          "shape":"Name",
-          "documentation":"<p>The name of the solution version.</p>"
-        },
         "solutionArn":{
           "shape":"Arn",
           "documentation":"<p>The Amazon Resource Name (ARN) of the solution containing the training configuration information.</p>"
@@ -2141,7 +1995,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">tags</a> to apply to the solution version.</p>"
+          "documentation":"<p>A list of <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">tags</a> to apply to the solution version.</p>"
         }
       }
     },
@@ -2414,10 +2268,6 @@
         "importMode":{
           "shape":"ImportMode",
           "documentation":"<p>The import mode used by the dataset import job to import new records.</p>"
-        },
-        "publishAttributionMetricsToS3":{
-          "shape":"Boolean",
-          "documentation":"<p>Whether the job publishes metrics to Amazon S3 for a metric attribution.</p>"
         }
       },
       "documentation":"<p>Describes a job that imports training data from a data source (Amazon S3 bucket) to an Amazon Personalize dataset. For more information, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_CreateDatasetImportJob.html\">CreateDatasetImportJob</a>.</p> <p>A dataset import job can be in one of the following states:</p> <ul> <li> <p>CREATE PENDING &gt; CREATE IN_PROGRESS &gt; ACTIVE -or- CREATE FAILED</p> </li> </ul>"
@@ -2702,16 +2552,6 @@
         }
       }
     },
-    "DeleteMetricAttributionRequest":{
-      "type":"structure",
-      "required":["metricAttributionArn"],
-      "members":{
-        "metricAttributionArn":{
-          "shape":"Arn",
-          "documentation":"<p>The metric attribution's Amazon Resource Name (ARN).</p>"
-        }
-      }
-    },
     "DeleteRecommenderRequest":{
       "type":"structure",
       "required":["recommenderArn"],
@@ -2951,25 +2791,6 @@
         }
       }
     },
-    "DescribeMetricAttributionRequest":{
-      "type":"structure",
-      "required":["metricAttributionArn"],
-      "members":{
-        "metricAttributionArn":{
-          "shape":"Arn",
-          "documentation":"<p>The metric attribution's Amazon Resource Name (ARN).</p>"
-        }
-      }
-    },
-    "DescribeMetricAttributionResponse":{
-      "type":"structure",
-      "members":{
-        "metricAttribution":{
-          "shape":"MetricAttribution",
-          "documentation":"<p>The details of the metric attribution.</p>"
-        }
-      }
-    },
     "DescribeRecipeRequest":{
       "type":"structure",
       "required":["recipeArn"],
@@ -3154,12 +2975,6 @@
     "EventValueThreshold":{
       "type":"string",
       "max":256
-    },
-    "ExcludedDatasetColumns":{
-      "type":"map",
-      "key":{"shape":"DatasetType"},
-      "value":{"shape":"ColumnNamesList"},
-      "max":3
     },
     "FailureReason":{"type":"string"},
     "FeatureTransformation":{
@@ -3738,66 +3553,6 @@
         }
       }
     },
-    "ListMetricAttributionMetricsRequest":{
-      "type":"structure",
-      "members":{
-        "metricAttributionArn":{
-          "shape":"Arn",
-          "documentation":"<p>The Amazon Resource Name (ARN) of the metric attribution to retrieve attributes for.</p>"
-        },
-        "nextToken":{
-          "shape":"NextToken",
-          "documentation":"<p>Specify the pagination token from a previous request to retrieve the next page of results.</p>"
-        },
-        "maxResults":{
-          "shape":"MaxResults",
-          "documentation":"<p>The maximum number of metrics to return in one page of results.</p>"
-        }
-      }
-    },
-    "ListMetricAttributionMetricsResponse":{
-      "type":"structure",
-      "members":{
-        "metrics":{
-          "shape":"MetricAttributes",
-          "documentation":"<p>The metrics for the specified metric attribution.</p>"
-        },
-        "nextToken":{
-          "shape":"NextToken",
-          "documentation":"<p>Specify the pagination token from a previous <code>ListMetricAttributionMetricsResponse</code> request to retrieve the next page of results.</p>"
-        }
-      }
-    },
-    "ListMetricAttributionsRequest":{
-      "type":"structure",
-      "members":{
-        "datasetGroupArn":{
-          "shape":"Arn",
-          "documentation":"<p>The metric attributions' dataset group Amazon Resource Name (ARN).</p>"
-        },
-        "nextToken":{
-          "shape":"NextToken",
-          "documentation":"<p>Specify the pagination token from a previous request to retrieve the next page of results.</p>"
-        },
-        "maxResults":{
-          "shape":"MaxResults",
-          "documentation":"<p>The maximum number of metric attributions to return in one page of results.</p>"
-        }
-      }
-    },
-    "ListMetricAttributionsResponse":{
-      "type":"structure",
-      "members":{
-        "metricAttributions":{
-          "shape":"MetricAttributions",
-          "documentation":"<p>The list of metric attributions.</p>"
-        },
-        "nextToken":{
-          "shape":"NextToken",
-          "documentation":"<p>Specify the pagination token from a previous request to retrieve the next page of results.</p>"
-        }
-      }
-    },
     "ListRecipesRequest":{
       "type":"structure",
       "members":{
@@ -3971,128 +3726,6 @@
       "type":"integer",
       "max":100,
       "min":1
-    },
-    "MetricAttribute":{
-      "type":"structure",
-      "required":[
-        "eventType",
-        "metricName",
-        "expression"
-      ],
-      "members":{
-        "eventType":{
-          "shape":"EventType",
-          "documentation":"<p>The metric's event type.</p>"
-        },
-        "metricName":{
-          "shape":"MetricName",
-          "documentation":"<p>The metric's name. The name helps you identify the metric in Amazon CloudWatch or Amazon S3.</p>"
-        },
-        "expression":{
-          "shape":"MetricExpression",
-          "documentation":"<p>The attribute's expression. Available functions are <code>SUM()</code> or <code>SAMPLECOUNT()</code>. For SUM() functions, provide the dataset type (either Interactions or Items) and column to sum as a parameter. For example SUM(Items.PRICE).</p>"
-        }
-      },
-      "documentation":"<p>Contains information on a metric that a metric attribution reports on. For more information, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/measuring-recommendation-impact.html\">Measuring impact of recommendations</a>.</p>"
-    },
-    "MetricAttributes":{
-      "type":"list",
-      "member":{"shape":"MetricAttribute"},
-      "max":10
-    },
-    "MetricAttributesNamesList":{
-      "type":"list",
-      "member":{"shape":"MetricName"},
-      "max":10
-    },
-    "MetricAttribution":{
-      "type":"structure",
-      "members":{
-        "name":{
-          "shape":"Name",
-          "documentation":"<p>The metric attribution's name.</p>"
-        },
-        "metricAttributionArn":{
-          "shape":"Arn",
-          "documentation":"<p>The metric attribution's Amazon Resource Name (ARN).</p>"
-        },
-        "datasetGroupArn":{
-          "shape":"Arn",
-          "documentation":"<p>The metric attribution's dataset group Amazon Resource Name (ARN).</p>"
-        },
-        "metricsOutputConfig":{
-          "shape":"MetricAttributionOutput",
-          "documentation":"<p>The metric attribution's output configuration.</p>"
-        },
-        "status":{
-          "shape":"Status",
-          "documentation":"<p>The metric attribution's status.</p>"
-        },
-        "creationDateTime":{
-          "shape":"Date",
-          "documentation":"<p>The metric attribution's creation date time.</p>"
-        },
-        "lastUpdatedDateTime":{
-          "shape":"Date",
-          "documentation":"<p>The metric attribution's last updated date time.</p>"
-        },
-        "failureReason":{
-          "shape":"FailureReason",
-          "documentation":"<p>The metric attribution's failure reason.</p>"
-        }
-      },
-      "documentation":"<p>Contains information on a metric attribution. A metric attribution creates reports on the data that you import into Amazon Personalize. Depending on how you import the data, you can view reports in Amazon CloudWatch or Amazon S3. For more information, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/measuring-recommendation-impact.html\">Measuring impact of recommendations</a>.</p>"
-    },
-    "MetricAttributionOutput":{
-      "type":"structure",
-      "required":["roleArn"],
-      "members":{
-        "s3DataDestination":{"shape":"S3DataConfig"},
-        "roleArn":{
-          "shape":"RoleArn",
-          "documentation":"<p>The Amazon Resource Name (ARN) of the IAM service role that has permissions to add data to your output Amazon S3 bucket and add metrics to Amazon CloudWatch. For more information, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/measuring-recommendation-impact.html\">Measuring impact of recommendations</a>.</p>"
-        }
-      },
-      "documentation":"<p>The output configuration details for a metric attribution.</p>"
-    },
-    "MetricAttributionSummary":{
-      "type":"structure",
-      "members":{
-        "name":{
-          "shape":"Name",
-          "documentation":"<p>The name of the metric attribution.</p>"
-        },
-        "metricAttributionArn":{
-          "shape":"Arn",
-          "documentation":"<p>The metric attribution's Amazon Resource Name (ARN).</p>"
-        },
-        "status":{
-          "shape":"Status",
-          "documentation":"<p>The metric attribution's status.</p>"
-        },
-        "creationDateTime":{
-          "shape":"Date",
-          "documentation":"<p>The metric attribution's creation date time.</p>"
-        },
-        "lastUpdatedDateTime":{
-          "shape":"Date",
-          "documentation":"<p>The metric attribution's last updated date time.</p>"
-        },
-        "failureReason":{
-          "shape":"FailureReason",
-          "documentation":"<p>The metric attribution's failure reason.</p>"
-        }
-      },
-      "documentation":"<p>Provides a summary of the properties of a metric attribution. For a complete listing, call the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeMetricAttribution.html\">DescribeMetricAttribution</a>.</p>"
-    },
-    "MetricAttributions":{
-      "type":"list",
-      "member":{"shape":"MetricAttributionSummary"},
-      "max":100
-    },
-    "MetricExpression":{
-      "type":"string",
-      "max":256
     },
     "MetricName":{
       "type":"string",
@@ -4297,11 +3930,7 @@
         },
         "minRecommendationRequestsPerSecond":{
           "shape":"TransactionsPerSecond",
-          "documentation":"<p>Specifies the requested minimum provisioned recommendation requests per second that Amazon Personalize will support. A high <code>minRecommendationRequestsPerSecond</code> will increase your bill. We recommend starting with 1 for <code>minRecommendationRequestsPerSecond</code> (the default). Track your usage using Amazon CloudWatch metrics, and increase the <code>minRecommendationRequestsPerSecond</code> as necessary.</p>"
-        },
-        "trainingDataConfig":{
-          "shape":"TrainingDataConfig",
-          "documentation":"<p> Specifies the training data configuration to use when creating a domain recommender. </p>"
+          "documentation":"<p>Specifies the requested minimum provisioned recommendation requests per second that Amazon Personalize will support.</p>"
         }
       },
       "documentation":"<p>The configuration details of the recommender.</p>"
@@ -4452,7 +4081,7 @@
         },
         "performAutoML":{
           "shape":"PerformAutoML",
-          "documentation":"<important> <p>We don't recommend enabling automated machine learning. Instead, match your use case to the available Amazon Personalize recipes. For more information, see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/determining-use-case.html\">Determining your use case.</a> </p> </important> <p>When true, Amazon Personalize performs a search for the best USER_PERSONALIZATION recipe from the list specified in the solution configuration (<code>recipeArn</code> must not be specified). When false (the default), Amazon Personalize uses <code>recipeArn</code> for training.</p>"
+          "documentation":"<p>When true, Amazon Personalize performs a search for the best USER_PERSONALIZATION recipe from the list specified in the solution configuration (<code>recipeArn</code> must not be specified). When false (the default), Amazon Personalize uses <code>recipeArn</code> for training.</p>"
         },
         "recipeArn":{
           "shape":"Arn",
@@ -4519,10 +4148,6 @@
         "optimizationObjective":{
           "shape":"OptimizationObjective",
           "documentation":"<p>Describes the additional objective for the solution, such as maximizing streaming minutes or increasing revenue. For more information see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/optimizing-solution-for-objective.html\">Optimizing a solution</a>.</p>"
-        },
-        "trainingDataConfig":{
-          "shape":"TrainingDataConfig",
-          "documentation":"<p> Specifies the training data configuration to use when creating a custom solution version (trained model). </p>"
         }
       },
       "documentation":"<p>Describes the configuration properties for the solution.</p>"
@@ -4549,10 +4174,6 @@
         "lastUpdatedDateTime":{
           "shape":"Date",
           "documentation":"<p>The date and time (in Unix time) that the solution was last updated.</p>"
-        },
-        "recipeArn":{
-          "shape":"Arn",
-          "documentation":"<p>The Amazon Resource Name (ARN) of the recipe used by the solution.</p>"
         }
       },
       "documentation":"<p>Provides a summary of the properties of a solution. For a complete listing, call the <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/API_DescribeSolution.html\">DescribeSolution</a> API.</p>"
@@ -4560,10 +4181,6 @@
     "SolutionVersion":{
       "type":"structure",
       "members":{
-        "name":{
-          "shape":"Name",
-          "documentation":"<p>The name of the solution version.</p>"
-        },
         "solutionVersionArn":{
           "shape":"Arn",
           "documentation":"<p>The ARN of the solution version.</p>"
@@ -4731,7 +4348,7 @@
           "documentation":"<p>The optional part of a key-value pair that makes up a tag. A value acts as a descriptor within a tag category (key).</p>"
         }
       },
-      "documentation":"<p>The optional metadata that you apply to resources to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define. For more information see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">Tagging Amazon Personalize recources</a>. </p>"
+      "documentation":"<p>The optional metadata that you apply to resources to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define. For more information see <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">Tagging Personalize resources</a>. </p>"
     },
     "TagKey":{
       "type":"string",
@@ -4758,7 +4375,7 @@
         },
         "tags":{
           "shape":"Tags",
-          "documentation":"<p>Tags to apply to the resource. For more information see <a href=\"https://docs.aws.amazon.com/personalize/latest/dg/tagging-resources.html\">Tagging Amazon Personalize recources</a>.</p>"
+          "documentation":"<p>Tags to apply to the resource. For more information see <a href=\"https://docs.aws.amazon.com/personalize/latest/dev/tagging-resources.html\">Tagging Personalize resources</a>.</p>"
         }
       }
     },
@@ -4798,16 +4415,6 @@
     "TrackingId":{
       "type":"string",
       "max":256
-    },
-    "TrainingDataConfig":{
-      "type":"structure",
-      "members":{
-        "excludedDatasetColumns":{
-          "shape":"ExcludedDatasetColumns",
-          "documentation":"<p>Specifies the columns to exclude from training. Each key is a dataset type, and each value is a list of columns. Exclude columns to control what data Amazon Personalize uses to generate recommendations. For example, you might have a column that you want to use only to filter recommendations. You can exclude this column from training and Amazon Personalize considers it only when filtering. </p>"
-        }
-      },
-      "documentation":"<p>The training data configuration to use when creating a domain recommender or custom solution version (trained model).</p>"
     },
     "TrainingHours":{
       "type":"double",
@@ -4875,7 +4482,7 @@
         },
         "minProvisionedTPS":{
           "shape":"TransactionsPerSecond",
-          "documentation":"<p>Specifies the requested minimum provisioned transactions (recommendations) per second that Amazon Personalize will support. A high <code>minProvisionedTPS</code> will increase your bill. We recommend starting with 1 for <code>minProvisionedTPS</code> (the default). Track your usage using Amazon CloudWatch metrics, and increase the <code>minProvisionedTPS</code> as necessary.</p>"
+          "documentation":"<p>Specifies the requested minimum provisioned transactions (recommendations) per second that Amazon Personalize will support.</p>"
         },
         "campaignConfig":{
           "shape":"CampaignConfig",
@@ -4889,36 +4496,6 @@
         "campaignArn":{
           "shape":"Arn",
           "documentation":"<p>The same campaign ARN as given in the request.</p>"
-        }
-      }
-    },
-    "UpdateMetricAttributionRequest":{
-      "type":"structure",
-      "members":{
-        "addMetrics":{
-          "shape":"MetricAttributes",
-          "documentation":"<p>Add new metric attributes to the metric attribution.</p>"
-        },
-        "removeMetrics":{
-          "shape":"MetricAttributesNamesList",
-          "documentation":"<p>Remove metric attributes from the metric attribution.</p>"
-        },
-        "metricsOutputConfig":{
-          "shape":"MetricAttributionOutput",
-          "documentation":"<p>An output config for the metric attribution.</p>"
-        },
-        "metricAttributionArn":{
-          "shape":"Arn",
-          "documentation":"<p>The Amazon Resource Name (ARN) for the metric attribution to update.</p>"
-        }
-      }
-    },
-    "UpdateMetricAttributionResponse":{
-      "type":"structure",
-      "members":{
-        "metricAttributionArn":{
-          "shape":"Arn",
-          "documentation":"<p>The Amazon Resource Name (ARN) for the metric attribution that you updated.</p>"
         }
       }
     },

@@ -1098,7 +1098,7 @@
       "members":{
         "targetArn":{
           "shape":"TargetARN",
-          "documentation":"<p>The <a href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\">ARN</a> of the target IoT thing or thing group. When creating a subdeployment, the targetARN can only be a thing group.</p>"
+          "documentation":"<p>The <a href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\">ARN</a> of the target IoT thing or thing group.</p>"
         },
         "deploymentName":{
           "shape":"DeploymentNameString",
@@ -1115,10 +1115,6 @@
         "deploymentPolicies":{
           "shape":"DeploymentPolicies",
           "documentation":"<p>The deployment policies for the deployment. These policies define how the deployment updates components and handles failure.</p>"
-        },
-        "parentTargetArn":{
-          "shape":"ThingGroupARN",
-          "documentation":"<p>The parent deployment's target <a href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\">ARN</a> within a subdeployment.</p>"
         },
         "tags":{
           "shape":"TagMap",
@@ -1194,7 +1190,7 @@
       "members":{
         "targetArn":{
           "shape":"TargetARN",
-          "documentation":"<p>The <a href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\">ARN</a> of the target IoT thing or thing group. When creating a subdeployment, the targetARN can only be a thing group.</p>"
+          "documentation":"<p>The <a href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\">ARN</a> of the target IoT thing or thing group.</p>"
         },
         "revisionId":{
           "shape":"NonEmptyString",
@@ -1219,10 +1215,6 @@
         "isLatestForTarget":{
           "shape":"IsLatestForTarget",
           "documentation":"<p>Whether or not the deployment is the latest revision for its target.</p>"
-        },
-        "parentTargetArn":{
-          "shape":"ThingGroupARN",
-          "documentation":"<p>The parent deployment's target <a href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\">ARN</a> within a subdeployment.</p>"
         }
       },
       "documentation":"<p>Contains information about a deployment.</p>"
@@ -1482,7 +1474,7 @@
         },
         "coreDeviceExecutionStatus":{
           "shape":"EffectiveDeploymentExecutionStatus",
-          "documentation":"<p>The status of the deployment job on the Greengrass core device.</p> <ul> <li> <p> <code>IN_PROGRESS</code> – The deployment job is running.</p> </li> <li> <p> <code>QUEUED</code> – The deployment job is in the job queue and waiting to run.</p> </li> <li> <p> <code>FAILED</code> – The deployment failed. For more information, see the <code>statusDetails</code> field.</p> </li> <li> <p> <code>COMPLETED</code> – The deployment to an IoT thing was completed successfully.</p> </li> <li> <p> <code>TIMED_OUT</code> – The deployment didn't complete in the allotted time. </p> </li> <li> <p> <code>CANCELED</code> – The deployment was canceled by the user.</p> </li> <li> <p> <code>REJECTED</code> – The deployment was rejected. For more information, see the <code>statusDetails</code> field.</p> </li> <li> <p> <code>SUCCEEDED</code> – The deployment to an IoT thing group was completed successfully.</p> </li> </ul>"
+          "documentation":"<p>The status of the deployment job on the Greengrass core device.</p>"
         },
         "reason":{
           "shape":"Reason",
@@ -1530,8 +1522,7 @@
         "COMPLETED",
         "TIMED_OUT",
         "CANCELED",
-        "REJECTED",
-        "SUCCEEDED"
+        "REJECTED"
       ]
     },
     "EffectiveDeploymentStatusDetails":{
@@ -1767,10 +1758,6 @@
           "shape":"IsLatestForTarget",
           "documentation":"<p>Whether or not the deployment is the latest revision for its target.</p>"
         },
-        "parentTargetArn":{
-          "shape":"ThingGroupARN",
-          "documentation":"<p>The parent deployment's target <a href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\">ARN</a> within a subdeployment.</p>"
-        },
         "tags":{
           "shape":"TagMap",
           "documentation":"<p>A list of key-value pairs that contain metadata for the resource. For more information, see <a href=\"https://docs.aws.amazon.com/greengrass/v2/developerguide/tag-resources.html\">Tag your resources</a> in the <i>IoT Greengrass V2 Developer Guide</i>.</p>"
@@ -1826,11 +1813,11 @@
         },
         "lastReportedTimestamp":{
           "shape":"Timestamp",
-          "documentation":"<p>The last time the Greengrass core device sent a message containing a component's state to the Amazon Web Services Cloud.</p> <p>A component does not need to see a state change for this field to update.</p>"
+          "documentation":"<p>The last time the Greengrass core device sent a message containing a certain component to the Amazon Web Services Cloud.</p> <p>A component does not need to see a state change for this field to update.</p>"
         },
         "lastInstallationSource":{
           "shape":"NonEmptyString",
-          "documentation":"<p>The most recent deployment source that brought the component to the Greengrass core device. For a thing group deployment or thing deployment, the source will be the The ID of the deployment. and for local deployments it will be <code>LOCAL</code>.</p> <note> <p>Any deployment will attempt to reinstall currently broken components on the device, which will update the last installation source.</p> </note>"
+          "documentation":"<p>The most recent deployment source that brought the component to the Greengrass core device. For a thing group deployment or thing deployment, the source will be the The ID of the deployment. and for local deployments it will be <code>LOCAL</code>.</p>"
         },
         "lifecycleStatusCodes":{
           "shape":"InstalledComponentLifecycleStatusCodeList",
@@ -2475,12 +2462,6 @@
           "documentation":"<p>The filter for the list of deployments. Choose one of the following options:</p> <ul> <li> <p> <code>ALL</code> – The list includes all deployments.</p> </li> <li> <p> <code>LATEST_ONLY</code> – The list includes only the latest revision of each deployment.</p> </li> </ul> <p>Default: <code>LATEST_ONLY</code> </p>",
           "location":"querystring",
           "locationName":"historyFilter"
-        },
-        "parentTargetArn":{
-          "shape":"ThingGroupARN",
-          "documentation":"<p>The parent deployment's target <a href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\">ARN</a> within a subdeployment.</p>",
-          "location":"querystring",
-          "locationName":"parentTargetArn"
         },
         "maxResults":{
           "shape":"DefaultMaxResults",

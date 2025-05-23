@@ -270,23 +270,6 @@
       ],
       "documentation":"<p>Indicates to the service that the specified transaction is still active and should not be treated as idle and aborted.</p> <p>Write transactions that remain idle for a long period are automatically aborted unless explicitly extended.</p>"
     },
-    "GetDataCellsFilter":{
-      "name":"GetDataCellsFilter",
-      "http":{
-        "method":"POST",
-        "requestUri":"/GetDataCellsFilter"
-      },
-      "input":{"shape":"GetDataCellsFilterRequest"},
-      "output":{"shape":"GetDataCellsFilterResponse"},
-      "errors":[
-        {"shape":"EntityNotFoundException"},
-        {"shape":"InvalidInputException"},
-        {"shape":"OperationTimeoutException"},
-        {"shape":"InternalServiceException"},
-        {"shape":"AccessDeniedException"}
-      ],
-      "documentation":"<p>Returns a data cells filter.</p>"
-    },
     "GetDataLakeSettings":{
       "name":"GetDataLakeSettings",
       "http":{
@@ -496,7 +479,7 @@
         {"shape":"EntityNotFoundException"},
         {"shape":"InvalidInputException"}
       ],
-      "documentation":"<p>Grants permissions to the principal to access metadata in the Data Catalog and data organized in underlying data storage such as Amazon S3.</p> <p>For information about permissions, see <a href=\"https://docs.aws.amazon.com/lake-formation/latest/dg/security-data-access.html\">Security and Access Control to Metadata and Data</a>.</p>"
+      "documentation":"<p>Grants permissions to the principal to access metadata in the Data Catalog and data organized in underlying data storage such as Amazon S3.</p> <p>For information about permissions, see <a href=\"https://docs-aws.amazon.com/lake-formation/latest/dg/security-data-access.html\">Security and Access Control to Metadata and Data</a>.</p>"
     },
     "ListDataCellsFilter":{
       "name":"ListDataCellsFilter",
@@ -726,24 +709,6 @@
         {"shape":"OperationTimeoutException"}
       ],
       "documentation":"<p>Starts a new transaction and returns its transaction ID. Transaction IDs are opaque objects that you can use to identify a transaction.</p>"
-    },
-    "UpdateDataCellsFilter":{
-      "name":"UpdateDataCellsFilter",
-      "http":{
-        "method":"POST",
-        "requestUri":"/UpdateDataCellsFilter"
-      },
-      "input":{"shape":"UpdateDataCellsFilterRequest"},
-      "output":{"shape":"UpdateDataCellsFilterResponse"},
-      "errors":[
-        {"shape":"ConcurrentModificationException"},
-        {"shape":"InvalidInputException"},
-        {"shape":"EntityNotFoundException"},
-        {"shape":"InternalServiceException"},
-        {"shape":"OperationTimeoutException"},
-        {"shape":"AccessDeniedException"}
-      ],
-      "documentation":"<p>Updates a data cell filter.</p>"
     },
     "UpdateLFTag":{
       "name":"UpdateLFTag",
@@ -1259,10 +1224,6 @@
         "ColumnWildcard":{
           "shape":"ColumnWildcard",
           "documentation":"<p>A wildcard with exclusions.</p> <p>You must specify either a <code>ColumnNames</code> list or the <code>ColumnWildCard</code>. </p>"
-        },
-        "VersionId":{
-          "shape":"VersionString",
-          "documentation":"<p>The ID of the data cells filter version.</p>"
         }
       },
       "documentation":"<p>A structure that describes certain columns on certain rows.</p>"
@@ -1336,15 +1297,11 @@
         },
         "CreateDatabaseDefaultPermissions":{
           "shape":"PrincipalPermissionsList",
-          "documentation":"<p>Specifies whether access control on newly created database is managed by Lake Formation permissions or exclusively by IAM permissions.</p> <p>A null value indicates access control by Lake Formation permissions. A value that assigns ALL to IAM_ALLOWED_PRINCIPALS indicates access control by IAM permissions. This is referred to as the setting \"Use only IAM access control,\" and is for backward compatibility with the Glue permission model implemented by IAM permissions.</p> <p>The only permitted values are an empty array or an array that contains a single JSON object that grants ALL to IAM_ALLOWED_PRINCIPALS.</p> <p>For more information, see <a href=\"https://docs.aws.amazon.com/lake-formation/latest/dg/change-settings.html\">Changing the Default Security Settings for Your Data Lake</a>.</p>"
+          "documentation":"<p>Specifies whether access control on newly created database is managed by Lake Formation permissions or exclusively by IAM permissions. You can override this default setting when you create a database.</p> <p>A null value indicates access control by Lake Formation permissions. A value that assigns ALL to IAM_ALLOWED_PRINCIPALS indicates access control by IAM permissions. This is referred to as the setting \"Use only IAM access control,\" and is for backward compatibility with the Glue permission model implemented by IAM permissions.</p> <p>The only permitted values are an empty array or an array that contains a single JSON object that grants ALL to IAM_ALLOWED_PRINCIPALS.</p> <p>For more information, see <a href=\"https://docs.aws.amazon.com/lake-formation/latest/dg/change-settings.html\">Changing the Default Security Settings for Your Data Lake</a>.</p>"
         },
         "CreateTableDefaultPermissions":{
           "shape":"PrincipalPermissionsList",
           "documentation":"<p>Specifies whether access control on newly created table is managed by Lake Formation permissions or exclusively by IAM permissions.</p> <p>A null value indicates access control by Lake Formation permissions. A value that assigns ALL to IAM_ALLOWED_PRINCIPALS indicates access control by IAM permissions. This is referred to as the setting \"Use only IAM access control,\" and is for backward compatibility with the Glue permission model implemented by IAM permissions.</p> <p>The only permitted values are an empty array or an array that contains a single JSON object that grants ALL to IAM_ALLOWED_PRINCIPALS.</p> <p>For more information, see <a href=\"https://docs.aws.amazon.com/lake-formation/latest/dg/change-settings.html\">Changing the Default Security Settings for Your Data Lake</a>.</p>"
-        },
-        "Parameters":{
-          "shape":"ParametersMap",
-          "documentation":"<p>A key-value map that provides an additional configuration on your data lake. CrossAccountVersion is the key you can configure in the Parameters field. Accepted values for the CrossAccountVersion key are 1, 2, and 3.</p>"
         },
         "TrustedResourceOwners":{
           "shape":"TrustedResourceOwners",
@@ -1586,7 +1543,7 @@
           "documentation":"<p>A message describing the problem.</p>"
         }
       },
-      "documentation":"<p>A specified entity does not exist.</p>",
+      "documentation":"<p>A specified entity does not exist</p>",
       "exception":true
     },
     "ErrorDetail":{
@@ -1640,7 +1597,9 @@
     },
     "Expression":{
       "type":"list",
-      "member":{"shape":"LFTag"}
+      "member":{"shape":"LFTag"},
+      "max":5,
+      "min":1
     },
     "ExtendTransactionRequest":{
       "type":"structure",
@@ -1687,42 +1646,6 @@
       "member":{"shape":"FilterCondition"},
       "max":20,
       "min":1
-    },
-    "GetDataCellsFilterRequest":{
-      "type":"structure",
-      "required":[
-        "TableCatalogId",
-        "DatabaseName",
-        "TableName",
-        "Name"
-      ],
-      "members":{
-        "TableCatalogId":{
-          "shape":"CatalogIdString",
-          "documentation":"<p>The ID of the catalog to which the table belongs.</p>"
-        },
-        "DatabaseName":{
-          "shape":"NameString",
-          "documentation":"<p>A database in the Glue Data Catalog.</p>"
-        },
-        "TableName":{
-          "shape":"NameString",
-          "documentation":"<p>A table in the database.</p>"
-        },
-        "Name":{
-          "shape":"NameString",
-          "documentation":"<p>The name given by the user to the data filter cell.</p>"
-        }
-      }
-    },
-    "GetDataCellsFilterResponse":{
-      "type":"structure",
-      "members":{
-        "DataCellsFilter":{
-          "shape":"DataCellsFilter",
-          "documentation":"<p>A structure that describes certain columns on certain rows.</p>"
-        }
-      }
     },
     "GetDataLakeSettingsRequest":{
       "type":"structure",
@@ -2242,12 +2165,6 @@
       },
       "exception":true
     },
-    "KeyString":{
-      "type":"string",
-      "max":255,
-      "min":1,
-      "pattern":"[\\u0020-\\uD7FF\\uE000-\\uFFFD\\uD800\\uDC00-\\uDBFF\\uDFFF\\t]*"
-    },
     "LFTag":{
       "type":"structure",
       "required":[
@@ -2629,15 +2546,6 @@
       "max":1000,
       "min":1
     },
-    "ParametersMap":{
-      "type":"map",
-      "key":{"shape":"KeyString"},
-      "value":{"shape":"ParametersMapValue"}
-    },
-    "ParametersMapValue":{
-      "type":"string",
-      "max":512000
-    },
     "PartitionObjects":{
       "type":"structure",
       "members":{
@@ -2876,15 +2784,11 @@
         },
         "UseServiceLinkedRole":{
           "shape":"NullableBoolean",
-          "documentation":"<p>Designates an Identity and Access Management (IAM) service-linked role by registering this role with the Data Catalog. A service-linked role is a unique type of IAM role that is linked directly to Lake Formation.</p> <p>For more information, see <a href=\"https://docs.aws.amazon.com/lake-formation/latest/dg/service-linked-roles.html\">Using Service-Linked Roles for Lake Formation</a>.</p>"
+          "documentation":"<p>Designates an Identity and Access Management (IAM) service-linked role by registering this role with the Data Catalog. A service-linked role is a unique type of IAM role that is linked directly to Lake Formation.</p> <p>For more information, see <a href=\"https://docs-aws.amazon.com/lake-formation/latest/dg/service-linked-roles.html\">Using Service-Linked Roles for Lake Formation</a>.</p>"
         },
         "RoleArn":{
           "shape":"IAMRoleArn",
           "documentation":"<p>The identifier for the role that registers the resource.</p>"
-        },
-        "WithFederation":{
-          "shape":"NullableBoolean",
-          "documentation":"<p>Whether or not the resource is a federated resource.</p>"
         }
       }
     },
@@ -2976,10 +2880,6 @@
         "LastModified":{
           "shape":"LastModifiedTimestamp",
           "documentation":"<p>The date and time the resource was last modified.</p>"
-        },
-        "WithFederation":{
-          "shape":"NullableBoolean",
-          "documentation":"<p>Whether or not the resource is a federated resource.</p>"
         }
       },
       "documentation":"<p>A structure containing information about an Lake Formation resource.</p>"
@@ -3056,7 +2956,7 @@
         },
         "Permissions":{
           "shape":"PermissionList",
-          "documentation":"<p>The permissions revoked to the principal on the resource. For information about permissions, see <a href=\"https://docs.aws.amazon.com/lake-formation/latest/dg/security-data-access.html\">Security and Access Control to Metadata and Data</a>.</p>"
+          "documentation":"<p>The permissions revoked to the principal on the resource. For information about permissions, see <a href=\"https://docs-aws.amazon.com/lake-formation/latest/dg/security-data-access.html\">Security and Access Control to Metadata and Data</a>.</p>"
         },
         "PermissionsWithGrantOption":{
           "shape":"PermissionList",
@@ -3097,7 +2997,7 @@
           "documentation":"<p>A continuation token, if this is not the first call to retrieve this list.</p>"
         },
         "MaxResults":{
-          "shape":"SearchPageSize",
+          "shape":"PageSize",
           "documentation":"<p>The maximum number of results to return.</p>"
         },
         "CatalogId":{
@@ -3123,12 +3023,6 @@
         }
       }
     },
-    "SearchPageSize":{
-      "type":"integer",
-      "box":true,
-      "max":100,
-      "min":1
-    },
     "SearchTablesByLFTagsRequest":{
       "type":"structure",
       "required":["Expression"],
@@ -3138,7 +3032,7 @@
           "documentation":"<p>A continuation token, if this is not the first call to retrieve this list.</p>"
         },
         "MaxResults":{
-          "shape":"SearchPageSize",
+          "shape":"PageSize",
           "documentation":"<p>The maximum number of results to return.</p>"
         },
         "CatalogId":{
@@ -3544,21 +3438,6 @@
       "min":1,
       "pattern":"[\\u0020-\\uD7FF\\uE000-\\uFFFD\\uD800\\uDC00-\\uDBFF\\uDFFF\\r\\n\\t]*"
     },
-    "UpdateDataCellsFilterRequest":{
-      "type":"structure",
-      "required":["TableData"],
-      "members":{
-        "TableData":{
-          "shape":"DataCellsFilter",
-          "documentation":"<p>A <code>DataCellsFilter</code> structure containing information about the data cells filter.</p>"
-        }
-      }
-    },
-    "UpdateDataCellsFilterResponse":{
-      "type":"structure",
-      "members":{
-      }
-    },
     "UpdateLFTagRequest":{
       "type":"structure",
       "required":["TagKey"],
@@ -3600,10 +3479,6 @@
         "ResourceArn":{
           "shape":"ResourceArnString",
           "documentation":"<p>The resource ARN.</p>"
-        },
-        "WithFederation":{
-          "shape":"NullableBoolean",
-          "documentation":"<p>Whether or not the resource is a federated resource.</p>"
         }
       }
     },
@@ -3687,12 +3562,6 @@
       "type":"list",
       "member":{"shape":"ValueString"},
       "min":1
-    },
-    "VersionString":{
-      "type":"string",
-      "max":255,
-      "min":1,
-      "pattern":"[\\u0020-\\uD7FF\\uE000-\\uFFFD\\uD800\\uDC00-\\uDBFF\\uDFFF\\t]*"
     },
     "VirtualObject":{
       "type":"structure",

@@ -419,10 +419,7 @@
         "en-ZA",
         "ca-ES",
         "de-AT",
-        "yue-CN",
-        "ar-AE",
-        "fi-FI",
-        "en-IE"
+        "yue-CN"
       ]
     },
     "LanguageCodeList":{
@@ -1087,24 +1084,7 @@
         "Liam",
         "Pedro",
         "Kajal",
-        "Hiujin",
-        "Laura",
-        "Elin",
-        "Ida",
-        "Suvi",
-        "Ola",
-        "Hala",
-        "Andres",
-        "Sergio",
-        "Remi",
-        "Adriano",
-        "Thiago",
-        "Ruth",
-        "Stephen",
-        "Kazuha",
-        "Tomoko",
-        "Niamh",
-        "Sofie"
+        "Hiujin"
       ]
     },
     "VoiceList":{

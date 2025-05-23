@@ -24,6 +24,7 @@ or you can look at the test files in /tests/unit/data/endpoints/valid-rules/
 import logging
 import re
 from enum import Enum
+from functools import lru_cache
 from string import Formatter
 from typing import NamedTuple
 
@@ -35,7 +36,6 @@ from botocore.utils import (
     InvalidArnException,
     is_valid_ipv4_endpoint_url,
     is_valid_ipv6_endpoint_url,
-    lru_cache_weakref,
     normalize_url_path,
     percent_encode,
 )
@@ -52,7 +52,7 @@ ARN_PARSER = ArnParser()
 STRING_FORMATTER = Formatter()
 
 
-class RuleSetStandardLibrary:
+class RuleSetStandardLibary:
     """Rule actions to be performed by the EndpointProvider."""
 
     def __init__(self, partitions_data):
@@ -202,12 +202,13 @@ class RuleSetStandardLibrary:
         :type value: str
         :rtype: dict
         """
-        partitions = self.partitions_data['partitions']
+        if value is None:
+            return None
 
-        if value is not None:
-            for partition in partitions:
-                if self.is_partition_match(value, partition):
-                    return self.format_partition_output(partition)
+        partitions = self.partitions_data['partitions']
+        for partition in partitions:
+            if self.is_partition_match(value, partition):
+                return self.format_partition_output(partition)
 
         # return the default partition if no matches were found
         aws_partition = partitions[0]
@@ -236,7 +237,8 @@ class RuleSetStandardLibrary:
         arn_dict["accountId"] = arn_dict.pop("account")
 
         resource = arn_dict.pop("resource")
-        arn_dict["resourceId"] = resource.replace(":", "/").split("/")
+        delimiter = ":" if ":" in resource else "/"
+        arn_dict["resourceId"] = resource.split(delimiter)
 
         return arn_dict
 
@@ -398,14 +400,13 @@ class RuleSetStandardLibrary:
         ):
             return False
 
-        return self.is_valid_host_label(
-            value, allow_subdomains=allow_subdomains
-        )
+        if allow_subdomains is True:
+            return all(
+                self.aws_is_virtual_hostable_s3_bucket(label, False)
+                for label in value.split(".")
+            )
 
-
-# maintains backwards compatibility as `Library` was misspelled
-# in earlier versions
-RuleSetStandardLibary = RuleSetStandardLibrary
+        return self.is_valid_host_label(value, allow_subdomains=False)
 
 
 class BaseRule:
@@ -550,6 +551,7 @@ class TreeRule(BaseRule):
 
 
 class RuleCreator:
+
     endpoint = EndpointRule
     error = ErrorRule
     tree = TreeRule
@@ -656,7 +658,7 @@ class RuleSet:
         self.version = version
         self.parameters = self._ingest_parameter_spec(parameters)
         self.rules = [RuleCreator.create(**rule) for rule in rules]
-        self.rule_lib = RuleSetStandardLibrary(partitions)
+        self.rule_lib = RuleSetStandardLibary(partitions)
         self.documentation = documentation
 
     def _ingest_parameter_spec(self, parameters):
@@ -703,7 +705,7 @@ class EndpointProvider:
     def __init__(self, ruleset_data, partition_data):
         self.ruleset = RuleSet(**ruleset_data, partitions=partition_data)
 
-    @lru_cache_weakref(maxsize=CACHE_SIZE)
+    @lru_cache(maxsize=CACHE_SIZE)
     def resolve_endpoint(self, **input_parameters):
         """Match input parameters to a rule.
 

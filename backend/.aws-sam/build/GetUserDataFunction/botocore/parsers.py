@@ -115,12 +115,11 @@ Each call to ``parse()`` returns a dict has this form::
 
 """
 import base64
-import http.client
 import json
 import logging
 import re
 
-from botocore.compat import ETree, XMLParseError
+from botocore.compat import ETree, XMLParseError, six
 from botocore.eventstream import EventStream, NoInitialResponseError
 from botocore.utils import (
     is_json_value_header,
@@ -237,8 +236,8 @@ class ResponseParser:
             always be present.
 
         """
-        LOG.debug('Response headers: %r', response['headers'])
-        LOG.debug('Response body:\n%r', response['body'])
+        LOG.debug('Response headers: %s', response['headers'])
+        LOG.debug('Response body:\n%s', response['body'])
         if response['status_code'] >= 301:
             if self._is_generic_error_response(response):
                 parsed = self._do_generic_error_parse(response)
@@ -307,7 +306,7 @@ class ResponseParser:
         return {
             'Error': {
                 'Code': str(response['status_code']),
-                'Message': http.client.responses.get(
+                'Message': six.moves.http_client.responses.get(
                     response['status_code'], ''
                 ),
             },
@@ -706,7 +705,6 @@ class BaseJSONParser(ResponseParser):
         code = None
         if len(query_error_components) == 2 and query_error_components[0]:
             code = query_error_components[0]
-            error['Error']['Type'] = query_error_components[1]
         if code is None:
             code = body.get('__type', response_code and str(response_code))
         if code is not None:
@@ -834,6 +832,7 @@ class EventStreamXMLParser(BaseEventStreamParser, BaseXMLResponseParser):
 
 
 class JSONParser(BaseJSONParser):
+
     EVENT_STREAM_PARSER_CLS = EventStreamJSONParser
 
     """Response parser for the "json" protocol."""
@@ -993,6 +992,7 @@ class BaseRestParser(ResponseParser):
 
 
 class RestJSONParser(BaseRestParser, BaseJSONParser):
+
     EVENT_STREAM_PARSER_CLS = EventStreamJSONParser
 
     def _initial_body_parse(self, body_contents):
@@ -1023,6 +1023,7 @@ class RestJSONParser(BaseRestParser, BaseJSONParser):
 
 
 class RestXMLParser(BaseRestParser, BaseXMLResponseParser):
+
     EVENT_STREAM_PARSER_CLS = EventStreamXMLParser
 
     def _initial_body_parse(self, xml_string):
@@ -1061,7 +1062,7 @@ class RestXMLParser(BaseRestParser, BaseXMLResponseParser):
         return {
             'Error': {
                 'Code': str(response['status_code']),
-                'Message': http.client.responses.get(
+                'Message': six.moves.http_client.responses.get(
                     response['status_code'], ''
                 ),
             },

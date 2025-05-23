@@ -1254,14 +1254,6 @@
         "AssetInformationList":{
           "shape":"LineItemAssetInformationList",
           "documentation":"<p> Information about assets. </p>"
-        },
-        "PreviousLineItemId":{
-          "shape":"LineItemId",
-          "documentation":"<p>The ID of the previous line item.</p>"
-        },
-        "PreviousOrderId":{
-          "shape":"OrderId",
-          "documentation":"<p>The ID of the previous order.</p>"
         }
       },
       "documentation":"<p>Information about a line item.</p>"
@@ -1327,8 +1319,7 @@
         "INSTALLING",
         "INSTALLED",
         "ERROR",
-        "CANCELLED",
-        "REPLACED"
+        "CANCELLED"
       ]
     },
     "LineItemStatusCounts":{
@@ -1651,14 +1642,6 @@
         "OrderFulfilledDate":{
           "shape":"ISO8601Timestamp",
           "documentation":"<p>The fulfillment date of the order.</p>"
-        },
-        "PaymentTerm":{
-          "shape":"PaymentTerm",
-          "documentation":"<p>The payment term.</p>"
-        },
-        "OrderType":{
-          "shape":"OrderType",
-          "documentation":"<p>The type of order.</p>"
         }
       },
       "documentation":"<p>Information about an order.</p>"
@@ -1697,7 +1680,7 @@
         },
         "OrderType":{
           "shape":"OrderType",
-          "documentation":"<p>The type of order.</p>"
+          "documentation":"<p> The type of order. </p>"
         },
         "Status":{
           "shape":"OrderStatus",
@@ -1837,8 +1820,7 @@
       "enum":[
         "POWER_5_KVA",
         "POWER_10_KVA",
-        "POWER_15_KVA",
-        "POWER_30_KVA"
+        "POWER_15_KVA"
       ]
     },
     "PowerFeedDrop":{
@@ -2166,7 +2148,7 @@
     "Token":{
       "type":"string",
       "documentation":"<p>The pagination token.</p>",
-      "max":2048,
+      "max":1005,
       "min":1,
       "pattern":"^(\\d+)##(\\S+)$"
     },

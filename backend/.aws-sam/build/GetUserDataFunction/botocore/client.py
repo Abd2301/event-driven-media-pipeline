@@ -61,18 +61,6 @@ from botocore.utils import S3RegionRedirector  # noqa
 from botocore import UNSIGNED  # noqa
 
 
-_LEGACY_SIGNATURE_VERSIONS = frozenset(
-    (
-        'v2',
-        'v3',
-        'v3https',
-        'v4',
-        's3',
-        's3v4',
-    )
-)
-
-
 logger = logging.getLogger(__name__)
 history_recorder = get_global_history_recorder()
 
@@ -148,9 +136,6 @@ class ClientCreator:
             client_config,
             service_signing_name=service_model.metadata.get('signingName'),
             config_store=self._config_store,
-            service_signature_version=service_model.metadata.get(
-                'signatureVersion'
-            ),
         )
         client_args = self._get_client_args(
             service_model,
@@ -168,14 +153,8 @@ class ClientCreator:
         )
         service_client = cls(**client_args)
         self._register_retries(service_client)
-        self._register_s3_events(
-            client=service_client,
-            endpoint_bridge=None,
-            endpoint_url=None,
-            client_config=client_config,
-            scoped_config=scoped_config,
-        )
-        self._register_s3_control_events(client=service_client)
+        self._register_s3_events(service_client, client_config, scoped_config)
+        self._register_s3_control_events(service_client)
         self._register_endpoint_discovery(
             service_client, endpoint_url, client_config
         )
@@ -367,14 +346,7 @@ class ClientCreator:
             endpoint_url=endpoint_url,
         ).register(client.meta.events)
 
-    def _register_s3_events(
-        self,
-        client,
-        endpoint_bridge,
-        endpoint_url,
-        client_config,
-        scoped_config,
-    ):
+    def _register_s3_events(self, client, client_config, scoped_config):
         if client.meta.service_model.service_name != 's3':
             return
         S3RegionRedirectorv2(None, client).register()
@@ -382,14 +354,7 @@ class ClientCreator:
             client.meta, client_config, scoped_config
         )
 
-    def _register_s3_control_events(
-        self,
-        client,
-        endpoint_bridge=None,
-        endpoint_url=None,
-        client_config=None,
-        scoped_config=None,
-    ):
+    def _register_s3_control_events(self, client):
         if client.meta.service_model.service_name != 's3control':
             return
         S3ControlArnParamHandlerv2().register(client.meta.events)
@@ -567,7 +532,6 @@ class ClientEndpointBridge:
         default_endpoint=None,
         service_signing_name=None,
         config_store=None,
-        service_signature_version=None,
     ):
         self.service_signing_name = service_signing_name
         self.endpoint_resolver = endpoint_resolver
@@ -575,7 +539,6 @@ class ClientEndpointBridge:
         self.client_config = client_config
         self.default_endpoint = default_endpoint or self.DEFAULT_ENDPOINT
         self.config_store = config_store
-        self.service_signature_version = service_signature_version
 
     def resolve(
         self, service_name, region_name=None, endpoint_url=None, is_secure=True
@@ -792,18 +755,9 @@ class ClientEndpointBridge:
         if configured_version is not None:
             return configured_version
 
-        potential_versions = resolved.get('signatureVersions', [])
-        if (
-            self.service_signature_version is not None
-            and self.service_signature_version
-            not in _LEGACY_SIGNATURE_VERSIONS
-        ):
-            # Prefer the service model as most specific
-            # source of truth for new signature versions.
-            potential_versions = [self.service_signature_version]
-
         # Pick a signature version from the endpoint metadata if present.
         if 'signatureVersions' in resolved:
+            potential_versions = resolved['signatureVersions']
             if service_name == 's3':
                 return 's3v4'
             if 'v4' in potential_versions:
@@ -814,11 +768,12 @@ class ClientEndpointBridge:
                 if known in AUTH_TYPE_MAPS:
                     return known
         raise UnknownSignatureVersionError(
-            signature_version=potential_versions
+            signature_version=resolved.get('signatureVersions')
         )
 
 
 class BaseClient:
+
     # This is actually reassigned with the py->op_name mapping
     # when the client creator creates the subclass.  This value is used
     # because calls such as client.get_paginator('list_objects') use the
@@ -912,11 +867,6 @@ class BaseClient:
             'has_streaming_input': operation_model.has_streaming_input,
             'auth_type': operation_model.auth_type,
         }
-        api_params = self._emit_api_params(
-            api_params=api_params,
-            operation_model=operation_model,
-            context=request_context,
-        )
         endpoint_url, additional_headers = self._resolve_endpoint_ruleset(
             operation_model, api_params, request_context
         )
@@ -988,6 +938,9 @@ class BaseClient:
         headers=None,
         set_user_agent_header=True,
     ):
+        api_params = self._emit_api_params(
+            api_params, operation_model, context
+        )
         request_dict = self._serializer.serialize_to_request(
             api_params, operation_model
         )

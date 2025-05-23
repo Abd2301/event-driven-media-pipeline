@@ -683,6 +683,7 @@ class S3SigV4PostAuth(SigV4Auth):
 
 
 class HmacV1Auth(BaseSigner):
+
     # List of Query String Arguments of Interest
     QSAOfInterest = [
         'accelerate',

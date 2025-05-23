@@ -17,8 +17,8 @@ Globals:
 Parameters:
   JwtSecret:
     Type: String
-    NoEcho: true
     Description: Secret key for JWT token generation
+    Default: e5298f548bab9996676025a645c62550487694a85584db92b4d087652cd27e75
 Resources:
   UsersTable:
     Type: AWS::DynamoDB::Table

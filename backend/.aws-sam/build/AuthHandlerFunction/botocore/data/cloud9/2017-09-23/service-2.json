@@ -260,8 +260,7 @@
     "AutomaticStopTimeMinutes":{
       "type":"integer",
       "box":true,
-      "max":20160,
-      "min":0
+      "max":20160
     },
     "BadRequestException":{
       "type":"structure",

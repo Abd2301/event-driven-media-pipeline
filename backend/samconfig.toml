@@ -1,0 +1,10 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "serverless-saas-app"
+resolve_s3 = true
+s3_prefix = "serverless-saas-app"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "JwtSecret=\"e5298f548bab9996676025a645c62550487694a85584db92b4d087652cd27e75\""
+image_repositories = []

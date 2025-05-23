@@ -225,13 +225,6 @@
       "max":2048,
       "min":20
     },
-    "AuthenticationMethod":{
-      "type":"string",
-      "enum":[
-        "X509ClientCertificate",
-        "SignatureVersion4"
-      ]
-    },
     "ConflictException":{
       "type":"structure",
       "members":{
@@ -246,7 +239,6 @@
     },
     "CreateSuiteDefinitionRequest":{
       "type":"structure",
-      "required":["suiteDefinitionConfiguration"],
       "members":{
         "suiteDefinitionConfiguration":{
           "shape":"SuiteDefinitionConfiguration",
@@ -263,19 +255,19 @@
       "members":{
         "suiteDefinitionId":{
           "shape":"UUID",
-          "documentation":"<p>The UUID of the test suite created.</p>"
+          "documentation":"<p>Creates a Device Advisor test suite with suite UUID.</p>"
         },
         "suiteDefinitionArn":{
           "shape":"AmazonResourceName",
-          "documentation":"<p>The Amazon Resource Name (ARN) of the test suite.</p>"
+          "documentation":"<p>Creates a Device Advisor test suite with Amazon Resource Name (ARN).</p>"
         },
         "suiteDefinitionName":{
           "shape":"SuiteDefinitionName",
-          "documentation":"<p>The suite definition name of the test suite. This is a required parameter.</p>"
+          "documentation":"<p>Creates a Device Advisor test suite with suite definition name.</p>"
         },
         "createdAt":{
           "shape":"Timestamp",
-          "documentation":"<p>The timestamp of when the test suite was created.</p>"
+          "documentation":"<p>Creates a Device Advisor test suite with TimeStamp of when it was created.</p>"
         }
       }
     },
@@ -301,18 +293,14 @@
       "members":{
         "thingArn":{
           "shape":"AmazonResourceName",
-          "documentation":"<p>Lists device's thing ARN.</p>"
+          "documentation":"<p>Lists devices thing ARN.</p>"
         },
         "certificateArn":{
           "shape":"AmazonResourceName",
-          "documentation":"<p>Lists device's certificate ARN.</p>"
-        },
-        "deviceRoleArn":{
-          "shape":"AmazonResourceName",
-          "documentation":"<p>Lists device's role ARN.</p>"
+          "documentation":"<p>Lists devices certificate ARN.</p>"
         }
       },
-      "documentation":"<p>Information of a test device. A thing ARN, certificate ARN or device role ARN is required.</p>"
+      "documentation":"<p>Information of a test device. A thing ARN or a certificate ARN is required.</p>"
     },
     "DeviceUnderTestList":{
       "type":"list",
@@ -341,18 +329,6 @@
           "documentation":"<p>The certificate ARN of the device. This is an optional parameter.</p>",
           "location":"querystring",
           "locationName":"certificateArn"
-        },
-        "deviceRoleArn":{
-          "shape":"AmazonResourceName",
-          "documentation":"<p>The device role ARN of the device. This is an optional parameter.</p>",
-          "location":"querystring",
-          "locationName":"deviceRoleArn"
-        },
-        "authenticationMethod":{
-          "shape":"AuthenticationMethod",
-          "documentation":"<p>The authentication method used during the device connection.</p>",
-          "location":"querystring",
-          "locationName":"authenticationMethod"
         }
       }
     },
@@ -637,7 +613,7 @@
       "members":{
         "resourceArn":{
           "shape":"AmazonResourceName",
-          "documentation":"<p>The resource ARN of the IoT Device Advisor resource. This can be SuiteDefinition ARN or SuiteRun ARN.</p>",
+          "documentation":"<p>The ARN of the IoT Device Advisor resource.</p>",
           "location":"uri",
           "locationName":"resourceArn"
         }
@@ -668,9 +644,7 @@
       "type":"string",
       "enum":[
         "MqttV3_1_1",
-        "MqttV5",
-        "MqttV3_1_1_OverWebSocket",
-        "MqttV5_OverWebSocket"
+        "MqttV5"
       ]
     },
     "QualificationReportDownloadUrl":{"type":"string"},
@@ -689,7 +663,7 @@
     "RootGroup":{
       "type":"string",
       "max":2048,
-      "min":0
+      "min":1
     },
     "SelectedTestList":{
       "type":"list",
@@ -699,10 +673,7 @@
     },
     "StartSuiteRunRequest":{
       "type":"structure",
-      "required":[
-        "suiteDefinitionId",
-        "suiteRunConfiguration"
-      ],
+      "required":["suiteDefinitionId"],
       "members":{
         "suiteDefinitionId":{
           "shape":"UUID",
@@ -738,10 +709,6 @@
         "createdAt":{
           "shape":"Timestamp",
           "documentation":"<p>Starts a Device Advisor test suite run based on suite create time.</p>"
-        },
-        "endpoint":{
-          "shape":"Endpoint",
-          "documentation":"<p>The response of an Device Advisor test endpoint.</p>"
         }
       }
     },
@@ -797,15 +764,10 @@
     },
     "SuiteDefinitionConfiguration":{
       "type":"structure",
-      "required":[
-        "suiteDefinitionName",
-        "rootGroup",
-        "devicePermissionRoleArn"
-      ],
       "members":{
         "suiteDefinitionName":{
           "shape":"SuiteDefinitionName",
-          "documentation":"<p>Gets the suite definition name. This is a required parameter.</p>"
+          "documentation":"<p>Gets Suite Definition Configuration name.</p>"
         },
         "devices":{
           "shape":"DeviceUnderTestList",
@@ -817,22 +779,22 @@
         },
         "isLongDurationTest":{
           "shape":"IsLongDurationTestBoolean",
-          "documentation":"<p>Verifies if the test suite is a long duration test.</p>"
+          "documentation":"<p> Verifies if the test suite is a long duration test. </p>"
         },
         "rootGroup":{
           "shape":"RootGroup",
-          "documentation":"<p>Gets the test suite root group. This is a required parameter. For updating or creating the latest qualification suite, if <code>intendedForQualification</code> is set to true, <code>rootGroup</code> can be an empty string. If <code>intendedForQualification</code> is false, <code>rootGroup</code> cannot be an empty string. If <code>rootGroup</code> is empty, and <code>intendedForQualification</code> is set to true, all the qualification tests are included, and the configuration is default.</p> <p> For a qualification suite, the minimum length is 0, and the maximum is 2048. For a non-qualification suite, the minimum length is 1, and the maximum is 2048. </p>"
+          "documentation":"<p>Gets test suite root group.</p>"
         },
         "devicePermissionRoleArn":{
           "shape":"AmazonResourceName",
-          "documentation":"<p>Gets the device permission ARN. This is a required parameter.</p>"
+          "documentation":"<p>Gets the device permission ARN.</p>"
         },
         "protocol":{
           "shape":"Protocol",
-          "documentation":"<p>Sets the MQTT protocol that is configured in the suite definition.</p>"
+          "documentation":"<p> Gets the MQTT protocol that is configured in the suite definition.</p>"
         }
       },
-      "documentation":"<p>Gets the suite definition configuration.</p>"
+      "documentation":"<p>Gets Suite Definition Configuration.</p>"
     },
     "SuiteDefinitionInformation":{
       "type":"structure",
@@ -855,11 +817,11 @@
         },
         "isLongDurationTest":{
           "shape":"IsLongDurationTestBoolean",
-          "documentation":"<p>Verifies if the test suite is a long duration test.</p>"
+          "documentation":"<p> Verifies if the test suite is a long duration test. </p>"
         },
         "protocol":{
           "shape":"Protocol",
-          "documentation":"<p>Gets the MQTT protocol that is configured in the suite definition.</p>"
+          "documentation":"<p> Gets the MQTT protocol that is configured in the suite definition.</p>"
         },
         "createdAt":{
           "shape":"Timestamp",
@@ -884,15 +846,14 @@
     },
     "SuiteRunConfiguration":{
       "type":"structure",
-      "required":["primaryDevice"],
       "members":{
         "primaryDevice":{
           "shape":"DeviceUnderTest",
-          "documentation":"<p>Sets the primary device for the test suite run. This requires a thing ARN or a certificate ARN.</p>"
+          "documentation":"<p>Gets the primary device for suite run.</p>"
         },
         "selectedTestList":{
           "shape":"SelectedTestList",
-          "documentation":"<p>Sets test case list.</p>"
+          "documentation":"<p>Gets test case list.</p>"
         },
         "parallelRun":{
           "shape":"ParallelRun",
@@ -993,7 +954,7 @@
       "members":{
         "resourceArn":{
           "shape":"AmazonResourceName",
-          "documentation":"<p>The resource ARN of an IoT Device Advisor resource. This can be SuiteDefinition ARN or SuiteRun ARN.</p>",
+          "documentation":"<p>The resource ARN of an IoT Device Advisor resource.</p>",
           "location":"uri",
           "locationName":"resourceArn"
         },
@@ -1081,7 +1042,7 @@
         },
         "systemMessage":{
           "shape":"SystemMessage",
-          "documentation":"<p>Provides test case scenario system messages if any.</p>"
+          "documentation":"<p> </p>"
         }
       },
       "documentation":"<p>Provides test case scenario.</p>"
@@ -1141,7 +1102,7 @@
       "members":{
         "resourceArn":{
           "shape":"AmazonResourceName",
-          "documentation":"<p>The resource ARN of an IoT Device Advisor resource. This can be SuiteDefinition ARN or SuiteRun ARN.</p>",
+          "documentation":"<p>The resource ARN of an IoT Device Advisor resource.</p>",
           "location":"uri",
           "locationName":"resourceArn"
         },
@@ -1160,10 +1121,7 @@
     },
     "UpdateSuiteDefinitionRequest":{
       "type":"structure",
-      "required":[
-        "suiteDefinitionId",
-        "suiteDefinitionConfiguration"
-      ],
+      "required":["suiteDefinitionId"],
       "members":{
         "suiteDefinitionId":{
           "shape":"UUID",
@@ -1190,7 +1148,7 @@
         },
         "suiteDefinitionName":{
           "shape":"SuiteDefinitionName",
-          "documentation":"<p>Updates the suite definition name. This is a required parameter.</p>"
+          "documentation":"<p>Suite definition name of the updated test suite.</p>"
         },
         "suiteDefinitionVersion":{
           "shape":"SuiteDefinitionVersion",

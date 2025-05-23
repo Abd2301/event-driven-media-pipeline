@@ -204,12 +204,6 @@
       "limit_key": "MaxRecords",
       "output_token": "Marker",
       "result_key": "DBProxyEndpoints"
-    },
-    "DescribeBlueGreenDeployments": {
-      "input_token": "Marker",
-      "limit_key": "MaxRecords",
-      "output_token": "Marker",
-      "result_key": "BlueGreenDeployments"
     }
   }
 }

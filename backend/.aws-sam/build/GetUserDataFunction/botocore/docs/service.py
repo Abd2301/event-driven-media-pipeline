@@ -18,10 +18,9 @@ from botocore.exceptions import DataNotFoundError
 
 
 class ServiceDocumenter:
-    def __init__(self, service_name, session, root_docs_path):
+    def __init__(self, service_name, session):
         self._session = session
         self._service_name = service_name
-        self._root_docs_path = root_docs_path
 
         self._client = self._session.create_client(
             service_name,
@@ -33,6 +32,7 @@ class ServiceDocumenter:
 
         self.sections = [
             'title',
+            'table-of-contents',
             'client-api',
             'client-exceptions',
             'paginator-api',
@@ -48,6 +48,7 @@ class ServiceDocumenter:
             self._service_name, section_names=self.sections, target='html'
         )
         self.title(doc_structure.get_section('title'))
+        self.table_of_contents(doc_structure.get_section('table-of-contents'))
         self.client_api(doc_structure.get_section('client-api'))
         self.client_exceptions(doc_structure.get_section('client-exceptions'))
         self.paginator_api(doc_structure.get_section('paginator-api'))
@@ -70,14 +71,10 @@ class ServiceDocumenter:
         except DataNotFoundError:
             pass
 
-        ClientDocumenter(
-            self._client, self._root_docs_path, examples
-        ).document_client(section)
+        ClientDocumenter(self._client, examples).document_client(section)
 
     def client_exceptions(self, section):
-        ClientExceptionsDocumenter(
-            self._client, self._root_docs_path
-        ).document_exceptions(section)
+        ClientExceptionsDocumenter(self._client).document_exceptions(section)
 
     def paginator_api(self, section):
         try:
@@ -86,11 +83,10 @@ class ServiceDocumenter:
             )
         except DataNotFoundError:
             return
-        if service_paginator_model._paginator_config:
-            paginator_documenter = PaginatorDocumenter(
-                self._client, service_paginator_model, self._root_docs_path
-            )
-            paginator_documenter.document_paginators(section)
+        paginator_documenter = PaginatorDocumenter(
+            self._client, service_paginator_model
+        )
+        paginator_documenter.document_paginators(section)
 
     def waiter_api(self, section):
         if self._client.waiter_names:
@@ -98,7 +94,7 @@ class ServiceDocumenter:
                 self._service_name
             )
             waiter_documenter = WaiterDocumenter(
-                self._client, service_waiter_model, self._root_docs_path
+                self._client, service_waiter_model
             )
             waiter_documenter.document_waiters(section)
 

@@ -118,8 +118,7 @@
         {"shape":"ThrottlingException"},
         {"shape":"InternalServerException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"ConflictException"},
-        {"shape":"ValidationException"}
+        {"shape":"ConflictException"}
       ],
       "documentation":"<p> Deletes a dataset and associated artifacts. The operation will check to see if any inference scheduler or data ingestion job is currently using the dataset, and if there isn't, the dataset, its metadata, and any associated data stored in S3 will be deleted. This does not affect any models that used this dataset for training and evaluation, but does prevent it from being used in the future. </p>"
     },
@@ -152,8 +151,7 @@
         {"shape":"ThrottlingException"},
         {"shape":"InternalServerException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"ConflictException"},
-        {"shape":"ValidationException"}
+        {"shape":"ConflictException"}
       ],
       "documentation":"<p> Deletes a label. </p>"
     },
@@ -169,8 +167,7 @@
         {"shape":"ThrottlingException"},
         {"shape":"InternalServerException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"ConflictException"},
-        {"shape":"ValidationException"}
+        {"shape":"ConflictException"}
       ],
       "documentation":"<p> Deletes a group of labels. </p>"
     },
@@ -186,8 +183,7 @@
         {"shape":"ThrottlingException"},
         {"shape":"InternalServerException"},
         {"shape":"ConflictException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"ValidationException"}
+        {"shape":"AccessDeniedException"}
       ],
       "documentation":"<p>Deletes an ML model currently available for Amazon Lookout for Equipment. This will prevent it from being used with an inference scheduler, even one that is already set up. </p>"
     },
@@ -2313,10 +2309,6 @@
         "ModelName":{
           "shape":"ModelName",
           "documentation":"<p>The name of the ML model used by the inference scheduler to be listed. </p>"
-        },
-        "Status":{
-          "shape":"InferenceSchedulerStatus",
-          "documentation":"<p>Specifies the current status of the inference schedulers to list.</p>"
         }
       }
     },

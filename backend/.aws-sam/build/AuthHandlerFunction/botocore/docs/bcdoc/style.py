@@ -14,8 +14,6 @@
 import logging
 
 logger = logging.getLogger('bcdocs')
-# Terminal punctuation where a space is not needed before.
-PUNCTUATION_CHARACTERS = ('.', ',', '?', '!', ':', ';')
 
 
 class BaseStyle:
@@ -64,16 +62,6 @@ class BaseStyle:
     def italics(self, s):
         return s
 
-    def add_trailing_space_to_previous_write(self):
-        # Adds a trailing space if none exists. This is mainly used for
-        # ensuring inline code and links are separated from surrounding text.
-        last_write = self.doc.pop_write()
-        if last_write is None:
-            last_write = ''
-        if last_write != '' and last_write[-1] != ' ':
-            last_write += ' '
-        self.doc.push_write(last_write)
-
 
 class ReSTStyle(BaseStyle):
     def __init__(self, doc, indent_width=2):
@@ -89,27 +77,26 @@ class ReSTStyle(BaseStyle):
         self.doc.write('\n%s' % self.spaces())
 
     def _start_inline(self, markup):
-        # Insert space between any directly adjacent bold and italic inlines to
-        # avoid situations like ``**abc***def*``.
-        try:
-            last_write = self.doc.peek_write()
-        except IndexError:
-            pass
-        else:
-            if last_write in ('*', '**') and markup in ('*', '**'):
-                self.doc.write(' ')
         self.doc.write(markup)
 
     def _end_inline(self, markup):
-        # Remove empty and self-closing tags like ``<b></b>`` and ``<b/>``.
-        # If we simply translate that directly then we end up with something
-        # like ****, which rst will assume is a heading instead of an empty
-        # bold.
-        last_write = self.doc.pop_write()
+        # Sometimes the HTML markup has whitespace between the end
+        # of the text inside the inline markup and the closing element
+        # (e.g. <b>foobar </b>).  This trailing space will cause
+        # problems in the ReST inline markup so we remove it here
+        # by popping the last item written off the stack, striping
+        # the whitespace and then pushing it back on the stack.
+        last_write = self.doc.pop_write().rstrip(' ')
+
+        # Sometimes, for whatever reason, a tag like <b/> is present. This
+        # is problematic because if we simply translate that directly then
+        # we end up with something like ****, which rst will assume is a
+        # heading instead of an empty bold.
         if last_write == markup:
             return
+
         self.doc.push_write(last_write)
-        self.doc.write(markup)
+        self.doc.write(markup + ' ')
 
     def start_bold(self, attrs=None):
         self._start_inline('**')
@@ -173,7 +160,6 @@ class ReSTStyle(BaseStyle):
 
     def start_code(self, attrs=None):
         self.doc.do_translation = True
-        self.add_trailing_space_to_previous_write()
         self._start_inline('``')
 
     def end_code(self):
@@ -217,15 +203,10 @@ class ReSTStyle(BaseStyle):
         self.new_paragraph()
 
     def start_a(self, attrs=None):
-        # Write an empty space to guard against zero whitespace
-        # before an "a" tag. Example: hi<a>Example</a>
-        self.add_trailing_space_to_previous_write()
         if attrs:
             for attr_key, attr_value in attrs:
                 if attr_key == 'href':
-                    # Removes unnecessary whitespace around the href link.
-                    # Example: <a href=" http://example.com ">Example</a>
-                    self.a_href = attr_value.strip()
+                    self.a_href = attr_value
                     self.doc.write('`')
         else:
             # There are some model documentation that
@@ -246,22 +227,9 @@ class ReSTStyle(BaseStyle):
         else:
             self.doc.write(text)
 
-    def _clean_link_text(self):
-        doc = self.doc
-        # Pop till we reach the link start character to retrieve link text.
-        last_write = doc.pop_write()
-        while not last_write.startswith('`'):
-            last_write = doc.pop_write() + last_write
-        if last_write != '':
-            # Remove whitespace from the start of link text.
-            if last_write.startswith('` '):
-                last_write = f'`{last_write[1:].lstrip(" ")}'
-            doc.push_write(last_write)
-
-    def end_a(self, next_child=None):
+    def end_a(self):
         self.doc.do_translation = False
         if self.a_href:
-            self._clean_link_text()
             last_write = self.doc.pop_write()
             last_write = last_write.rstrip(' ')
             if last_write and last_write != '`':
@@ -281,6 +249,7 @@ class ReSTStyle(BaseStyle):
                 self.doc.hrefs[self.a_href] = self.a_href
                 self.doc.write('`__')
             self.a_href = None
+        self.doc.write(' ')
 
     def start_i(self, attrs=None):
         self.doc.do_translation = True

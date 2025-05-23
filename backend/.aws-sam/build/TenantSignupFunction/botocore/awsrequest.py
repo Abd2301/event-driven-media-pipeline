@@ -100,7 +100,7 @@ class AWSConnection:
     def _convert_to_bytes(self, mixed_buffer):
         # Take a list of mixed str/bytes and convert it
         # all into a single bytestring.
-        # Any str will be encoded as utf-8.
+        # Any six.text_types will be encoded as utf-8.
         bytes_buffer = []
         for chunk in mixed_buffer:
             if isinstance(chunk, str):
@@ -445,6 +445,7 @@ class AWSRequest:
         auth_path=None,
         stream_output=False,
     ):
+
         self._request_preparer = self._REQUEST_PREPARER_CLS()
 
         # Default empty dicts for dict params.
@@ -564,7 +565,7 @@ class AWSResponse:
             # NOTE: requests would attempt to call stream and fall back
             # to a custom generator that would call read in a loop, but
             # we don't rely on this behavior
-            self._content = b''.join(self.raw.stream()) or b''
+            self._content = bytes().join(self.raw.stream()) or bytes()
 
         return self._content
 

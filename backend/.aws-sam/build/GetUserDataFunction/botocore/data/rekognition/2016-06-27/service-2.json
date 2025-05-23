@@ -12,27 +12,6 @@
     "uid":"rekognition-2016-06-27"
   },
   "operations":{
-    "AssociateFaces":{
-      "name":"AssociateFaces",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"AssociateFacesRequest"},
-      "output":{"shape":"AssociateFacesResponse"},
-      "errors":[
-        {"shape":"InvalidParameterException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"ThrottlingException"},
-        {"shape":"ProvisionedThroughputExceededException"},
-        {"shape":"IdempotentParameterMismatchException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ConflictException"},
-        {"shape":"ServiceQuotaExceededException"}
-      ],
-      "documentation":"<p>Associates one or more faces with an existing UserID. Takes an array of <code>FaceIds</code>. Each <code>FaceId</code> that are present in the <code>FaceIds</code> list is associated with the provided UserID. The maximum number of total <code>FaceIds</code> per UserID is 100. </p> <p>The <code>UserMatchThreshold</code> parameter specifies the minimum user match confidence required for the face to be associated with a UserID that has at least one <code>FaceID</code> already associated. This ensures that the <code>FaceIds</code> are associated with the right UserID. The value ranges from 0-100 and default value is 75. </p> <p>If successful, an array of <code>AssociatedFace</code> objects containing the associated <code>FaceIds</code> is returned. If a given face is already associated with the given <code>UserID</code>, it will be ignored and will not be returned in the response. If a given face is already associated to a different <code>UserID</code>, isn't found in the collection, doesn’t meet the <code>UserMatchThreshold</code>, or there are already 100 faces associated with the <code>UserID</code>, it will be returned as part of an array of <code>UnsuccessfulFaceAssociations.</code> </p> <p>The <code>UserStatus</code> reflects the status of an operation which updates a UserID representation with a list of given faces. The <code>UserStatus</code> can be: </p> <ul> <li> <p>ACTIVE - All associations or disassociations of FaceID(s) for a UserID are complete.</p> </li> <li> <p>CREATED - A UserID has been created, but has no FaceID(s) associated with it.</p> </li> <li> <p>UPDATING - A UserID is being updated and there are current associations or disassociations of FaceID(s) taking place.</p> </li> </ul>"
-    },
     "CompareFaces":{
       "name":"CompareFaces",
       "http":{
@@ -72,7 +51,7 @@
         {"shape":"ProvisionedThroughputExceededException"},
         {"shape":"ResourceInUseException"}
       ],
-      "documentation":"<p>Copies a version of an Amazon Rekognition Custom Labels model from a source project to a destination project. The source and destination projects can be in different AWS accounts but must be in the same AWS Region. You can't copy a model to another AWS service. </p> <p>To copy a model version to a different AWS account, you need to create a resource-based policy known as a <i>project policy</i>. You attach the project policy to the source project by calling <a>PutProjectPolicy</a>. The project policy gives permission to copy the model version from a trusting AWS account to a trusted account.</p> <p>For more information creating and attaching a project policy, see Attaching a project policy (SDK) in the <i>Amazon Rekognition Custom Labels Developer Guide</i>. </p> <p>If you are copying a model version to a project in the same AWS account, you don't need to create a project policy.</p> <note> <p>To copy a model, the destination project, source project, and source model version must already exist.</p> </note> <p>Copying a model version takes a while to complete. To get the current status, call <a>DescribeProjectVersions</a> and check the value of <code>Status</code> in the <a>ProjectVersionDescription</a> object. The copy operation has finished when the value of <code>Status</code> is <code>COPYING_COMPLETED</code>.</p> <p>This operation requires permissions to perform the <code>rekognition:CopyProjectVersion</code> action.</p>"
+      "documentation":"<p>Copies a version of an Amazon Rekognition Custom Labels model from a source project to a destination project. The source and destination projects can be in different AWS accounts but must be in the same AWS Region. You can't copy a model to another AWS service. </p> <p>To copy a model version to a different AWS account, you need to create a resource-based policy known as a <i>project policy</i>. You attach the project policy to the source project by calling <a>PutProjectPolicy</a>. The project policy gives permission to copy the model version from a trusting AWS account to a trusted account.</p> <p>For more information creating and attaching a project policy, see Attaching a project policy (SDK) in the <i>Amazon Rekognition Custom Labels Developer Guide</i>. </p> <p>If you are copying a model version to a project in the same AWS account, you don't need to create a project policy.</p> <note> <p>To copy a model, the destination project, source project, and source model version must already exist.</p> </note> <p>Copying a model version takes a while to complete. To get the current status, call <a>DescribeProjectVersions</a> and check the value of <code>Status</code> in the <a>ProjectVersionDescription</a> object. The copy operation has finished when the value of <code>Status</code> is <code>COPYING_COMPLETED</code>.</p>"
     },
     "CreateCollection":{
       "name":"CreateCollection",
@@ -113,24 +92,6 @@
         {"shape":"ResourceNotFoundException"}
       ],
       "documentation":"<p>Creates a new Amazon Rekognition Custom Labels dataset. You can create a dataset by using an Amazon Sagemaker format manifest file or by copying an existing Amazon Rekognition Custom Labels dataset.</p> <p>To create a training dataset for a project, specify <code>train</code> for the value of <code>DatasetType</code>. To create the test dataset for a project, specify <code>test</code> for the value of <code>DatasetType</code>. </p> <p>The response from <code>CreateDataset</code> is the Amazon Resource Name (ARN) for the dataset. Creating a dataset takes a while to complete. Use <a>DescribeDataset</a> to check the current status. The dataset created successfully if the value of <code>Status</code> is <code>CREATE_COMPLETE</code>. </p> <p>To check if any non-terminal errors occurred, call <a>ListDatasetEntries</a> and check for the presence of <code>errors</code> lists in the JSON Lines.</p> <p>Dataset creation fails if a terminal error occurs (<code>Status</code> = <code>CREATE_FAILED</code>). Currently, you can't access the terminal error information. </p> <p>For more information, see Creating dataset in the <i>Amazon Rekognition Custom Labels Developer Guide</i>.</p> <p>This operation requires permissions to perform the <code>rekognition:CreateDataset</code> action. If you want to copy an existing dataset, you also require permission to perform the <code>rekognition:ListDatasetEntries</code> action.</p>"
-    },
-    "CreateFaceLivenessSession":{
-      "name":"CreateFaceLivenessSession",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"CreateFaceLivenessSessionRequest"},
-      "output":{"shape":"CreateFaceLivenessSessionResponse"},
-      "errors":[
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"InvalidParameterException"},
-        {"shape":"ThrottlingException"},
-        {"shape":"ProvisionedThroughputExceededException"}
-      ],
-      "documentation":"<p>This API operation initiates a Face Liveness session. It returns a <code>SessionId</code>, which you can use to start streaming Face Liveness video and get the results for a Face Liveness session. You can use the <code>OutputConfig</code> option in the Settings parameter to provide an Amazon S3 bucket location. The Amazon S3 bucket stores reference images and audit images. You can use <code>AuditImagesLimit</code> to limit the number of audit images returned. This number is between 0 and 4. By default, it is set to 0. The limit is best effort and based on the duration of the selfie-video. </p>",
-      "idempotent":true
     },
     "CreateProject":{
       "name":"CreateProject",
@@ -190,28 +151,7 @@
         {"shape":"ProvisionedThroughputExceededException"},
         {"shape":"ServiceQuotaExceededException"}
       ],
-      "documentation":"<p>Creates an Amazon Rekognition stream processor that you can use to detect and recognize faces or to detect labels in a streaming video.</p> <p>Amazon Rekognition Video is a consumer of live video from Amazon Kinesis Video Streams. There are two different settings for stream processors in Amazon Rekognition: detecting faces and detecting labels.</p> <ul> <li> <p>If you are creating a stream processor for detecting faces, you provide as input a Kinesis video stream (<code>Input</code>) and a Kinesis data stream (<code>Output</code>) stream for receiving the output. You must use the <code>FaceSearch</code> option in <code>Settings</code>, specifying the collection that contains the faces you want to recognize. After you have finished analyzing a streaming video, use <a>StopStreamProcessor</a> to stop processing.</p> </li> <li> <p>If you are creating a stream processor to detect labels, you provide as input a Kinesis video stream (<code>Input</code>), Amazon S3 bucket information (<code>Output</code>), and an Amazon SNS topic ARN (<code>NotificationChannel</code>). You can also provide a KMS key ID to encrypt the data sent to your Amazon S3 bucket. You specify what you want to detect by using the <code>ConnectedHome</code> option in settings, and selecting one of the following: <code>PERSON</code>, <code>PET</code>, <code>PACKAGE</code>, <code>ALL</code> You can also specify where in the frame you want Amazon Rekognition to monitor with <code>RegionsOfInterest</code>. When you run the <a>StartStreamProcessor</a> operation on a label detection stream processor, you input start and stop information to determine the length of the processing time.</p> </li> </ul> <p> Use <code>Name</code> to assign an identifier for the stream processor. You use <code>Name</code> to manage the stream processor. For example, you can start processing the source video by calling <a>StartStreamProcessor</a> with the <code>Name</code> field. </p> <p>This operation requires permissions to perform the <code>rekognition:CreateStreamProcessor</code> action. If you want to tag your stream processor, you also require permission to perform the <code>rekognition:TagResource</code> operation.</p>"
-    },
-    "CreateUser":{
-      "name":"CreateUser",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"CreateUserRequest"},
-      "output":{"shape":"CreateUserResponse"},
-      "errors":[
-        {"shape":"InvalidParameterException"},
-        {"shape":"ConflictException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ServiceQuotaExceededException"},
-        {"shape":"ProvisionedThroughputExceededException"},
-        {"shape":"IdempotentParameterMismatchException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"ThrottlingException"}
-      ],
-      "documentation":"<p>Creates a new User within a collection specified by <code>CollectionId</code>. Takes <code>UserId</code> as a parameter, which is a user provided ID which should be unique within the collection. The provided <code>UserId</code> will alias the system generated UUID to make the <code>UserId</code> more user friendly. </p> <p>Uses a <code>ClientToken</code>, an idempotency token that ensures a call to <code>CreateUser</code> completes only once. If the value is not supplied, the AWS SDK generates an idempotency token for the requests. This prevents retries after a network error results from making multiple <code>CreateUser</code> calls. </p>"
+      "documentation":"<p>Creates an Amazon Rekognition stream processor that you can use to detect and recognize faces or to detect labels in a streaming video.</p> <p>Amazon Rekognition Video is a consumer of live video from Amazon Kinesis Video Streams. There are two different settings for stream processors in Amazon Rekognition: detecting faces and detecting labels.</p> <ul> <li> <p>If you are creating a stream processor for detecting faces, you provide as input a Kinesis video stream (<code>Input</code>) and a Kinesis data stream (<code>Output</code>) stream. You also specify the face recognition criteria in <code>Settings</code>. For example, the collection containing faces that you want to recognize. After you have finished analyzing a streaming video, use <a>StopStreamProcessor</a> to stop processing.</p> </li> <li> <p>If you are creating a stream processor to detect labels, you provide as input a Kinesis video stream (<code>Input</code>), Amazon S3 bucket information (<code>Output</code>), and an Amazon SNS topic ARN (<code>NotificationChannel</code>). You can also provide a KMS key ID to encrypt the data sent to your Amazon S3 bucket. You specify what you want to detect in <code>ConnectedHomeSettings</code>, such as people, packages and people, or pets, people, and packages. You can also specify where in the frame you want Amazon Rekognition to monitor with <code>RegionsOfInterest</code>. When you run the <a>StartStreamProcessor</a> operation on a label detection stream processor, you input start and stop information to determine the length of the processing time.</p> </li> </ul> <p> Use <code>Name</code> to assign an identifier for the stream processor. You use <code>Name</code> to manage the stream processor. For example, you can start processing the source video by calling <a>StartStreamProcessor</a> with the <code>Name</code> field. </p> <p>This operation requires permissions to perform the <code>rekognition:CreateStreamProcessor</code> action. If you want to tag your stream processor, you also require permission to perform the <code>rekognition:TagResource</code> operation.</p>"
     },
     "DeleteCollection":{
       "name":"DeleteCollection",
@@ -305,7 +245,7 @@
         {"shape":"ProvisionedThroughputExceededException"},
         {"shape":"InvalidPolicyRevisionIdException"}
       ],
-      "documentation":"<p>Deletes an existing project policy.</p> <p>To get a list of project policies attached to a project, call <a>ListProjectPolicies</a>. To attach a project policy to a project, call <a>PutProjectPolicy</a>.</p> <p>This operation requires permissions to perform the <code>rekognition:DeleteProjectPolicy</code> action.</p>"
+      "documentation":"<p>Deletes an existing project policy.</p> <p>To get a list of project policies attached to a project, call <a>ListProjectPolicies</a>. To attach a project policy to a project, call <a>PutProjectPolicy</a>.</p>"
     },
     "DeleteProjectVersion":{
       "name":"DeleteProjectVersion",
@@ -344,26 +284,6 @@
         {"shape":"ProvisionedThroughputExceededException"}
       ],
       "documentation":"<p>Deletes the stream processor identified by <code>Name</code>. You assign the value for <code>Name</code> when you create the stream processor with <a>CreateStreamProcessor</a>. You might not be able to use the same name for a stream processor for a few seconds after calling <code>DeleteStreamProcessor</code>.</p>"
-    },
-    "DeleteUser":{
-      "name":"DeleteUser",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DeleteUserRequest"},
-      "output":{"shape":"DeleteUserResponse"},
-      "errors":[
-        {"shape":"InvalidParameterException"},
-        {"shape":"ConflictException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ProvisionedThroughputExceededException"},
-        {"shape":"IdempotentParameterMismatchException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"ThrottlingException"}
-      ],
-      "documentation":"<p>Deletes the specified UserID within the collection. Faces that are associated with the UserID are disassociated from the UserID before deleting the specified UserID. If the specified <code>Collection</code> or <code>UserID</code> is already deleted or not found, a <code>ResourceNotFoundException</code> will be thrown. If the action is successful with a 200 response, an empty HTTP body is returned. </p>"
     },
     "DescribeCollection":{
       "name":"DescribeCollection",
@@ -497,7 +417,7 @@
         {"shape":"ProvisionedThroughputExceededException"},
         {"shape":"InvalidImageFormatException"}
       ],
-      "documentation":"<p>Detects faces within an image that is provided as input.</p> <p> <code>DetectFaces</code> detects the 100 largest faces in the image. For each face detected, the operation returns face details. These details include a bounding box of the face, a confidence value (that the bounding box contains a face), and a fixed set of attributes such as facial landmarks (for example, coordinates of eye and mouth), pose, presence of facial occlusion, and so on.</p> <p>The face-detection algorithm is most effective on frontal faces. For non-frontal or obscured faces, the algorithm might not detect the faces or might detect faces with lower confidence. </p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <note> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> </note> <p>This operation requires permissions to perform the <code>rekognition:DetectFaces</code> action. </p>"
+      "documentation":"<p>Detects faces within an image that is provided as input.</p> <p> <code>DetectFaces</code> detects the 100 largest faces in the image. For each face detected, the operation returns face details. These details include a bounding box of the face, a confidence value (that the bounding box contains a face), and a fixed set of attributes such as facial landmarks (for example, coordinates of eye and mouth), presence of beard, sunglasses, and so on. </p> <p>The face-detection algorithm is most effective on frontal faces. For non-frontal or obscured faces, the algorithm might not detect the faces or might detect faces with lower confidence. </p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <note> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> </note> <p>This operation requires permissions to perform the <code>rekognition:DetectFaces</code> action. </p>"
     },
     "DetectLabels":{
       "name":"DetectLabels",
@@ -517,7 +437,7 @@
         {"shape":"ProvisionedThroughputExceededException"},
         {"shape":"InvalidImageFormatException"}
       ],
-      "documentation":"<p>Detects instances of real-world entities within an image (JPEG or PNG) provided as input. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; and concepts like landscape, evening, and nature. </p> <p>For an example, see Analyzing images stored in an Amazon S3 bucket in the Amazon Rekognition Developer Guide.</p> <p>You pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> <b>Optional Parameters</b> </p> <p>You can specify one or both of the <code>GENERAL_LABELS</code> and <code>IMAGE_PROPERTIES</code> feature types when calling the DetectLabels API. Including <code>GENERAL_LABELS</code> will ensure the response includes the labels detected in the input image, while including <code>IMAGE_PROPERTIES </code>will ensure the response includes information about the image quality and color.</p> <p>When using <code>GENERAL_LABELS</code> and/or <code>IMAGE_PROPERTIES</code> you can provide filtering criteria to the Settings parameter. You can filter with sets of individual labels or with label categories. You can specify inclusive filters, exclusive filters, or a combination of inclusive and exclusive filters. For more information on filtering see <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/labels-detect-labels-image.html\">Detecting Labels in an Image</a>.</p> <p>You can specify <code>MinConfidence</code> to control the confidence threshold for the labels returned. The default is 55%. You can also add the <code>MaxLabels</code> parameter to limit the number of labels returned. The default and upper limit is 1000 labels.</p> <p> <b>Response Elements</b> </p> <p> For each object, scene, and concept the API returns one or more labels. The API returns the following types of information about labels:</p> <ul> <li> <p> Name - The name of the detected label. </p> </li> <li> <p> Confidence - The level of confidence in the label assigned to a detected object. </p> </li> <li> <p> Parents - The ancestor labels for a detected label. DetectLabels returns a hierarchical taxonomy of detected labels. For example, a detected car might be assigned the label car. The label car has two parent labels: Vehicle (its parent) and Transportation (its grandparent). The response includes the all ancestors for a label, where every ancestor is a unique label. In the previous example, Car, Vehicle, and Transportation are returned as unique labels in the response. </p> </li> <li> <p> Aliases - Possible Aliases for the label. </p> </li> <li> <p> Categories - The label categories that the detected label belongs to. </p> </li> <li> <p> BoundingBox — Bounding boxes are described for all instances of detected common object labels, returned in an array of Instance objects. An Instance object contains a BoundingBox object, describing the location of the label on the input image. It also includes the confidence for the accuracy of the detected bounding box. </p> </li> </ul> <p> The API returns the following information regarding the image, as part of the ImageProperties structure:</p> <ul> <li> <p>Quality - Information about the Sharpness, Brightness, and Contrast of the input image, scored between 0 to 100. Image quality is returned for the entire image, as well as the background and the foreground. </p> </li> <li> <p>Dominant Color - An array of the dominant colors in the image. </p> </li> <li> <p>Foreground - Information about the sharpness, brightness, and dominant colors of the input image’s foreground. </p> </li> <li> <p>Background - Information about the sharpness, brightness, and dominant colors of the input image’s background.</p> </li> </ul> <p>The list of returned labels will include at least one label for every detected object, along with information about that label. In the following example, suppose the input image has a lighthouse, the sea, and a rock. The response includes all three labels, one for each object, as well as the confidence in the label:</p> <p> <code>{Name: lighthouse, Confidence: 98.4629}</code> </p> <p> <code>{Name: rock,Confidence: 79.2097}</code> </p> <p> <code> {Name: sea,Confidence: 75.061}</code> </p> <p>The list of labels can include multiple labels for the same object. For example, if the input image shows a flower (for example, a tulip), the operation might return the following three labels. </p> <p> <code>{Name: flower,Confidence: 99.0562}</code> </p> <p> <code>{Name: plant,Confidence: 99.0562}</code> </p> <p> <code>{Name: tulip,Confidence: 99.0562}</code> </p> <p>In this example, the detection algorithm more precisely identifies the flower as a tulip.</p> <note> <p>If the object detected is a person, the operation doesn't provide the same facial details that the <a>DetectFaces</a> operation provides.</p> </note> <p>This is a stateless API operation that doesn't return any data.</p> <p>This operation requires permissions to perform the <code>rekognition:DetectLabels</code> action. </p>"
+      "documentation":"<p>Detects instances of real-world entities within an image (JPEG or PNG) provided as input. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; and concepts like landscape, evening, and nature. </p> <p>For an example, see Analyzing images stored in an Amazon S3 bucket in the Amazon Rekognition Developer Guide.</p> <note> <p> <code>DetectLabels</code> does not support the detection of activities. However, activity detection is supported for label detection in videos. For more information, see StartLabelDetection in the Amazon Rekognition Developer Guide.</p> </note> <p>You pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> For each object, scene, and concept the API returns one or more labels. Each label provides the object name, and the level of confidence that the image contains the object. For example, suppose the input image has a lighthouse, the sea, and a rock. The response includes all three labels, one for each object. </p> <p> <code>{Name: lighthouse, Confidence: 98.4629}</code> </p> <p> <code>{Name: rock,Confidence: 79.2097}</code> </p> <p> <code> {Name: sea,Confidence: 75.061}</code> </p> <p>In the preceding example, the operation returns one label for each of the three objects. The operation can also return multiple labels for the same object in the image. For example, if the input image shows a flower (for example, a tulip), the operation might return the following three labels. </p> <p> <code>{Name: flower,Confidence: 99.0562}</code> </p> <p> <code>{Name: plant,Confidence: 99.0562}</code> </p> <p> <code>{Name: tulip,Confidence: 99.0562}</code> </p> <p>In this example, the detection algorithm more precisely identifies the flower as a tulip.</p> <p>In response, the API returns an array of labels. In addition, the response also includes the orientation correction. Optionally, you can specify <code>MinConfidence</code> to control the confidence threshold for the labels returned. The default is 55%. You can also add the <code>MaxLabels</code> parameter to limit the number of labels returned. </p> <note> <p>If the object detected is a person, the operation doesn't provide the same facial details that the <a>DetectFaces</a> operation provides.</p> </note> <p> <code>DetectLabels</code> returns bounding boxes for instances of common object labels in an array of <a>Instance</a> objects. An <code>Instance</code> object contains a <a>BoundingBox</a> object, for the location of the label on the image. It also includes the confidence by which the bounding box was detected.</p> <p> <code>DetectLabels</code> also returns a hierarchical taxonomy of detected labels. For example, a detected car might be assigned the label <i>car</i>. The label <i>car</i> has two parent labels: <i>Vehicle</i> (its parent) and <i>Transportation</i> (its grandparent). The response returns the entire list of ancestors for a label. Each ancestor is a unique label in the response. In the previous example, <i>Car</i>, <i>Vehicle</i>, and <i>Transportation</i> are returned as unique labels in the response. </p> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> <p>This operation requires permissions to perform the <code>rekognition:DetectLabels</code> action. </p>"
     },
     "DetectModerationLabels":{
       "name":"DetectModerationLabels",
@@ -579,26 +499,6 @@
         {"shape":"InvalidImageFormatException"}
       ],
       "documentation":"<p>Detects text in the input image and converts it into machine-readable text.</p> <p>Pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, you must pass it as a reference to an image in an Amazon S3 bucket. For the AWS CLI, passing image bytes is not supported. The image must be either a .png or .jpeg formatted file. </p> <p>The <code>DetectText</code> operation returns text in an array of <a>TextDetection</a> elements, <code>TextDetections</code>. Each <code>TextDetection</code> element provides information about a single word or line of text that was detected in the image. </p> <p>A word is one or more script characters that are not separated by spaces. <code>DetectText</code> can detect up to 100 words in an image.</p> <p>A line is a string of equally spaced words. A line isn't necessarily a complete sentence. For example, a driver's license number is detected as a line. A line ends when there is no aligned text after it. Also, a line ends when there is a large gap between words, relative to the length of the words. This means, depending on the gap between words, Amazon Rekognition may detect multiple lines in text aligned in the same direction. Periods don't represent the end of a line. If a sentence spans multiple lines, the <code>DetectText</code> operation returns multiple lines.</p> <p>To determine whether a <code>TextDetection</code> element is a line of text or a word, use the <code>TextDetection</code> object <code>Type</code> field. </p> <p>To be detected, text must be within +/- 90 degrees orientation of the horizontal axis.</p> <p>For more information, see Detecting text in the Amazon Rekognition Developer Guide.</p>"
-    },
-    "DisassociateFaces":{
-      "name":"DisassociateFaces",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DisassociateFacesRequest"},
-      "output":{"shape":"DisassociateFacesResponse"},
-      "errors":[
-        {"shape":"InvalidParameterException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"ThrottlingException"},
-        {"shape":"ProvisionedThroughputExceededException"},
-        {"shape":"IdempotentParameterMismatchException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ConflictException"}
-      ],
-      "documentation":"<p>Removes the association between a <code>Face</code> supplied in an array of <code>FaceIds</code> and the User. If the User is not present already, then a <code>ResourceNotFound</code> exception is thrown. If successful, an array of faces that are disassociated from the User is returned. If a given face is already disassociated from the given UserID, it will be ignored and not be returned in the response. If a given face is already associated with a different User or not found in the collection it will be returned as part of <code>UnsuccessfulDisassociations</code>. You can remove 1 - 100 face IDs from a user at one time.</p>"
     },
     "DistributeDatasetEntries":{
       "name":"DistributeDatasetEntries",
@@ -694,24 +594,6 @@
       ],
       "documentation":"<p>Gets face detection results for a Amazon Rekognition Video analysis started by <a>StartFaceDetection</a>.</p> <p>Face detection with Amazon Rekognition Video is an asynchronous operation. You start face detection by calling <a>StartFaceDetection</a> which returns a job identifier (<code>JobId</code>). When the face detection operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartFaceDetection</code>. To get the results of the face detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceDetection</code>.</p> <p> <code>GetFaceDetection</code> returns an array of detected faces (<code>Faces</code>) sorted by the time the faces were detected. </p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetFaceDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetFaceDetection</code>.</p>"
     },
-    "GetFaceLivenessSessionResults":{
-      "name":"GetFaceLivenessSessionResults",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"GetFaceLivenessSessionResultsRequest"},
-      "output":{"shape":"GetFaceLivenessSessionResultsResponse"},
-      "errors":[
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"InvalidParameterException"},
-        {"shape":"SessionNotFoundException"},
-        {"shape":"ThrottlingException"},
-        {"shape":"ProvisionedThroughputExceededException"}
-      ],
-      "documentation":"<p>Retrieves the results of a specific Face Liveness session. It requires the <code>sessionId</code> as input, which was created using <code>CreateFaceLivenessSession</code>. Returns the corresponding Face Liveness confidence score, a reference image that includes a face bounding box, and audit images that also contain face bounding boxes. The Face Liveness confidence score ranges from 0 to 100. The reference image can optionally be returned.</p>"
-    },
     "GetFaceSearch":{
       "name":"GetFaceSearch",
       "http":{
@@ -748,7 +630,7 @@
         {"shape":"ResourceNotFoundException"},
         {"shape":"ThrottlingException"}
       ],
-      "documentation":"<p>Gets the label detection results of a Amazon Rekognition Video analysis started by <a>StartLabelDetection</a>. </p> <p>The label detection operation is started by a call to <a>StartLabelDetection</a> which returns a job identifier (<code>JobId</code>). When the label detection operation finishes, Amazon Rekognition publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartlabelDetection</code>. </p> <p>To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p> <code>GetLabelDetection</code> returns an array of detected labels (<code>Labels</code>) sorted by the time the labels were detected. You can also sort by the label name by specifying <code>NAME</code> for the <code>SortBy</code> input parameter. If there is no <code>NAME</code> specified, the default sort is by timestamp.</p> <p>You can select how results are aggregated by using the <code>AggregateBy</code> input parameter. The default aggregation method is <code>TIMESTAMPS</code>. You can also aggregate by <code>SEGMENTS</code>, which aggregates all instances of labels detected in a given segment. </p> <p>The returned Labels array may include the following attributes:</p> <ul> <li> <p>Name - The name of the detected label.</p> </li> <li> <p>Confidence - The level of confidence in the label assigned to a detected object. </p> </li> <li> <p>Parents - The ancestor labels for a detected label. GetLabelDetection returns a hierarchical taxonomy of detected labels. For example, a detected car might be assigned the label car. The label car has two parent labels: Vehicle (its parent) and Transportation (its grandparent). The response includes the all ancestors for a label, where every ancestor is a unique label. In the previous example, Car, Vehicle, and Transportation are returned as unique labels in the response. </p> </li> <li> <p> Aliases - Possible Aliases for the label. </p> </li> <li> <p>Categories - The label categories that the detected label belongs to.</p> </li> <li> <p>BoundingBox — Bounding boxes are described for all instances of detected common object labels, returned in an array of Instance objects. An Instance object contains a BoundingBox object, describing the location of the label on the input image. It also includes the confidence for the accuracy of the detected bounding box.</p> </li> <li> <p>Timestamp - Time, in milliseconds from the start of the video, that the label was detected. For aggregation by <code>SEGMENTS</code>, the <code>StartTimestampMillis</code>, <code>EndTimestampMillis</code>, and <code>DurationMillis</code> structures are what define a segment. Although the “Timestamp” structure is still returned with each label, its value is set to be the same as <code>StartTimestampMillis</code>.</p> </li> </ul> <p>Timestamp and Bounding box information are returned for detected Instances, only if aggregation is done by <code>TIMESTAMPS</code>. If aggregating by <code>SEGMENTS</code>, information about detected instances isn’t returned. </p> <p>The version of the label model used for the detection is also returned.</p> <p> <b>Note <code>DominantColors</code> isn't returned for <code>Instances</code>, although it is shown as part of the response in the sample seen below.</b> </p> <p>Use <code>MaxResults</code> parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetlabelDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetLabelDetection</code>.</p>"
+      "documentation":"<p>Gets the label detection results of a Amazon Rekognition Video analysis started by <a>StartLabelDetection</a>. </p> <p>The label detection operation is started by a call to <a>StartLabelDetection</a> which returns a job identifier (<code>JobId</code>). When the label detection operation finishes, Amazon Rekognition publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartlabelDetection</code>. To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p> <code>GetLabelDetection</code> returns an array of detected labels (<code>Labels</code>) sorted by the time the labels were detected. You can also sort by the label name by specifying <code>NAME</code> for the <code>SortBy</code> input parameter.</p> <p>The labels returned include the label name, the percentage confidence in the accuracy of the detected label, and the time the label was detected in the video.</p> <p>The returned labels also include bounding box information for common objects, a hierarchical taxonomy of detected labels, and the version of the label model used for detection.</p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetlabelDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetLabelDetection</code>.</p>"
     },
     "GetPersonTracking":{
       "name":"GetPersonTracking",
@@ -827,7 +709,7 @@
         {"shape":"InvalidImageFormatException"},
         {"shape":"ServiceQuotaExceededException"}
       ],
-      "documentation":"<p>Detects faces in the input image and adds them to the specified collection. </p> <p>Amazon Rekognition doesn't save the actual faces that are detected. Instead, the underlying detection algorithm first detects the faces in the input image. For each face, the algorithm extracts facial features into a feature vector, and stores it in the backend database. Amazon Rekognition uses feature vectors when it performs face match and search operations using the <a>SearchFaces</a> and <a>SearchFacesByImage</a> operations.</p> <p>For more information, see Adding faces to a collection in the Amazon Rekognition Developer Guide.</p> <p>To get the number of faces in a collection, call <a>DescribeCollection</a>. </p> <p>If you're using version 1.0 of the face detection model, <code>IndexFaces</code> indexes the 15 largest faces in the input image. Later versions of the face detection model index the 100 largest faces in the input image. </p> <p>If you're using version 4 or later of the face model, image orientation information is not returned in the <code>OrientationCorrection</code> field. </p> <p>To determine which version of the model you're using, call <a>DescribeCollection</a> and supply the collection ID. You can also get the model version from the value of <code>FaceModelVersion</code> in the response from <code>IndexFaces</code> </p> <p>For more information, see Model Versioning in the Amazon Rekognition Developer Guide.</p> <p>If you provide the optional <code>ExternalImageId</code> for the input image you provided, Amazon Rekognition associates this ID with all faces that it detects. When you call the <a>ListFaces</a> operation, the response returns the external ID. You can use this external image ID to create a client-side index to associate the faces with each image. You can then use the index to find all faces in an image.</p> <p>You can specify the maximum number of faces to index with the <code>MaxFaces</code> input parameter. This is useful when you want to index the largest faces in an image and don't want to index smaller faces, such as those belonging to people standing in the background.</p> <p>The <code>QualityFilter</code> input parameter allows you to filter out detected faces that don’t meet a required quality bar. The quality bar is based on a variety of common use cases. By default, <code>IndexFaces</code> chooses the quality bar that's used to filter faces. You can also explicitly choose the quality bar. Use <code>QualityFilter</code>, to set the quality bar by specifying <code>LOW</code>, <code>MEDIUM</code>, or <code>HIGH</code>. If you do not want to filter detected faces, specify <code>NONE</code>. </p> <note> <p>To use quality filtering, you need a collection associated with version 3 of the face model or higher. To get the version of the face model associated with a collection, call <a>DescribeCollection</a>. </p> </note> <p>Information about faces detected in an image, but not indexed, is returned in an array of <a>UnindexedFace</a> objects, <code>UnindexedFaces</code>. Faces aren't indexed for reasons such as:</p> <ul> <li> <p>The number of faces detected exceeds the value of the <code>MaxFaces</code> request parameter.</p> </li> <li> <p>The face is too small compared to the image dimensions.</p> </li> <li> <p>The face is too blurry.</p> </li> <li> <p>The image is too dark.</p> </li> <li> <p>The face has an extreme pose.</p> </li> <li> <p>The face doesn’t have enough detail to be suitable for face search.</p> </li> </ul> <p>In response, the <code>IndexFaces</code> operation returns an array of metadata for all detected faces, <code>FaceRecords</code>. This includes: </p> <ul> <li> <p>The bounding box, <code>BoundingBox</code>, of the detected face. </p> </li> <li> <p>A confidence value, <code>Confidence</code>, which indicates the confidence that the bounding box contains a face.</p> </li> <li> <p>A face ID, <code>FaceId</code>, assigned by the service for each face that's detected and stored.</p> </li> <li> <p>An image ID, <code>ImageId</code>, assigned by the service for the input image.</p> </li> </ul> <p>If you request <code>ALL</code> or specific facial attributes (e.g., <code>FACE_OCCLUDED</code>) by using the detectionAttributes parameter, Amazon Rekognition returns detailed facial attributes, such as facial landmarks (for example, location of eye and mouth), facial occlusion, and other facial attributes.</p> <p>If you provide the same image, specify the same collection, and use the same external ID in the <code>IndexFaces</code> operation, Amazon Rekognition doesn't save duplicate face metadata.</p> <p/> <p>The input image is passed either as base64-encoded image bytes, or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn't supported. The image must be formatted as a PNG or JPEG file. </p> <p>This operation requires permissions to perform the <code>rekognition:IndexFaces</code> action.</p>"
+      "documentation":"<p>Detects faces in the input image and adds them to the specified collection. </p> <p>Amazon Rekognition doesn't save the actual faces that are detected. Instead, the underlying detection algorithm first detects the faces in the input image. For each face, the algorithm extracts facial features into a feature vector, and stores it in the backend database. Amazon Rekognition uses feature vectors when it performs face match and search operations using the <a>SearchFaces</a> and <a>SearchFacesByImage</a> operations.</p> <p>For more information, see Adding faces to a collection in the Amazon Rekognition Developer Guide.</p> <p>To get the number of faces in a collection, call <a>DescribeCollection</a>. </p> <p>If you're using version 1.0 of the face detection model, <code>IndexFaces</code> indexes the 15 largest faces in the input image. Later versions of the face detection model index the 100 largest faces in the input image. </p> <p>If you're using version 4 or later of the face model, image orientation information is not returned in the <code>OrientationCorrection</code> field. </p> <p>To determine which version of the model you're using, call <a>DescribeCollection</a> and supply the collection ID. You can also get the model version from the value of <code>FaceModelVersion</code> in the response from <code>IndexFaces</code> </p> <p>For more information, see Model Versioning in the Amazon Rekognition Developer Guide.</p> <p>If you provide the optional <code>ExternalImageId</code> for the input image you provided, Amazon Rekognition associates this ID with all faces that it detects. When you call the <a>ListFaces</a> operation, the response returns the external ID. You can use this external image ID to create a client-side index to associate the faces with each image. You can then use the index to find all faces in an image.</p> <p>You can specify the maximum number of faces to index with the <code>MaxFaces</code> input parameter. This is useful when you want to index the largest faces in an image and don't want to index smaller faces, such as those belonging to people standing in the background.</p> <p>The <code>QualityFilter</code> input parameter allows you to filter out detected faces that don’t meet a required quality bar. The quality bar is based on a variety of common use cases. By default, <code>IndexFaces</code> chooses the quality bar that's used to filter faces. You can also explicitly choose the quality bar. Use <code>QualityFilter</code>, to set the quality bar by specifying <code>LOW</code>, <code>MEDIUM</code>, or <code>HIGH</code>. If you do not want to filter detected faces, specify <code>NONE</code>. </p> <note> <p>To use quality filtering, you need a collection associated with version 3 of the face model or higher. To get the version of the face model associated with a collection, call <a>DescribeCollection</a>. </p> </note> <p>Information about faces detected in an image, but not indexed, is returned in an array of <a>UnindexedFace</a> objects, <code>UnindexedFaces</code>. Faces aren't indexed for reasons such as:</p> <ul> <li> <p>The number of faces detected exceeds the value of the <code>MaxFaces</code> request parameter.</p> </li> <li> <p>The face is too small compared to the image dimensions.</p> </li> <li> <p>The face is too blurry.</p> </li> <li> <p>The image is too dark.</p> </li> <li> <p>The face has an extreme pose.</p> </li> <li> <p>The face doesn’t have enough detail to be suitable for face search.</p> </li> </ul> <p>In response, the <code>IndexFaces</code> operation returns an array of metadata for all detected faces, <code>FaceRecords</code>. This includes: </p> <ul> <li> <p>The bounding box, <code>BoundingBox</code>, of the detected face. </p> </li> <li> <p>A confidence value, <code>Confidence</code>, which indicates the confidence that the bounding box contains a face.</p> </li> <li> <p>A face ID, <code>FaceId</code>, assigned by the service for each face that's detected and stored.</p> </li> <li> <p>An image ID, <code>ImageId</code>, assigned by the service for the input image.</p> </li> </ul> <p>If you request all facial attributes (by using the <code>detectionAttributes</code> parameter), Amazon Rekognition returns detailed facial attributes, such as facial landmarks (for example, location of eye and mouth) and other facial attributes. If you provide the same image, specify the same collection, and use the same external ID in the <code>IndexFaces</code> operation, Amazon Rekognition doesn't save duplicate face metadata.</p> <p/> <p>The input image is passed either as base64-encoded image bytes, or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn't supported. The image must be formatted as a PNG or JPEG file. </p> <p>This operation requires permissions to perform the <code>rekognition:IndexFaces</code> action.</p>"
     },
     "ListCollections":{
       "name":"ListCollections",
@@ -926,7 +808,7 @@
         {"shape":"ProvisionedThroughputExceededException"},
         {"shape":"InvalidPaginationTokenException"}
       ],
-      "documentation":"<p>Gets a list of the project policies attached to a project.</p> <p>To attach a project policy to a project, call <a>PutProjectPolicy</a>. To remove a project policy from a project, call <a>DeleteProjectPolicy</a>.</p> <p>This operation requires permissions to perform the <code>rekognition:ListProjectPolicies</code> action.</p>"
+      "documentation":"<p>Gets a list of the project policies attached to a project.</p> <p>To attach a project policy to a project, call <a>PutProjectPolicy</a>. To remove a project policy from a project, call <a>DeleteProjectPolicy</a>.</p>"
     },
     "ListStreamProcessors":{
       "name":"ListStreamProcessors",
@@ -964,25 +846,6 @@
       ],
       "documentation":"<p> Returns a list of tags in an Amazon Rekognition collection, stream processor, or Custom Labels model. </p> <p>This operation requires permissions to perform the <code>rekognition:ListTagsForResource</code> action. </p>"
     },
-    "ListUsers":{
-      "name":"ListUsers",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"ListUsersRequest"},
-      "output":{"shape":"ListUsersResponse"},
-      "errors":[
-        {"shape":"InvalidParameterException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"InvalidPaginationTokenException"},
-        {"shape":"ProvisionedThroughputExceededException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"ThrottlingException"}
-      ],
-      "documentation":"<p>Returns metadata of the User such as <code>UserID</code> in the specified collection. Anonymous User (to reserve faces without any identity) is not returned as part of this request. The results are sorted by system generated primary key ID. If the response is truncated, <code>NextToken</code> is returned in the response that can be used in the subsequent request to retrieve the next set of identities.</p>"
-    },
     "PutProjectPolicy":{
       "name":"PutProjectPolicy",
       "http":{
@@ -1004,7 +867,7 @@
         {"shape":"ProvisionedThroughputExceededException"},
         {"shape":"LimitExceededException"}
       ],
-      "documentation":"<p>Attaches a project policy to a Amazon Rekognition Custom Labels project in a trusting AWS account. A project policy specifies that a trusted AWS account can copy a model version from a trusting AWS account to a project in the trusted AWS account. To copy a model version you use the <a>CopyProjectVersion</a> operation.</p> <p>For more information about the format of a project policy document, see Attaching a project policy (SDK) in the <i>Amazon Rekognition Custom Labels Developer Guide</i>. </p> <p>The response from <code>PutProjectPolicy</code> is a revision ID for the project policy. You can attach multiple project policies to a project. You can also update an existing project policy by specifying the policy revision ID of the existing policy.</p> <p>To remove a project policy from a project, call <a>DeleteProjectPolicy</a>. To get a list of project policies attached to a project, call <a>ListProjectPolicies</a>. </p> <p>You copy a model version by calling <a>CopyProjectVersion</a>.</p> <p>This operation requires permissions to perform the <code>rekognition:PutProjectPolicy</code> action.</p>"
+      "documentation":"<p>Attaches a project policy to a Amazon Rekognition Custom Labels project in a trusting AWS account. A project policy specifies that a trusted AWS account can copy a model version from a trusting AWS account to a project in the trusted AWS account. To copy a model version you use the <a>CopyProjectVersion</a> operation.</p> <p>For more information about the format of a project policy document, see Attaching a project policy (SDK) in the <i>Amazon Rekognition Custom Labels Developer Guide</i>. </p> <p>The response from <code>PutProjectPolicy</code> is a revision ID for the project policy. You can attach multiple project policies to a project. You can also update an existing project policy by specifying the policy revision ID of the existing policy.</p> <p>To remove a project policy from a project, call <a>DeleteProjectPolicy</a>. To get a list of project policies attached to a project, call <a>ListProjectPolicies</a>. </p> <p>You copy a model version by calling <a>CopyProjectVersion</a>.</p>"
     },
     "RecognizeCelebrities":{
       "name":"RecognizeCelebrities",
@@ -1065,45 +928,6 @@
         {"shape":"InvalidImageFormatException"}
       ],
       "documentation":"<p>For a given input image, first detects the largest face in the image, and then searches the specified collection for matching faces. The operation compares the features of the input face with faces in the specified collection. </p> <note> <p>To search for all faces in an input image, you might first call the <a>IndexFaces</a> operation, and then use the face IDs returned in subsequent calls to the <a>SearchFaces</a> operation. </p> <p> You can also call the <code>DetectFaces</code> operation and use the bounding boxes in the response to make face crops, which then you can pass in to the <code>SearchFacesByImage</code> operation. </p> </note> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> The response returns an array of faces that match, ordered by similarity score with the highest similarity first. More specifically, it is an array of metadata for each face match found. Along with the metadata, the response also includes a <code>similarity</code> indicating how similar the face is to the input face. In the response, the operation also returns the bounding box (and a confidence level that the bounding box contains a face) of the face that Amazon Rekognition used for the input image. </p> <p>If no faces are detected in the input image, <code>SearchFacesByImage</code> returns an <code>InvalidParameterException</code> error. </p> <p>For an example, Searching for a Face Using an Image in the Amazon Rekognition Developer Guide.</p> <p>The <code>QualityFilter</code> input parameter allows you to filter out detected faces that don’t meet a required quality bar. The quality bar is based on a variety of common use cases. Use <code>QualityFilter</code> to set the quality bar for filtering by specifying <code>LOW</code>, <code>MEDIUM</code>, or <code>HIGH</code>. If you do not want to filter detected faces, specify <code>NONE</code>. The default value is <code>NONE</code>.</p> <note> <p>To use quality filtering, you need a collection associated with version 3 of the face model or higher. To get the version of the face model associated with a collection, call <a>DescribeCollection</a>. </p> </note> <p>This operation requires permissions to perform the <code>rekognition:SearchFacesByImage</code> action.</p>"
-    },
-    "SearchUsers":{
-      "name":"SearchUsers",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"SearchUsersRequest"},
-      "output":{"shape":"SearchUsersResponse"},
-      "errors":[
-        {"shape":"InvalidParameterException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ProvisionedThroughputExceededException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"ThrottlingException"}
-      ],
-      "documentation":"<p>Searches for UserIDs within a collection based on a <code>FaceId</code> or <code>UserId</code>. This API can be used to find the closest UserID (with a highest similarity) to associate a face. The request must be provided with either <code>FaceId</code> or <code>UserId</code>. The operation returns an array of UserID that match the <code>FaceId</code> or <code>UserId</code>, ordered by similarity score with the highest similarity first. </p>"
-    },
-    "SearchUsersByImage":{
-      "name":"SearchUsersByImage",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"SearchUsersByImageRequest"},
-      "output":{"shape":"SearchUsersByImageResponse"},
-      "errors":[
-        {"shape":"InvalidParameterException"},
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"InvalidImageFormatException"},
-        {"shape":"InvalidS3ObjectException"},
-        {"shape":"ImageTooLargeException"},
-        {"shape":"ProvisionedThroughputExceededException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"InternalServerError"},
-        {"shape":"ThrottlingException"}
-      ],
-      "documentation":"<p>Searches for UserIDs using a supplied image. It first detects the largest face in the image, and then searches a specified collection for matching UserIDs. </p> <p>The operation returns an array of UserIDs that match the face in the supplied image, ordered by similarity score with the highest similarity first. It also returns a bounding box for the face found in the input image. </p> <p>Information about faces detected in the supplied image, but not used for the search, is returned in an array of <code>UnsearchedFace</code> objects. If no valid face is detected in the image, the response will contain an empty <code>UserMatches</code> list and no <code>SearchedFace</code> object. </p>"
     },
     "StartCelebrityRecognition":{
       "name":"StartCelebrityRecognition",
@@ -1213,7 +1037,7 @@
         {"shape":"LimitExceededException"},
         {"shape":"ThrottlingException"}
       ],
-      "documentation":"<p>Starts asynchronous detection of labels in a stored video.</p> <p>Amazon Rekognition Video can detect labels in a video. Labels are instances of real-world entities. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; concepts like landscape, evening, and nature; and activities like a person getting out of a car or a person skiing.</p> <p>The video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartLabelDetection</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>.</p> <p>To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p> <i>Optional Parameters</i> </p> <p> <code>StartLabelDetection</code> has the <code>GENERAL_LABELS</code> Feature applied by default. This feature allows you to provide filtering criteria to the <code>Settings</code> parameter. You can filter with sets of individual labels or with label categories. You can specify inclusive filters, exclusive filters, or a combination of inclusive and exclusive filters. For more information on filtering, see <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/labels-detecting-labels-video.html\">Detecting labels in a video</a>.</p> <p>You can specify <code>MinConfidence</code> to control the confidence threshold for the labels returned. The default is 50.</p>",
+      "documentation":"<p>Starts asynchronous detection of labels in a stored video.</p> <p>Amazon Rekognition Video can detect labels in a video. Labels are instances of real-world entities. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; concepts like landscape, evening, and nature; and activities like a person getting out of a car or a person skiing.</p> <p>The video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartLabelDetection</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>.</p> <p>To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p/>",
       "idempotent":true
     },
     "StartPersonTracking":{
@@ -1338,7 +1162,7 @@
         {"shape":"ThrottlingException"},
         {"shape":"ProvisionedThroughputExceededException"}
       ],
-      "documentation":"<p>Stops a running model. The operation might take a while to complete. To check the current status, call <a>DescribeProjectVersions</a>. </p> <p>This operation requires permissions to perform the <code>rekognition:StopProjectVersion</code> action.</p>"
+      "documentation":"<p>Stops a running model. The operation might take a while to complete. To check the current status, call <a>DescribeProjectVersions</a>. </p>"
     },
     "StopStreamProcessor":{
       "name":"StopStreamProcessor",
@@ -1430,8 +1254,7 @@
         {"shape":"ThrottlingException"},
         {"shape":"InvalidParameterException"},
         {"shape":"ResourceNotFoundException"},
-        {"shape":"ProvisionedThroughputExceededException"},
-        {"shape":"ResourceInUseException"}
+        {"shape":"ProvisionedThroughputExceededException"}
       ],
       "documentation":"<p> Allows you to update a stream processor. You can change some settings and regions of interest and delete certain parameters. </p>"
     }
@@ -1469,87 +1292,11 @@
       "type":"list",
       "member":{"shape":"Asset"}
     },
-    "AssociateFacesRequest":{
-      "type":"structure",
-      "required":[
-        "CollectionId",
-        "UserId",
-        "FaceIds"
-      ],
-      "members":{
-        "CollectionId":{
-          "shape":"CollectionId",
-          "documentation":"<p>The ID of an existing collection containing the UserID.</p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>The ID for the existing UserID.</p>"
-        },
-        "FaceIds":{
-          "shape":"UserFaceIdList",
-          "documentation":"<p>An array of FaceIDs to associate with the UserID.</p>"
-        },
-        "UserMatchThreshold":{
-          "shape":"Percent",
-          "documentation":"<p>An optional value specifying the minimum confidence in the UserID match to return. The default value is 75.</p>"
-        },
-        "ClientRequestToken":{
-          "shape":"ClientRequestToken",
-          "documentation":"<p>Idempotent token used to identify the request to <code>AssociateFaces</code>. If you use the same token with multiple <code>AssociateFaces</code> requests, the same response is returned. Use ClientRequestToken to prevent the same request from being processed more than once.</p>",
-          "idempotencyToken":true
-        }
-      }
-    },
-    "AssociateFacesResponse":{
-      "type":"structure",
-      "members":{
-        "AssociatedFaces":{
-          "shape":"AssociatedFacesList",
-          "documentation":"<p>An array of AssociatedFace objects containing FaceIDs that are successfully associated with the UserID is returned. Returned if the AssociateFaces action is successful.</p>"
-        },
-        "UnsuccessfulFaceAssociations":{
-          "shape":"UnsuccessfulFaceAssociationList",
-          "documentation":"<p>An array of UnsuccessfulAssociation objects containing FaceIDs that are not successfully associated along with the reasons. Returned if the AssociateFaces action is successful.</p>"
-        },
-        "UserStatus":{
-          "shape":"UserStatus",
-          "documentation":"<p>The status of an update made to a UserID. Reflects if the UserID has been updated for every requested change.</p>"
-        }
-      }
-    },
-    "AssociatedFace":{
-      "type":"structure",
-      "members":{
-        "FaceId":{
-          "shape":"FaceId",
-          "documentation":"<p>Unique identifier assigned to the face.</p>"
-        }
-      },
-      "documentation":"<p>Provides face metadata for the faces that are associated to a specific UserID.</p>"
-    },
-    "AssociatedFacesList":{
-      "type":"list",
-      "member":{"shape":"AssociatedFace"},
-      "max":100,
-      "min":0
-    },
     "Attribute":{
       "type":"string",
       "enum":[
         "DEFAULT",
-        "ALL",
-        "AGE_RANGE",
-        "BEARD",
-        "EMOTIONS",
-        "EYE_DIRECTION",
-        "EYEGLASSES",
-        "EYES_OPEN",
-        "GENDER",
-        "MOUTH_OPEN",
-        "MUSTACHE",
-        "FACE_OCCLUDED",
-        "SMILE",
-        "SUNGLASSES"
+        "ALL"
       ]
     },
     "Attributes":{
@@ -1581,27 +1328,6 @@
     "AudioMetadataList":{
       "type":"list",
       "member":{"shape":"AudioMetadata"}
-    },
-    "AuditImage":{
-      "type":"structure",
-      "members":{
-        "Bytes":{
-          "shape":"LivenessImageBlob",
-          "documentation":"<p>The Base64-encoded bytes representing an image selected from the Face Liveness video and returned for audit purposes.</p>"
-        },
-        "S3Object":{"shape":"S3Object"},
-        "BoundingBox":{"shape":"BoundingBox"}
-      },
-      "documentation":"<p>An image that is picked from the Face Liveness video and returned for audit trail purposes, returned as Base64-encoded bytes.</p>"
-    },
-    "AuditImages":{
-      "type":"list",
-      "member":{"shape":"AuditImage"}
-    },
-    "AuditImagesLimit":{
-      "type":"integer",
-      "max":4,
-      "min":0
     },
     "Beard":{
       "type":"structure",
@@ -1747,7 +1473,7 @@
       "members":{
         "Timestamp":{
           "shape":"Timestamp",
-          "documentation":"<p>The time, in milliseconds from the start of the video, that the celebrity was recognized. Note that <code>Timestamp</code> is not guaranteed to be accurate to the individual frame where the celebrity first appears.</p>"
+          "documentation":"<p>The time, in milliseconds from the start of the video, that the celebrity was recognized.</p>"
         },
         "Celebrity":{
           "shape":"CelebrityDetail",
@@ -1907,13 +1633,6 @@
       },
       "documentation":"<p>Type that describes the face Amazon Rekognition chose to compare with the faces in the target. This contains a bounding box for the selected face and confidence level that the bounding box contains a face. Note that Amazon Rekognition selects the largest face in the source image for this comparison. </p>"
     },
-    "ConflictException":{
-      "type":"structure",
-      "members":{
-      },
-      "documentation":"<p> A User with the same Id already exists within the collection, or the update or deletion of the User caused an inconsistent state. ** </p>",
-      "exception":true
-    },
     "ConnectedHomeLabel":{"type":"string"},
     "ConnectedHomeLabels":{
       "type":"list",
@@ -1962,35 +1681,16 @@
       "member":{"shape":"ContentClassifier"},
       "max":256
     },
-    "ContentModerationAggregateBy":{
-      "type":"string",
-      "enum":[
-        "TIMESTAMPS",
-        "SEGMENTS"
-      ]
-    },
     "ContentModerationDetection":{
       "type":"structure",
       "members":{
         "Timestamp":{
           "shape":"Timestamp",
-          "documentation":"<p>Time, in milliseconds from the beginning of the video, that the content moderation label was detected. Note that <code>Timestamp</code> is not guaranteed to be accurate to the individual frame where the moderated content first appears.</p>"
+          "documentation":"<p>Time, in milliseconds from the beginning of the video, that the content moderation label was detected.</p>"
         },
         "ModerationLabel":{
           "shape":"ModerationLabel",
           "documentation":"<p>The content moderation label detected by in the stored video.</p>"
-        },
-        "StartTimestampMillis":{
-          "shape":"ULong",
-          "documentation":"<p>The time in milliseconds defining the start of the timeline segment containing a continuously detected moderation label.</p>"
-        },
-        "EndTimestampMillis":{
-          "shape":"ULong",
-          "documentation":"<p> The time in milliseconds defining the end of the timeline segment containing a continuously detected moderation label. </p>"
-        },
-        "DurationMillis":{
-          "shape":"ULong",
-          "documentation":"<p> The time duration of a segment in milliseconds, I.e. time elapsed from StartTimestampMillis to EndTimestampMillis. </p>"
         }
       },
       "documentation":"<p>Information about an inappropriate, unwanted, or offensive content label detection in a stored video.</p>"
@@ -2130,47 +1830,6 @@
         }
       }
     },
-    "CreateFaceLivenessSessionRequest":{
-      "type":"structure",
-      "members":{
-        "KmsKeyId":{
-          "shape":"KmsKeyId",
-          "documentation":"<p> The identifier for your AWS Key Management Service key (AWS KMS key). Used to encrypt audit images and reference images.</p>"
-        },
-        "Settings":{
-          "shape":"CreateFaceLivenessSessionRequestSettings",
-          "documentation":"<p>A session settings object. It contains settings for the operation to be performed. For Face Liveness, it accepts <code>OutputConfig</code> and <code>AuditImagesLimit</code>.</p>"
-        },
-        "ClientRequestToken":{
-          "shape":"ClientRequestToken",
-          "documentation":"<p>Idempotent token is used to recognize the Face Liveness request. If the same token is used with multiple <code>CreateFaceLivenessSession</code> requests, the same session is returned. This token is employed to avoid unintentionally creating the same session multiple times.</p>"
-        }
-      }
-    },
-    "CreateFaceLivenessSessionRequestSettings":{
-      "type":"structure",
-      "members":{
-        "OutputConfig":{
-          "shape":"LivenessOutputConfig",
-          "documentation":"<p>Can specify the location of an Amazon S3 bucket, where reference and audit images will be stored. Note that the Amazon S3 bucket must be located in the caller's AWS account and in the same region as the Face Liveness end-point. Additionally, the Amazon S3 object keys are auto-generated by the Face Liveness system. Requires that the caller has the <code>s3:PutObject</code> permission on the Amazon S3 bucket.</p>"
-        },
-        "AuditImagesLimit":{
-          "shape":"AuditImagesLimit",
-          "documentation":"<p>Number of audit images to be returned back. Takes an integer between 0-4. Any integer less than 0 will return 0, any integer above 4 will return 4 images in the response. By default, it is set to 0. The limit is best effort and is based on the actual duration of the selfie-video.</p>"
-        }
-      },
-      "documentation":"<p>A session settings object. It contains settings for the operation to be performed. It accepts arguments for OutputConfig and AuditImagesLimit.</p>"
-    },
-    "CreateFaceLivenessSessionResponse":{
-      "type":"structure",
-      "required":["SessionId"],
-      "members":{
-        "SessionId":{
-          "shape":"LivenessSessionId",
-          "documentation":"<p>A unique 128-bit UUID identifying a Face Liveness session.</p>"
-        }
-      }
-    },
     "CreateProjectRequest":{
       "type":"structure",
       "required":["ProjectName"],
@@ -2293,33 +1952,6 @@
           "shape":"StreamProcessorArn",
           "documentation":"<p>Amazon Resource Number for the newly created stream processor.</p>"
         }
-      }
-    },
-    "CreateUserRequest":{
-      "type":"structure",
-      "required":[
-        "CollectionId",
-        "UserId"
-      ],
-      "members":{
-        "CollectionId":{
-          "shape":"CollectionId",
-          "documentation":"<p>The ID of an existing collection to which the new UserID needs to be created.</p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>ID for the UserID to be created. This ID needs to be unique within the collection.</p>"
-        },
-        "ClientRequestToken":{
-          "shape":"ClientRequestToken",
-          "documentation":"<p>Idempotent token used to identify the request to <code>CreateUser</code>. If you use the same token with multiple <code>CreateUser</code> requests, the same response is returned. Use ClientRequestToken to prevent the same request from being processed more than once.</p>",
-          "idempotencyToken":true
-        }
-      }
-    },
-    "CreateUserResponse":{
-      "type":"structure",
-      "members":{
       }
     },
     "CustomLabel":{
@@ -2602,10 +2234,6 @@
         "DeletedFaces":{
           "shape":"FaceIdList",
           "documentation":"<p>An array of strings (face IDs) of the faces that were deleted.</p>"
-        },
-        "UnsuccessfulFaceDeletions":{
-          "shape":"UnsuccessfulFaceDeletionsList",
-          "documentation":"<p>An array of any faces that weren't deleted.</p>"
         }
       }
     },
@@ -2688,33 +2316,6 @@
       "members":{
       }
     },
-    "DeleteUserRequest":{
-      "type":"structure",
-      "required":[
-        "CollectionId",
-        "UserId"
-      ],
-      "members":{
-        "CollectionId":{
-          "shape":"CollectionId",
-          "documentation":"<p>The ID of an existing collection from which the UserID needs to be deleted. </p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>ID for the UserID to be deleted. </p>"
-        },
-        "ClientRequestToken":{
-          "shape":"ClientRequestToken",
-          "documentation":"<p>Idempotent token used to identify the request to <code>DeleteUser</code>. If you use the same token with multiple <code>DeleteUser </code>requests, the same response is returned. Use ClientRequestToken to prevent the same request from being processed more than once.</p>",
-          "idempotencyToken":true
-        }
-      }
-    },
-    "DeleteUserResponse":{
-      "type":"structure",
-      "members":{
-      }
-    },
     "DescribeCollectionRequest":{
       "type":"structure",
       "required":["CollectionId"],
@@ -2743,10 +2344,6 @@
         "CreationTimestamp":{
           "shape":"DateTime",
           "documentation":"<p>The number of milliseconds since the Unix epoch time until the creation of the collection. The Unix epoch time is 00:00:00 Coordinated Universal Time (UTC), Thursday, 1 January 1970.</p>"
-        },
-        "UserCount":{
-          "shape":"ULong",
-          "documentation":"<p>The number of UserIDs assigned to the specified colleciton.</p>"
         }
       }
     },
@@ -2943,7 +2540,7 @@
         },
         "Attributes":{
           "shape":"Attributes",
-          "documentation":"<p>An array of facial attributes you want to be returned. A <code>DEFAULT</code> subset of facial attributes - <code>BoundingBox</code>, <code>Confidence</code>, <code>Pose</code>, <code>Quality</code>, and <code>Landmarks</code> - will always be returned. You can request for specific facial attributes (in addition to the default list) - by using [<code>\"DEFAULT\", \"FACE_OCCLUDED\"</code>] or just [<code>\"FACE_OCCLUDED\"</code>]. You can request for all facial attributes by using [<code>\"ALL\"]</code>. Requesting more attributes may increase response time.</p> <p>If you provide both, <code>[\"ALL\", \"DEFAULT\"]</code>, the service uses a logical \"AND\" operator to determine which attributes to return (in this case, all attributes). </p>"
+          "documentation":"<p>An array of facial attributes you want to be returned. This can be the default list of attributes or all attributes. If you don't specify a value for <code>Attributes</code> or if you specify <code>[\"DEFAULT\"]</code>, the API returns the following subset of facial attributes: <code>BoundingBox</code>, <code>Confidence</code>, <code>Pose</code>, <code>Quality</code>, and <code>Landmarks</code>. If you provide <code>[\"ALL\"]</code>, all facial attributes are returned, but the operation takes longer to complete.</p> <p>If you provide both, <code>[\"ALL\", \"DEFAULT\"]</code>, the service uses a logical AND operator to determine which attributes to return (in this case, all attributes). </p>"
         }
       }
     },
@@ -2960,102 +2557,6 @@
         }
       }
     },
-    "DetectLabelsFeatureList":{
-      "type":"list",
-      "member":{"shape":"DetectLabelsFeatureName"},
-      "max":2,
-      "min":0
-    },
-    "DetectLabelsFeatureName":{
-      "type":"string",
-      "enum":[
-        "GENERAL_LABELS",
-        "IMAGE_PROPERTIES"
-      ]
-    },
-    "DetectLabelsImageBackground":{
-      "type":"structure",
-      "members":{
-        "Quality":{
-          "shape":"DetectLabelsImageQuality",
-          "documentation":"<p>The quality of the image background as defined by brightness and sharpness.</p>"
-        },
-        "DominantColors":{
-          "shape":"DominantColors",
-          "documentation":"<p>The dominant colors found in the background of an image, defined with RGB values, CSS color name, simplified color name, and PixelPercentage (the percentage of image pixels that have a particular color).</p>"
-        }
-      },
-      "documentation":"<p>The background of the image with regard to image quality and dominant colors.</p>"
-    },
-    "DetectLabelsImageForeground":{
-      "type":"structure",
-      "members":{
-        "Quality":{
-          "shape":"DetectLabelsImageQuality",
-          "documentation":"<p>The quality of the image foreground as defined by brightness and sharpness.</p>"
-        },
-        "DominantColors":{
-          "shape":"DominantColors",
-          "documentation":"<p>The dominant colors found in the foreground of an image, defined with RGB values, CSS color name, simplified color name, and PixelPercentage (the percentage of image pixels that have a particular color).</p>"
-        }
-      },
-      "documentation":"<p>The foreground of the image with regard to image quality and dominant colors.</p>"
-    },
-    "DetectLabelsImageProperties":{
-      "type":"structure",
-      "members":{
-        "Quality":{
-          "shape":"DetectLabelsImageQuality",
-          "documentation":"<p>Information about the quality of the image foreground as defined by brightness, sharpness, and contrast. The higher the value the greater the brightness, sharpness, and contrast respectively.</p>"
-        },
-        "DominantColors":{
-          "shape":"DominantColors",
-          "documentation":"<p>Information about the dominant colors found in an image, described with RGB values, CSS color name, simplified color name, and PixelPercentage (the percentage of image pixels that have a particular color).</p>"
-        },
-        "Foreground":{
-          "shape":"DetectLabelsImageForeground",
-          "documentation":"<p>Information about the properties of an image’s foreground, including the foreground’s quality and dominant colors, including the quality and dominant colors of the image.</p>"
-        },
-        "Background":{
-          "shape":"DetectLabelsImageBackground",
-          "documentation":"<p>Information about the properties of an image’s background, including the background’s quality and dominant colors, including the quality and dominant colors of the image.</p>"
-        }
-      },
-      "documentation":"<p>Information about the quality and dominant colors of an input image. Quality and color information is returned for the entire image, foreground, and background.</p>"
-    },
-    "DetectLabelsImagePropertiesSettings":{
-      "type":"structure",
-      "members":{
-        "MaxDominantColors":{
-          "shape":"DetectLabelsMaxDominantColors",
-          "documentation":"<p>The maximum number of dominant colors to return when detecting labels in an image. The default value is 10.</p>"
-        }
-      },
-      "documentation":"<p>Settings for the IMAGE_PROPERTIES feature type.</p>"
-    },
-    "DetectLabelsImageQuality":{
-      "type":"structure",
-      "members":{
-        "Brightness":{
-          "shape":"Float",
-          "documentation":"<p>The brightness of an image provided for label detection.</p>"
-        },
-        "Sharpness":{
-          "shape":"Float",
-          "documentation":"<p>The sharpness of an image provided for label detection.</p>"
-        },
-        "Contrast":{
-          "shape":"Float",
-          "documentation":"<p>The contrast of an image provided for label detection.</p>"
-        }
-      },
-      "documentation":"<p>The quality of an image provided for label detection, with regard to brightness, sharpness, and contrast.</p>"
-    },
-    "DetectLabelsMaxDominantColors":{
-      "type":"integer",
-      "max":20,
-      "min":0
-    },
     "DetectLabelsRequest":{
       "type":"structure",
       "required":["Image"],
@@ -3071,14 +2572,6 @@
         "MinConfidence":{
           "shape":"Percent",
           "documentation":"<p>Specifies the minimum confidence level for the labels to return. Amazon Rekognition doesn't return any labels with confidence lower than this specified value.</p> <p>If <code>MinConfidence</code> is not specified, the operation returns labels with a confidence values greater than or equal to 55 percent.</p>"
-        },
-        "Features":{
-          "shape":"DetectLabelsFeatureList",
-          "documentation":"<p>A list of the types of analysis to perform. Specifying GENERAL_LABELS uses the label detection feature, while specifying IMAGE_PROPERTIES returns information regarding image color and quality. If no option is specified GENERAL_LABELS is used by default.</p>"
-        },
-        "Settings":{
-          "shape":"DetectLabelsSettings",
-          "documentation":"<p>A list of the filters to be applied to returned detected labels and image properties. Specified filters can be inclusive, exclusive, or a combination of both. Filters can be used for individual labels or label categories. The exact label names or label categories must be supplied. For a full list of labels and label categories, see <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/labels.html\">Detecting labels</a>.</p>"
         }
       }
     },
@@ -3096,26 +2589,8 @@
         "LabelModelVersion":{
           "shape":"String",
           "documentation":"<p>Version number of the label detection model that was used to detect labels.</p>"
-        },
-        "ImageProperties":{
-          "shape":"DetectLabelsImageProperties",
-          "documentation":"<p>Information about the properties of the input image, such as brightness, sharpness, contrast, and dominant colors.</p>"
         }
       }
-    },
-    "DetectLabelsSettings":{
-      "type":"structure",
-      "members":{
-        "GeneralLabels":{
-          "shape":"GeneralLabelsSettings",
-          "documentation":"<p>Contains the specified filters for GENERAL_LABELS.</p>"
-        },
-        "ImageProperties":{
-          "shape":"DetectLabelsImagePropertiesSettings",
-          "documentation":"<p>Contains the chosen number of maximum dominant colors in an image.</p>"
-        }
-      },
-      "documentation":"<p>Settings for the DetectLabels request. Settings can include filters for both GENERAL_LABELS and IMAGE_PROPERTIES. GENERAL_LABELS filters can be inclusive or exclusive and applied to individual labels or label categories. IMAGE_PROPERTIES filters allow specification of a maximum number of dominant colors.</p>"
     },
     "DetectModerationLabelsRequest":{
       "type":"structure",
@@ -3239,66 +2714,6 @@
       },
       "documentation":"<p>A set of parameters that allow you to filter out certain results from your returned results.</p>"
     },
-    "DisassociateFacesRequest":{
-      "type":"structure",
-      "required":[
-        "CollectionId",
-        "UserId",
-        "FaceIds"
-      ],
-      "members":{
-        "CollectionId":{
-          "shape":"CollectionId",
-          "documentation":"<p>The ID of an existing collection containing the UserID.</p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>ID for the existing UserID.</p>"
-        },
-        "ClientRequestToken":{
-          "shape":"ClientRequestToken",
-          "documentation":"<p>Idempotent token used to identify the request to <code>DisassociateFaces</code>. If you use the same token with multiple <code>DisassociateFaces</code> requests, the same response is returned. Use ClientRequestToken to prevent the same request from being processed more than once.</p>",
-          "idempotencyToken":true
-        },
-        "FaceIds":{
-          "shape":"UserFaceIdList",
-          "documentation":"<p>An array of face IDs to disassociate from the UserID. </p>"
-        }
-      }
-    },
-    "DisassociateFacesResponse":{
-      "type":"structure",
-      "members":{
-        "DisassociatedFaces":{
-          "shape":"DisassociatedFacesList",
-          "documentation":"<p>An array of DissociatedFace objects containing FaceIds that are successfully disassociated with the UserID is returned. Returned if the DisassociatedFaces action is successful.</p>"
-        },
-        "UnsuccessfulFaceDisassociations":{
-          "shape":"UnsuccessfulFaceDisassociationList",
-          "documentation":"<p>An array of UnsuccessfulDisassociation objects containing FaceIds that are not successfully associated, along with the reasons for the failure to associate. Returned if the DisassociateFaces action is successful.</p>"
-        },
-        "UserStatus":{
-          "shape":"UserStatus",
-          "documentation":"<p>The status of an update made to a User. Reflects if the User has been updated for every requested change.</p>"
-        }
-      }
-    },
-    "DisassociatedFace":{
-      "type":"structure",
-      "members":{
-        "FaceId":{
-          "shape":"FaceId",
-          "documentation":"<p>Unique identifier assigned to the face.</p>"
-        }
-      },
-      "documentation":"<p>Provides face metadata for the faces that are disassociated from a specific UserID.</p>"
-    },
-    "DisassociatedFacesList":{
-      "type":"list",
-      "member":{"shape":"DisassociatedFace"},
-      "max":100,
-      "min":0
-    },
     "DistributeDataset":{
       "type":"structure",
       "required":["Arn"],
@@ -3330,44 +2745,6 @@
       "member":{"shape":"DistributeDataset"},
       "max":2,
       "min":2
-    },
-    "DominantColor":{
-      "type":"structure",
-      "members":{
-        "Red":{
-          "shape":"UInteger",
-          "documentation":"<p>The Red RGB value for a dominant color.</p>"
-        },
-        "Blue":{
-          "shape":"UInteger",
-          "documentation":"<p>The Blue RGB value for a dominant color.</p>"
-        },
-        "Green":{
-          "shape":"UInteger",
-          "documentation":"<p>The Green RGB value for a dominant color.</p>"
-        },
-        "HexCode":{
-          "shape":"String",
-          "documentation":"<p>The Hex code equivalent of the RGB values for a dominant color.</p>"
-        },
-        "CSSColor":{
-          "shape":"String",
-          "documentation":"<p>The CSS color name of a dominant color.</p>"
-        },
-        "SimplifiedColor":{
-          "shape":"String",
-          "documentation":"<p>One of 12 simplified color names applied to a dominant color.</p>"
-        },
-        "PixelPercent":{
-          "shape":"Percent",
-          "documentation":"<p>The percentage of image pixels that have a given dominant color.</p>"
-        }
-      },
-      "documentation":"<p>A description of the dominant colors in an image.</p>"
-    },
-    "DominantColors":{
-      "type":"list",
-      "member":{"shape":"DominantColor"}
     },
     "Emotion":{
       "type":"structure",
@@ -3451,24 +2828,6 @@
       "min":1,
       "pattern":"[a-zA-Z0-9_.\\-:]+"
     },
-    "EyeDirection":{
-      "type":"structure",
-      "members":{
-        "Yaw":{
-          "shape":"Degree",
-          "documentation":"<p>Value representing eye direction on the yaw axis.</p>"
-        },
-        "Pitch":{
-          "shape":"Degree",
-          "documentation":"<p>Value representing eye direction on the pitch axis.</p>"
-        },
-        "Confidence":{
-          "shape":"Percent",
-          "documentation":"<p>The confidence that the service has in its predicted eye direction.</p>"
-        }
-      },
-      "documentation":"<p>Indicates the direction the eyes are gazing in (independent of the head pose) as determined by its pitch and yaw. </p>"
-    },
     "EyeOpen":{
       "type":"structure",
       "members":{
@@ -3523,10 +2882,6 @@
         "IndexFacesModelVersion":{
           "shape":"IndexFacesModelVersion",
           "documentation":"<p> The version of the face detect and storage model that was used when indexing the face vector. </p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>Unique identifier assigned to the user.</p>"
         }
       },
       "documentation":"<p>Describes the face properties such as the bounding box, face ID, image ID of the input image, and external image ID that you assigned. </p>"
@@ -3600,17 +2955,9 @@
         "Confidence":{
           "shape":"Percent",
           "documentation":"<p>Confidence level that the bounding box contains a face (and not a different object such as a tree). Default attribute.</p>"
-        },
-        "FaceOccluded":{
-          "shape":"FaceOccluded",
-          "documentation":"<p> <code>FaceOccluded</code> should return \"true\" with a high confidence score if a detected face’s eyes, nose, and mouth are partially captured or if they are covered by masks, dark sunglasses, cell phones, hands, or other objects. <code>FaceOccluded</code> should return \"false\" with a high confidence score if common occurrences that do not impact face verification are detected, such as eye glasses, lightly tinted sunglasses, strands of hair, and others. </p>"
-        },
-        "EyeDirection":{
-          "shape":"EyeDirection",
-          "documentation":"<p>Indicates the direction the eyes are gazing in, as defined by pitch and yaw.</p>"
         }
       },
-      "documentation":"<p>Structure containing attributes of the face that the algorithm detected.</p> <p>A <code>FaceDetail</code> object contains either the default facial attributes or all facial attributes. The default attributes are <code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>.</p> <p> <a>GetFaceDetection</a> is the only Amazon Rekognition Video stored video operation that can return a <code>FaceDetail</code> object with all attributes. To specify which attributes to return, use the <code>FaceAttributes</code> input parameter for <a>StartFaceDetection</a>. The following Amazon Rekognition Video operations return only the default attributes. The corresponding Start operations don't have a <code>FaceAttributes</code> input parameter:</p> <ul> <li> <p>GetCelebrityRecognition</p> </li> <li> <p>GetPersonTracking</p> </li> <li> <p>GetFaceSearch</p> </li> </ul> <p>The Amazon Rekognition Image <a>DetectFaces</a> and <a>IndexFaces</a> operations can return all facial attributes. To specify which attributes to return, use the <code>Attributes</code> input parameter for <code>DetectFaces</code>. For <code>IndexFaces</code>, use the <code>DetectAttributes</code> input parameter.</p>"
+      "documentation":"<p>Structure containing attributes of the face that the algorithm detected.</p> <p>A <code>FaceDetail</code> object contains either the default facial attributes or all facial attributes. The default attributes are <code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>.</p> <p> <a>GetFaceDetection</a> is the only Amazon Rekognition Video stored video operation that can return a <code>FaceDetail</code> object with all attributes. To specify which attributes to return, use the <code>FaceAttributes</code> input parameter for <a>StartFaceDetection</a>. The following Amazon Rekognition Video operations return only the default attributes. The corresponding Start operations don't have a <code>FaceAttributes</code> input parameter.</p> <ul> <li> <p>GetCelebrityRecognition</p> </li> <li> <p>GetPersonTracking</p> </li> <li> <p>GetFaceSearch</p> </li> </ul> <p>The Amazon Rekognition Image <a>DetectFaces</a> and <a>IndexFaces</a> operations can return all facial attributes. To specify which attributes to return, use the <code>Attributes</code> input parameter for <code>DetectFaces</code>. For <code>IndexFaces</code>, use the <code>DetectAttributes</code> input parameter.</p>"
     },
     "FaceDetailList":{
       "type":"list",
@@ -3621,7 +2968,7 @@
       "members":{
         "Timestamp":{
           "shape":"Timestamp",
-          "documentation":"<p>Time, in milliseconds from the start of the video, that the face was detected. Note that <code>Timestamp</code> is not guaranteed to be accurate to the individual frame where the face first appears.</p>"
+          "documentation":"<p>Time, in milliseconds from the start of the video, that the face was detected.</p>"
         },
         "Face":{
           "shape":"FaceDetail",
@@ -3669,20 +3016,6 @@
     "FaceModelVersionList":{
       "type":"list",
       "member":{"shape":"String"}
-    },
-    "FaceOccluded":{
-      "type":"structure",
-      "members":{
-        "Value":{
-          "shape":"Boolean",
-          "documentation":"<p>True if a detected face’s eyes, nose, and mouth are partially captured or if they are covered by masks, dark sunglasses, cell phones, hands, or other objects. False if common occurrences that do not impact face verification are detected, such as eye glasses, lightly tinted sunglasses, strands of hair, and others.</p>"
-        },
-        "Confidence":{
-          "shape":"Percent",
-          "documentation":"<p>The confidence that the service has detected the presence of a face occlusion.</p>"
-        }
-      },
-      "documentation":"<p> <code>FaceOccluded</code> should return \"true\" with a high confidence score if a detected face’s eyes, nose, and mouth are partially captured or if they are covered by masks, dark sunglasses, cell phones, hands, or other objects. <code>FaceOccluded</code> should return \"false\" with a high confidence score if common occurrences that do not impact face verification are detected, such as eye glasses, lightly tinted sunglasses, strands of hair, and others. </p> <p>You can use <code>FaceOccluded</code> to determine if an obstruction on a face negatively impacts using the image for face matching.</p>"
     },
     "FaceRecord":{
       "type":"structure",
@@ -3748,40 +3081,6 @@
         "Male",
         "Female"
       ]
-    },
-    "GeneralLabelsFilterList":{
-      "type":"list",
-      "member":{"shape":"GeneralLabelsFilterValue"},
-      "max":100,
-      "min":0
-    },
-    "GeneralLabelsFilterValue":{
-      "type":"string",
-      "max":50,
-      "min":0,
-      "pattern":"[A-Za-z0-9àâèçñó'-_(). ]*"
-    },
-    "GeneralLabelsSettings":{
-      "type":"structure",
-      "members":{
-        "LabelInclusionFilters":{
-          "shape":"GeneralLabelsFilterList",
-          "documentation":"<p>The labels that should be included in the return from DetectLabels.</p>"
-        },
-        "LabelExclusionFilters":{
-          "shape":"GeneralLabelsFilterList",
-          "documentation":"<p>The labels that should be excluded from the return from DetectLabels.</p>"
-        },
-        "LabelCategoryInclusionFilters":{
-          "shape":"GeneralLabelsFilterList",
-          "documentation":"<p>The label categories that should be included in the return from DetectLabels.</p>"
-        },
-        "LabelCategoryExclusionFilters":{
-          "shape":"GeneralLabelsFilterList",
-          "documentation":"<p>The label categories that should be excluded from the return from DetectLabels.</p>"
-        }
-      },
-      "documentation":"<p>Contains filters for the object labels returned by DetectLabels. Filters can be inclusive, exclusive, or a combination of both and can be applied to individual labels or entire label categories. To see a list of label categories, see <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/labels.html\">Detecting Labels</a>.</p>"
     },
     "Geometry":{
       "type":"structure",
@@ -3868,15 +3167,6 @@
         "Celebrities":{
           "shape":"CelebrityRecognitions",
           "documentation":"<p>Array of celebrities recognized in the video.</p>"
-        },
-        "JobId":{
-          "shape":"JobId",
-          "documentation":"<p>Job identifier for the celebrity recognition operation for which you want to obtain results. The job identifer is returned by an initial call to StartCelebrityRecognition.</p>"
-        },
-        "Video":{"shape":"Video"},
-        "JobTag":{
-          "shape":"JobTag",
-          "documentation":"<p>A job identifier specified in the call to StartCelebrityRecognition and returned in the job completion notification sent to your Amazon Simple Notification Service topic.</p>"
         }
       }
     },
@@ -3899,26 +3189,8 @@
         "SortBy":{
           "shape":"ContentModerationSortBy",
           "documentation":"<p>Sort to use for elements in the <code>ModerationLabelDetections</code> array. Use <code>TIMESTAMP</code> to sort array elements by the time labels are detected. Use <code>NAME</code> to alphabetically group elements for a label together. Within each label group, the array element are sorted by detection confidence. The default sort is by <code>TIMESTAMP</code>.</p>"
-        },
-        "AggregateBy":{
-          "shape":"ContentModerationAggregateBy",
-          "documentation":"<p>Defines how to aggregate results of the StartContentModeration request. Default aggregation option is TIMESTAMPS. SEGMENTS mode aggregates moderation labels over time.</p>"
         }
       }
-    },
-    "GetContentModerationRequestMetadata":{
-      "type":"structure",
-      "members":{
-        "SortBy":{
-          "shape":"ContentModerationSortBy",
-          "documentation":"<p>The sorting method chosen for a GetContentModeration request.</p>"
-        },
-        "AggregateBy":{
-          "shape":"ContentModerationAggregateBy",
-          "documentation":"<p>The aggregation method chosen for a GetContentModeration request.</p>"
-        }
-      },
-      "documentation":"<p>Contains metadata about a content moderation request, including the SortBy and AggregateBy options.</p>"
     },
     "GetContentModerationResponse":{
       "type":"structure",
@@ -3946,19 +3218,6 @@
         "ModerationModelVersion":{
           "shape":"String",
           "documentation":"<p>Version number of the moderation detection model that was used to detect inappropriate, unwanted, or offensive content.</p>"
-        },
-        "JobId":{
-          "shape":"JobId",
-          "documentation":"<p>Job identifier for the content moderation operation for which you want to obtain results. The job identifer is returned by an initial call to StartContentModeration.</p>"
-        },
-        "Video":{"shape":"Video"},
-        "JobTag":{
-          "shape":"JobTag",
-          "documentation":"<p>A job identifier specified in the call to StartContentModeration and returned in the job completion notification sent to your Amazon Simple Notification Service topic.</p>"
-        },
-        "GetRequestMetadata":{
-          "shape":"GetContentModerationRequestMetadata",
-          "documentation":"<p>Information about the paramters used when getting a response. Includes information on aggregation and sorting methods.</p>"
         }
       }
     },
@@ -4002,54 +3261,6 @@
         "Faces":{
           "shape":"FaceDetections",
           "documentation":"<p>An array of faces detected in the video. Each element contains a detected face's details and the time, in milliseconds from the start of the video, the face was detected. </p>"
-        },
-        "JobId":{
-          "shape":"JobId",
-          "documentation":"<p>Job identifier for the face detection operation for which you want to obtain results. The job identifer is returned by an initial call to StartFaceDetection.</p>"
-        },
-        "Video":{"shape":"Video"},
-        "JobTag":{
-          "shape":"JobTag",
-          "documentation":"<p>A job identifier specified in the call to StartFaceDetection and returned in the job completion notification sent to your Amazon Simple Notification Service topic.</p>"
-        }
-      }
-    },
-    "GetFaceLivenessSessionResultsRequest":{
-      "type":"structure",
-      "required":["SessionId"],
-      "members":{
-        "SessionId":{
-          "shape":"LivenessSessionId",
-          "documentation":"<p>A unique 128-bit UUID. This is used to uniquely identify the session and also acts as an idempotency token for all operations associated with the session.</p>"
-        }
-      }
-    },
-    "GetFaceLivenessSessionResultsResponse":{
-      "type":"structure",
-      "required":[
-        "SessionId",
-        "Status"
-      ],
-      "members":{
-        "SessionId":{
-          "shape":"LivenessSessionId",
-          "documentation":"<p>The sessionId for which this request was called.</p>"
-        },
-        "Status":{
-          "shape":"LivenessSessionStatus",
-          "documentation":"<p>Represents a status corresponding to the state of the session. Possible statuses are: CREATED, IN_PROGRESS, SUCCEEDED, FAILED, EXPIRED.</p>"
-        },
-        "Confidence":{
-          "shape":"Percent",
-          "documentation":"<p>Probabalistic confidence score for if the person in the given video was live, represented as a float value between 0 to 100.</p>"
-        },
-        "ReferenceImage":{
-          "shape":"AuditImage",
-          "documentation":"<p>A high-quality image from the Face Liveness video that can be used for face comparison or search. It includes a bounding box of the face and the Base64-encoded bytes that return an image. If the CreateFaceLivenessSession request included an OutputConfig argument, the image will be uploaded to an S3Object specified in the output configuration. In case the reference image is not returned, it's recommended to retry the Liveness check.</p>"
-        },
-        "AuditImages":{
-          "shape":"AuditImages",
-          "documentation":"<p>A set of images from the Face Liveness video that can be used for audit purposes. It includes a bounding box of the face and the Base64-encoded bytes that return an image. If the CreateFaceLivenessSession request included an OutputConfig argument, the image will be uploaded to an S3Object specified in the output configuration.</p>"
         }
       }
     },
@@ -4097,15 +3308,6 @@
         "Persons":{
           "shape":"PersonMatches",
           "documentation":"<p>An array of persons, <a>PersonMatch</a>, in the video whose face(s) match the face(s) in an Amazon Rekognition collection. It also includes time information for when persons are matched in the video. You specify the input collection in an initial call to <code>StartFaceSearch</code>. Each <code>Persons</code> element includes a time the person was matched, face match details (<code>FaceMatches</code>) for matching faces in the collection, and person information (<code>Person</code>) for the matched person. </p>"
-        },
-        "JobId":{
-          "shape":"JobId",
-          "documentation":"<p>Job identifier for the face search operation for which you want to obtain results. The job identifer is returned by an initial call to StartFaceSearch.</p>"
-        },
-        "Video":{"shape":"Video"},
-        "JobTag":{
-          "shape":"JobTag",
-          "documentation":"<p>A job identifier specified in the call to StartFaceSearch and returned in the job completion notification sent to your Amazon Simple Notification Service topic.</p>"
         }
       }
     },
@@ -4128,26 +3330,8 @@
         "SortBy":{
           "shape":"LabelDetectionSortBy",
           "documentation":"<p>Sort to use for elements in the <code>Labels</code> array. Use <code>TIMESTAMP</code> to sort array elements by the time labels are detected. Use <code>NAME</code> to alphabetically group elements for a label together. Within each label group, the array element are sorted by detection confidence. The default sort is by <code>TIMESTAMP</code>.</p>"
-        },
-        "AggregateBy":{
-          "shape":"LabelDetectionAggregateBy",
-          "documentation":"<p>Defines how to aggregate the returned results. Results can be aggregated by timestamps or segments.</p>"
         }
       }
-    },
-    "GetLabelDetectionRequestMetadata":{
-      "type":"structure",
-      "members":{
-        "SortBy":{
-          "shape":"LabelDetectionSortBy",
-          "documentation":"<p>The sorting method chosen for a GetLabelDetection request.</p>"
-        },
-        "AggregateBy":{
-          "shape":"LabelDetectionAggregateBy",
-          "documentation":"<p>The aggregation method chosen for a GetLabelDetection request.</p>"
-        }
-      },
-      "documentation":"<p>Contains metadata about a label detection request, including the SortBy and AggregateBy options.</p>"
     },
     "GetLabelDetectionResponse":{
       "type":"structure",
@@ -4175,19 +3359,6 @@
         "LabelModelVersion":{
           "shape":"String",
           "documentation":"<p>Version number of the label detection model that was used to detect labels.</p>"
-        },
-        "JobId":{
-          "shape":"JobId",
-          "documentation":"<p>Job identifier for the label detection operation for which you want to obtain results. The job identifer is returned by an initial call to StartLabelDetection.</p>"
-        },
-        "Video":{"shape":"Video"},
-        "JobTag":{
-          "shape":"JobTag",
-          "documentation":"<p>A job identifier specified in the call to StartLabelDetection and returned in the job completion notification sent to your Amazon Simple Notification Service topic.</p>"
-        },
-        "GetRequestMetadata":{
-          "shape":"GetLabelDetectionRequestMetadata",
-          "documentation":"<p>Information about the paramters used when getting a response. Includes information on aggregation and sorting methods.</p>"
         }
       }
     },
@@ -4235,15 +3406,6 @@
         "Persons":{
           "shape":"PersonDetections",
           "documentation":"<p>An array of the persons detected in the video and the time(s) their path was tracked throughout the video. An array element will exist for each time a person's path is tracked. </p>"
-        },
-        "JobId":{
-          "shape":"JobId",
-          "documentation":"<p>Job identifier for the person tracking operation for which you want to obtain results. The job identifer is returned by an initial call to StartPersonTracking.</p>"
-        },
-        "Video":{"shape":"Video"},
-        "JobTag":{
-          "shape":"JobTag",
-          "documentation":"<p>A job identifier specified in the call to StartCelebrityRecognition and returned in the job completion notification sent to your Amazon Simple Notification Service topic.</p>"
         }
       }
     },
@@ -4295,15 +3457,6 @@
         "SelectedSegmentTypes":{
           "shape":"SegmentTypesInfo",
           "documentation":"<p>An array containing the segment types requested in the call to <code>StartSegmentDetection</code>. </p>"
-        },
-        "JobId":{
-          "shape":"JobId",
-          "documentation":"<p>Job identifier for the segment detection operation for which you want to obtain results. The job identifer is returned by an initial call to StartSegmentDetection.</p>"
-        },
-        "Video":{"shape":"Video"},
-        "JobTag":{
-          "shape":"JobTag",
-          "documentation":"<p>A job identifier specified in the call to StartSegmentDetection and returned in the job completion notification sent to your Amazon Simple Notification Service topic.</p>"
         }
       }
     },
@@ -4348,15 +3501,6 @@
         "TextModelVersion":{
           "shape":"String",
           "documentation":"<p>Version number of the text detection model that was used to detect text.</p>"
-        },
-        "JobId":{
-          "shape":"JobId",
-          "documentation":"<p>Job identifier for the text detection operation for which you want to obtain results. The job identifer is returned by an initial call to StartTextDetection.</p>"
-        },
-        "Video":{"shape":"Video"},
-        "JobTag":{
-          "shape":"JobTag",
-          "documentation":"<p>A job identifier specified in the call to StartTextDetection and returned in the job completion notification sent to your Amazon Simple Notification Service topic.</p>"
         }
       }
     },
@@ -4475,7 +3619,7 @@
       "members":{
         "Bytes":{
           "shape":"ImageBlob",
-          "documentation":"<p>Blob of image bytes up to 5 MBs. Note that the maximum image size you can pass to <code>DetectCustomLabels</code> is 4MB. </p>"
+          "documentation":"<p>Blob of image bytes up to 5 MBs.</p>"
         },
         "S3Object":{
           "shape":"S3Object",
@@ -4539,7 +3683,7 @@
         },
         "DetectionAttributes":{
           "shape":"Attributes",
-          "documentation":"<p>An array of facial attributes you want to be returned. A <code>DEFAULT</code> subset of facial attributes - <code>BoundingBox</code>, <code>Confidence</code>, <code>Pose</code>, <code>Quality</code>, and <code>Landmarks</code> - will always be returned. You can request for specific facial attributes (in addition to the default list) - by using <code>[\"DEFAULT\", \"FACE_OCCLUDED\"]</code> or just <code>[\"FACE_OCCLUDED\"]</code>. You can request for all facial attributes by using <code>[\"ALL\"]</code>. Requesting more attributes may increase response time.</p> <p>If you provide both, <code>[\"ALL\", \"DEFAULT\"]</code>, the service uses a logical AND operator to determine which attributes to return (in this case, all attributes). </p>"
+          "documentation":"<p>An array of facial attributes that you want to be returned. This can be the default list of attributes or all attributes. If you don't specify a value for <code>Attributes</code> or if you specify <code>[\"DEFAULT\"]</code>, the API returns the following subset of facial attributes: <code>BoundingBox</code>, <code>Confidence</code>, <code>Pose</code>, <code>Quality</code>, and <code>Landmarks</code>. If you provide <code>[\"ALL\"]</code>, all facial attributes are returned, but the operation takes longer to complete.</p> <p>If you provide both, <code>[\"ALL\", \"DEFAULT\"]</code>, the service uses a logical AND operator to determine which attributes to return (in this case, all attributes). </p>"
         },
         "MaxFaces":{
           "shape":"MaxFacesToIndex",
@@ -4586,10 +3730,6 @@
         "Confidence":{
           "shape":"Percent",
           "documentation":"<p>The confidence that Amazon Rekognition has in the accuracy of the bounding box.</p>"
-        },
-        "DominantColors":{
-          "shape":"DominantColors",
-          "documentation":"<p>The dominant colors found in an individual instance of a label.</p>"
         }
       },
       "documentation":"<p>An instance of a label returned by Amazon Rekognition Image (<a>DetectLabels</a>) or by Amazon Rekognition Video (<a>GetLabelDetection</a>).</p>"
@@ -4650,9 +3790,9 @@
     },
     "JobTag":{
       "type":"string",
-      "max":1024,
+      "max":256,
       "min":1,
-      "pattern":"[a-zA-Z0-9_.\\-:+=\\/]+"
+      "pattern":"[a-zA-Z0-9_.\\-:]+"
     },
     "KinesisDataArn":{
       "type":"string",
@@ -4693,14 +3833,14 @@
       "members":{
         "ProducerTimestamp":{
           "shape":"ULong",
-          "documentation":"<p> The timestamp from the producer corresponding to the fragment, in milliseconds, expressed in unix time format. </p>"
+          "documentation":"<p> The timestamp from the producer corresponding to the fragment. </p>"
         },
         "FragmentNumber":{
           "shape":"KinesisVideoStreamFragmentNumber",
           "documentation":"<p> The unique identifier of the fragment. This value monotonically increases based on the ingestion order. </p>"
         }
       },
-      "documentation":"<p>Specifies the starting point in a Kinesis stream to start processing. You can use the producer timestamp or the fragment number. One of either producer timestamp or fragment number is required. If you use the producer timestamp, you must put the time in milliseconds. For more information about fragment numbers, see <a href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_reader_Fragment.html\">Fragment</a>. </p>"
+      "documentation":"<p> Specifies the starting point in a Kinesis stream to start processing. You can use the producer timestamp or the fragment number. For more information, see <a href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_reader_Fragment.html\">Fragment</a>. </p>"
     },
     "KmsKeyId":{
       "type":"string",
@@ -4746,95 +3886,23 @@
         "Parents":{
           "shape":"Parents",
           "documentation":"<p>The parent labels for a label. The response includes all ancestor labels.</p>"
-        },
-        "Aliases":{
-          "shape":"LabelAliases",
-          "documentation":"<p>A list of potential aliases for a given label.</p>"
-        },
-        "Categories":{
-          "shape":"LabelCategories",
-          "documentation":"<p>A list of the categories associated with a given label.</p>"
         }
       },
       "documentation":"<p>Structure containing details about the detected label, including the name, detected instances, parent labels, and level of confidence.</p> <p> </p>"
-    },
-    "LabelAlias":{
-      "type":"structure",
-      "members":{
-        "Name":{
-          "shape":"String",
-          "documentation":"<p>The name of an alias for a given label.</p>"
-        }
-      },
-      "documentation":"<p>A potential alias of for a given label.</p>"
-    },
-    "LabelAliases":{
-      "type":"list",
-      "member":{"shape":"LabelAlias"}
-    },
-    "LabelCategories":{
-      "type":"list",
-      "member":{"shape":"LabelCategory"}
-    },
-    "LabelCategory":{
-      "type":"structure",
-      "members":{
-        "Name":{
-          "shape":"String",
-          "documentation":"<p>The name of a category that applies to a given label.</p>"
-        }
-      },
-      "documentation":"<p>The category that applies to a given label.</p>"
     },
     "LabelDetection":{
       "type":"structure",
       "members":{
         "Timestamp":{
           "shape":"Timestamp",
-          "documentation":"<p>Time, in milliseconds from the start of the video, that the label was detected. Note that <code>Timestamp</code> is not guaranteed to be accurate to the individual frame where the label first appears.</p>"
+          "documentation":"<p>Time, in milliseconds from the start of the video, that the label was detected.</p>"
         },
         "Label":{
           "shape":"Label",
           "documentation":"<p>Details about the detected label.</p>"
-        },
-        "StartTimestampMillis":{
-          "shape":"ULong",
-          "documentation":"<p>The time in milliseconds defining the start of the timeline segment containing a continuously detected label.</p>"
-        },
-        "EndTimestampMillis":{
-          "shape":"ULong",
-          "documentation":"<p>The time in milliseconds defining the end of the timeline segment containing a continuously detected label.</p>"
-        },
-        "DurationMillis":{
-          "shape":"ULong",
-          "documentation":"<p>The time duration of a segment in milliseconds, I.e. time elapsed from StartTimestampMillis to EndTimestampMillis.</p>"
         }
       },
       "documentation":"<p>Information about a label detected in a video analysis request and the time the label was detected in the video. </p>"
-    },
-    "LabelDetectionAggregateBy":{
-      "type":"string",
-      "enum":[
-        "TIMESTAMPS",
-        "SEGMENTS"
-      ]
-    },
-    "LabelDetectionFeatureList":{
-      "type":"list",
-      "member":{"shape":"LabelDetectionFeatureName"},
-      "max":1,
-      "min":0
-    },
-    "LabelDetectionFeatureName":{
-      "type":"string",
-      "enum":["GENERAL_LABELS"]
-    },
-    "LabelDetectionSettings":{
-      "type":"structure",
-      "members":{
-        "GeneralLabels":{"shape":"GeneralLabelsSettings"}
-      },
-      "documentation":"<p>Contains the specified filters that should be applied to a list of returned GENERAL_LABELS.</p>"
     },
     "LabelDetectionSortBy":{
       "type":"string",
@@ -5048,14 +4116,6 @@
         "MaxResults":{
           "shape":"PageSize",
           "documentation":"<p>Maximum number of faces to return.</p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>An array of user IDs to match when listing faces in a collection.</p>"
-        },
-        "FaceIds":{
-          "shape":"FaceIdList",
-          "documentation":"<p>An array of face IDs to match when listing faces in a collection.</p>"
         }
       }
     },
@@ -5157,99 +4217,12 @@
         }
       }
     },
-    "ListUsersRequest":{
-      "type":"structure",
-      "required":["CollectionId"],
-      "members":{
-        "CollectionId":{
-          "shape":"CollectionId",
-          "documentation":"<p>The ID of an existing collection.</p>"
-        },
-        "MaxResults":{
-          "shape":"MaxUserResults",
-          "documentation":"<p>Maximum number of UsersID to return. </p>"
-        },
-        "NextToken":{
-          "shape":"PaginationToken",
-          "documentation":"<p>Pagingation token to receive the next set of UsersID.</p>"
-        }
-      }
-    },
-    "ListUsersResponse":{
-      "type":"structure",
-      "members":{
-        "Users":{
-          "shape":"UserList",
-          "documentation":"<p>List of UsersID associated with the specified collection.</p>"
-        },
-        "NextToken":{
-          "shape":"PaginationToken",
-          "documentation":"<p>A pagination token to be used with the subsequent request if the response is truncated.</p>"
-        }
-      }
-    },
-    "LivenessImageBlob":{
-      "type":"blob",
-      "max":204800,
-      "min":1,
-      "sensitive":true
-    },
-    "LivenessOutputConfig":{
-      "type":"structure",
-      "required":["S3Bucket"],
-      "members":{
-        "S3Bucket":{
-          "shape":"S3Bucket",
-          "documentation":"<p>The path to an AWS Amazon S3 bucket used to store Face Liveness session results.</p>"
-        },
-        "S3KeyPrefix":{
-          "shape":"LivenessS3KeyPrefix",
-          "documentation":"<p>The prefix prepended to the output files for the Face Liveness session results.</p>"
-        }
-      },
-      "documentation":"<p>Contains settings that specify the location of an Amazon S3 bucket used to store the output of a Face Liveness session. Note that the S3 bucket must be located in the caller's AWS account and in the same region as the Face Liveness end-point. Additionally, the Amazon S3 object keys are auto-generated by the Face Liveness system. </p>"
-    },
-    "LivenessS3KeyPrefix":{
-      "type":"string",
-      "max":950,
-      "pattern":"\\S*"
-    },
-    "LivenessSessionId":{
-      "type":"string",
-      "max":36,
-      "min":36,
-      "pattern":"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-    },
-    "LivenessSessionStatus":{
-      "type":"string",
-      "enum":[
-        "CREATED",
-        "IN_PROGRESS",
-        "SUCCEEDED",
-        "FAILED",
-        "EXPIRED"
-      ]
-    },
     "MalformedPolicyDocumentException":{
       "type":"structure",
       "members":{
       },
       "documentation":"<p>The format of the project policy document that you supplied to <code>PutProjectPolicy</code> is incorrect. </p>",
       "exception":true
-    },
-    "MatchedUser":{
-      "type":"structure",
-      "members":{
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>A provided ID for the UserID. Unique within the collection.</p>"
-        },
-        "UserStatus":{
-          "shape":"UserStatus",
-          "documentation":"<p>The status of the user matched to a provided FaceID.</p>"
-        }
-      },
-      "documentation":"<p>Contains metadata for a UserID matched with a given face.</p>"
     },
     "MaxDurationInSecondsULong":{
       "type":"long",
@@ -5272,11 +4245,6 @@
     },
     "MaxResults":{
       "type":"integer",
-      "min":1
-    },
-    "MaxUserResults":{
-      "type":"integer",
-      "max":500,
       "min":1
     },
     "MinCoveragePercentage":{
@@ -5426,7 +4394,7 @@
       "members":{
         "Timestamp":{
           "shape":"Timestamp",
-          "documentation":"<p>The time, in milliseconds from the start of the video, that the person's path was tracked. Note that <code>Timestamp</code> is not guaranteed to be accurate to the individual frame where the person's path first appears.</p>"
+          "documentation":"<p>The time, in milliseconds from the start of the video, that the person's path was tracked.</p>"
         },
         "Person":{
           "shape":"PersonDetail",
@@ -6117,127 +5085,6 @@
         }
       }
     },
-    "SearchUsersByImageRequest":{
-      "type":"structure",
-      "required":[
-        "CollectionId",
-        "Image"
-      ],
-      "members":{
-        "CollectionId":{
-          "shape":"CollectionId",
-          "documentation":"<p>The ID of an existing collection containing the UserID.</p>"
-        },
-        "Image":{"shape":"Image"},
-        "UserMatchThreshold":{
-          "shape":"Percent",
-          "documentation":"<p>Specifies the minimum confidence in the UserID match to return. Default value is 80.</p>"
-        },
-        "MaxUsers":{
-          "shape":"MaxUserResults",
-          "documentation":"<p>Maximum number of UserIDs to return.</p>"
-        },
-        "QualityFilter":{
-          "shape":"QualityFilter",
-          "documentation":"<p>A filter that specifies a quality bar for how much filtering is done to identify faces. Filtered faces aren't searched for in the collection. The default value is NONE.</p>"
-        }
-      }
-    },
-    "SearchUsersByImageResponse":{
-      "type":"structure",
-      "members":{
-        "UserMatches":{
-          "shape":"UserMatchList",
-          "documentation":"<p>An array of UserID objects that matched the input face, along with the confidence in the match. The returned structure will be empty if there are no matches. Returned if the SearchUsersByImageResponse action is successful.</p>"
-        },
-        "FaceModelVersion":{
-          "shape":"String",
-          "documentation":"<p>Version number of the face detection model associated with the input collection CollectionId.</p>"
-        },
-        "SearchedFace":{
-          "shape":"SearchedFaceDetails",
-          "documentation":"<p>A list of FaceDetail objects containing the BoundingBox for the largest face in image, as well as the confidence in the bounding box, that was searched for matches. If no valid face is detected in the image the response will contain no SearchedFace object.</p>"
-        },
-        "UnsearchedFaces":{
-          "shape":"UnsearchedFacesList",
-          "documentation":"<p>List of UnsearchedFace objects. Contains the face details infered from the specified image but not used for search. Contains reasons that describe why a face wasn't used for Search. </p>"
-        }
-      }
-    },
-    "SearchUsersRequest":{
-      "type":"structure",
-      "required":["CollectionId"],
-      "members":{
-        "CollectionId":{
-          "shape":"CollectionId",
-          "documentation":"<p>The ID of an existing collection containing the UserID, used with a UserId or FaceId. If a FaceId is provided, UserId isn’t required to be present in the Collection.</p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>ID for the existing User.</p>"
-        },
-        "FaceId":{
-          "shape":"FaceId",
-          "documentation":"<p>ID for the existing face.</p>"
-        },
-        "UserMatchThreshold":{
-          "shape":"Percent",
-          "documentation":"<p>Optional value that specifies the minimum confidence in the matched UserID to return. Default value of 80.</p>"
-        },
-        "MaxUsers":{
-          "shape":"MaxUserResults",
-          "documentation":"<p>Maximum number of identities to return.</p>"
-        }
-      }
-    },
-    "SearchUsersResponse":{
-      "type":"structure",
-      "members":{
-        "UserMatches":{
-          "shape":"UserMatchList",
-          "documentation":"<p>An array of UserMatch objects that matched the input face along with the confidence in the match. Array will be empty if there are no matches.</p>"
-        },
-        "FaceModelVersion":{
-          "shape":"String",
-          "documentation":"<p>Version number of the face detection model associated with the input CollectionId.</p>"
-        },
-        "SearchedFace":{
-          "shape":"SearchedFace",
-          "documentation":"<p>Contains the ID of a face that was used to search for matches in a collection.</p>"
-        },
-        "SearchedUser":{
-          "shape":"SearchedUser",
-          "documentation":"<p>Contains the ID of the UserID that was used to search for matches in a collection.</p>"
-        }
-      }
-    },
-    "SearchedFace":{
-      "type":"structure",
-      "members":{
-        "FaceId":{
-          "shape":"FaceId",
-          "documentation":"<p> Unique identifier assigned to the face.</p>"
-        }
-      },
-      "documentation":"<p>Provides face metadata such as FaceId, BoundingBox, Confidence of the input face used for search.</p>"
-    },
-    "SearchedFaceDetails":{
-      "type":"structure",
-      "members":{
-        "FaceDetail":{"shape":"FaceDetail"}
-      },
-      "documentation":"<p>Contains data regarding the input face used for a search.</p>"
-    },
-    "SearchedUser":{
-      "type":"structure",
-      "members":{
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p> A provided ID for the UserID. Unique within the collection. </p>"
-        }
-      },
-      "documentation":"<p>Contains metadata about a User searched for within a collection.</p>"
-    },
     "SegmentConfidence":{
       "type":"float",
       "max":100,
@@ -6336,13 +5183,6 @@
       "members":{
       },
       "documentation":"<p/> <p>The size of the collection exceeds the allowed limit. For more information, see Guidelines and quotas in Amazon Rekognition in the Amazon Rekognition Developer Guide. </p>",
-      "exception":true
-    },
-    "SessionNotFoundException":{
-      "type":"structure",
-      "members":{
-      },
-      "documentation":"<p>Occurs when a given sessionId is not found.</p>",
       "exception":true
     },
     "ShotSegment":{
@@ -6530,7 +5370,7 @@
         },
         "MinConfidence":{
           "shape":"Percent",
-          "documentation":"<p>Specifies the minimum confidence that Amazon Rekognition Video must have in order to return a detected label. Confidence represents how certain Amazon Rekognition is that a label is correctly identified.0 is the lowest confidence. 100 is the highest confidence. Amazon Rekognition Video doesn't return any labels with a confidence level lower than this specified value.</p> <p>If you don't specify <code>MinConfidence</code>, the operation returns labels and bounding boxes (if detected) with confidence values greater than or equal to 50 percent.</p>"
+          "documentation":"<p>Specifies the minimum confidence that Amazon Rekognition Video must have in order to return a detected label. Confidence represents how certain Amazon Rekognition is that a label is correctly identified.0 is the lowest confidence. 100 is the highest confidence. Amazon Rekognition Video doesn't return any labels with a confidence level lower than this specified value.</p> <p>If you don't specify <code>MinConfidence</code>, the operation returns labels with confidence values greater than or equal to 50 percent.</p>"
         },
         "NotificationChannel":{
           "shape":"NotificationChannel",
@@ -6539,14 +5379,6 @@
         "JobTag":{
           "shape":"JobTag",
           "documentation":"<p>An identifier you specify that's returned in the completion notification that's published to your Amazon Simple Notification Service topic. For example, you can use <code>JobTag</code> to group related jobs and identify them in the completion notification.</p>"
-        },
-        "Features":{
-          "shape":"LabelDetectionFeatureList",
-          "documentation":"<p>The features to return after video analysis. You can specify that GENERAL_LABELS are returned.</p>"
-        },
-        "Settings":{
-          "shape":"LabelDetectionSettings",
-          "documentation":"<p>The settings for a StartLabelDetection request.Contains the specified parameters for the label detection request of an asynchronous label analysis operation. Settings can include filters for GENERAL_LABELS.</p>"
         }
       }
     },
@@ -6693,7 +5525,7 @@
         },
         "StartSelector":{
           "shape":"StreamProcessingStartSelector",
-          "documentation":"<p> Specifies the starting point in the Kinesis stream to start processing. You can use the producer timestamp or the fragment number. If you use the producer timestamp, you must put the time in milliseconds. For more information about fragment numbers, see <a href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_reader_Fragment.html\">Fragment</a>. </p> <p>This is a required parameter for label detection stream processors and should not be used to start a face search stream processor.</p>"
+          "documentation":"<p> Specifies the starting point in the Kinesis stream to start processing. You can use the producer timestamp or the fragment number. For more information, see <a href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_reader_Fragment.html\">Fragment</a>. </p> <p>This is a required parameter for label detection stream processors and should not be used to start a face search stream processor.</p>"
         },
         "StopSelector":{
           "shape":"StreamProcessingStopSelector",
@@ -6808,10 +5640,10 @@
       "members":{
         "KVSStreamStartSelector":{
           "shape":"KinesisVideoStreamStartSelector",
-          "documentation":"<p> Specifies the starting point in the stream to start processing. This can be done with a producer timestamp or a fragment number in a Kinesis stream. </p>"
+          "documentation":"<p> Specifies the starting point in the stream to start processing. This can be done with a timestamp or a fragment number in a Kinesis stream. </p>"
         }
       },
-      "documentation":"<p>This is a required parameter for label detection stream processors and should not be used to start a face search stream processor.</p>"
+      "documentation":"<p/>"
     },
     "StreamProcessingStopSelector":{
       "type":"structure",
@@ -7106,7 +5938,7 @@
       "members":{
         "Timestamp":{
           "shape":"Timestamp",
-          "documentation":"<p>The time, in milliseconds from the start of the video, that the text was detected. Note that <code>Timestamp</code> is not guaranteed to be accurate to the individual frame where the text first appears.</p>"
+          "documentation":"<p>The time, in milliseconds from the start of the video, that the text was detected.</p>"
         },
         "TextDetection":{
           "shape":"TextDetection",
@@ -7190,148 +6022,6 @@
       "type":"list",
       "member":{"shape":"UnindexedFace"}
     },
-    "UnsearchedFace":{
-      "type":"structure",
-      "members":{
-        "FaceDetails":{"shape":"FaceDetail"},
-        "Reasons":{
-          "shape":"UnsearchedFaceReasons",
-          "documentation":"<p> Reasons why a face wasn't used for Search. </p>"
-        }
-      },
-      "documentation":"<p>Face details inferred from the image but not used for search. The response attribute contains reasons for why a face wasn't used for Search. </p>"
-    },
-    "UnsearchedFaceReason":{
-      "type":"string",
-      "enum":[
-        "FACE_NOT_LARGEST",
-        "EXCEEDS_MAX_FACES",
-        "EXTREME_POSE",
-        "LOW_BRIGHTNESS",
-        "LOW_SHARPNESS",
-        "LOW_CONFIDENCE",
-        "SMALL_BOUNDING_BOX",
-        "LOW_FACE_QUALITY"
-      ]
-    },
-    "UnsearchedFaceReasons":{
-      "type":"list",
-      "member":{"shape":"UnsearchedFaceReason"}
-    },
-    "UnsearchedFacesList":{
-      "type":"list",
-      "member":{"shape":"UnsearchedFace"}
-    },
-    "UnsuccessfulFaceAssociation":{
-      "type":"structure",
-      "members":{
-        "FaceId":{
-          "shape":"FaceId",
-          "documentation":"<p>A unique identifier assigned to the face. </p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>A provided ID for the UserID. Unique within the collection. </p>"
-        },
-        "Confidence":{
-          "shape":"Percent",
-          "documentation":"<p>Match confidence with the UserID, provides information regarding if a face association was unsuccessful because it didn't meet UserMatchThreshold.</p>"
-        },
-        "Reasons":{
-          "shape":"UnsuccessfulFaceAssociationReasons",
-          "documentation":"<p> The reason why the association was unsuccessful. </p>"
-        }
-      },
-      "documentation":"<p>Contains metadata like FaceId, UserID, and Reasons, for a face that was unsuccessfully associated.</p>"
-    },
-    "UnsuccessfulFaceAssociationList":{
-      "type":"list",
-      "member":{"shape":"UnsuccessfulFaceAssociation"},
-      "max":500,
-      "min":0
-    },
-    "UnsuccessfulFaceAssociationReason":{
-      "type":"string",
-      "enum":[
-        "FACE_NOT_FOUND",
-        "ASSOCIATED_TO_A_DIFFERENT_USER",
-        "LOW_MATCH_CONFIDENCE"
-      ]
-    },
-    "UnsuccessfulFaceAssociationReasons":{
-      "type":"list",
-      "member":{"shape":"UnsuccessfulFaceAssociationReason"}
-    },
-    "UnsuccessfulFaceDeletion":{
-      "type":"structure",
-      "members":{
-        "FaceId":{
-          "shape":"FaceId",
-          "documentation":"<p> A unique identifier assigned to the face.</p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p> A provided ID for the UserID. Unique within the collection. </p>"
-        },
-        "Reasons":{
-          "shape":"UnsuccessfulFaceDeletionReasons",
-          "documentation":"<p>The reason why the deletion was unsuccessful. </p>"
-        }
-      },
-      "documentation":"<p>Contains metadata like FaceId, UserID, and Reasons, for a face that was unsuccessfully deleted.</p>"
-    },
-    "UnsuccessfulFaceDeletionReason":{
-      "type":"string",
-      "enum":[
-        "ASSOCIATED_TO_AN_EXISTING_USER",
-        "FACE_NOT_FOUND"
-      ]
-    },
-    "UnsuccessfulFaceDeletionReasons":{
-      "type":"list",
-      "member":{"shape":"UnsuccessfulFaceDeletionReason"}
-    },
-    "UnsuccessfulFaceDeletionsList":{
-      "type":"list",
-      "member":{"shape":"UnsuccessfulFaceDeletion"},
-      "max":4096,
-      "min":0
-    },
-    "UnsuccessfulFaceDisassociation":{
-      "type":"structure",
-      "members":{
-        "FaceId":{
-          "shape":"FaceId",
-          "documentation":"<p>A unique identifier assigned to the face. </p>"
-        },
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p>A provided ID for the UserID. Unique within the collection. </p>"
-        },
-        "Reasons":{
-          "shape":"UnsuccessfulFaceDisassociationReasons",
-          "documentation":"<p>The reason why the deletion was unsuccessful. </p>"
-        }
-      },
-      "documentation":"<p>Contains metadata like FaceId, UserID, and Reasons, for a face that was unsuccessfully disassociated.</p>"
-    },
-    "UnsuccessfulFaceDisassociationList":{
-      "type":"list",
-      "member":{"shape":"UnsuccessfulFaceDisassociation"},
-      "max":500,
-      "min":0
-    },
-    "UnsuccessfulFaceDisassociationReason":{
-      "type":"string",
-      "enum":[
-        "FACE_NOT_FOUND",
-        "ASSOCIATED_TO_A_DIFFERENT_USER"
-      ]
-    },
-    "UnsuccessfulFaceDisassociationReasons":{
-      "type":"list",
-      "member":{"shape":"UnsuccessfulFaceDisassociationReason"}
-    },
     "UntagResourceRequest":{
       "type":"structure",
       "required":[
@@ -7413,65 +6103,6 @@
       "member":{"shape":"Url"},
       "max":255,
       "min":0
-    },
-    "User":{
-      "type":"structure",
-      "members":{
-        "UserId":{
-          "shape":"UserId",
-          "documentation":"<p> A provided ID for the User. Unique within the collection.</p>"
-        },
-        "UserStatus":{
-          "shape":"UserStatus",
-          "documentation":"<p> Communicates if the UserID has been updated with latest set of faces to be associated with the UserID. </p>"
-        }
-      },
-      "documentation":"<p>Metadata of the user stored in a collection.</p>"
-    },
-    "UserFaceIdList":{
-      "type":"list",
-      "member":{"shape":"FaceId"},
-      "max":100,
-      "min":1
-    },
-    "UserId":{
-      "type":"string",
-      "max":128,
-      "min":1,
-      "pattern":"[a-zA-Z0-9_.\\-:]+"
-    },
-    "UserList":{
-      "type":"list",
-      "member":{"shape":"User"},
-      "max":500
-    },
-    "UserMatch":{
-      "type":"structure",
-      "members":{
-        "Similarity":{
-          "shape":"Percent",
-          "documentation":"<p> Describes the UserID metadata.</p>"
-        },
-        "User":{
-          "shape":"MatchedUser",
-          "documentation":"<p> Confidence in the match of this UserID with the input face. </p>"
-        }
-      },
-      "documentation":"<p>Provides UserID metadata along with the confidence in the match of this UserID with the input face.</p>"
-    },
-    "UserMatchList":{
-      "type":"list",
-      "member":{"shape":"UserMatch"},
-      "max":500
-    },
-    "UserStatus":{
-      "type":"string",
-      "enum":[
-        "ACTIVE",
-        "UPDATING",
-        "CREATING",
-        "CREATED"
-      ]
     },
     "ValidationData":{
       "type":"structure",
@@ -7566,5 +6197,5 @@
       "exception":true
     }
   },
-  "documentation":"<p>This is the API Reference for <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/images.html\">Amazon Rekognition Image</a>, <a href=\"https://docs.aws.amazon.com/rekognition/latest/customlabels-dg/what-is.html\">Amazon Rekognition Custom Labels</a>, <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/video.html\">Amazon Rekognition Stored Video</a>, <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/streaming-video.html\">Amazon Rekognition Streaming Video</a>. It provides descriptions of actions, data types, common parameters, and common errors.</p> <p> <b>Amazon Rekognition Image</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_AssociateFaces.html\">AssociateFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CompareFaces.html\">CompareFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateCollection.html\">CreateCollection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateUser.html\">CreateUser</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteCollection.html\">DeleteCollection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteFaces.html\">DeleteFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteUser.html\">DeleteUser</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeCollection.html\">DescribeCollection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectFaces.html\">DetectFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectLabels.html\">DetectLabels</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectModerationLabels.html\">DetectModerationLabels</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectProtectiveEquipment.html\">DetectProtectiveEquipment</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectText.html\">DetectText</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DisassociateFaces.html\">DisassociateFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetCelebrityInfo.html\">GetCelebrityInfo</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_IndexFaces.html\">IndexFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListCollections.html\">ListCollections</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListFaces.html\">ListFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListFaces.html\">ListUsers</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_RecognizeCelebrities.html\">RecognizeCelebrities</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_SearchFaces.html\">SearchFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_SearchFacesByImage.html\">SearchFacesByImage</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_SearchUsers.html\">SearchUsers</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_SearchUsersByImage.html\">SearchUsersByImage</a> </p> </li> </ul> <p> <b>Amazon Rekognition Custom Labels</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CopyProjectVersion.html\">CopyProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateDataset.html\">CreateDataset</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateProject.html\">CreateProject</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateProjectVersion.html\">CreateProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteDataset.html\">DeleteDataset</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteProject.html\">DeleteProject</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteProjectPolicy.html\">DeleteProjectPolicy</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteProjectVersion.html\">DeleteProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeDataset.html\">DescribeDataset</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeProjects.html\">DescribeProjects</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeProjectVersions.html\">DescribeProjectVersions</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectCustomLabels.html\">DetectCustomLabels</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DistributeDatasetEntries.html\">DistributeDatasetEntries</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListDatasetEntries.html\">ListDatasetEntries</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListDatasetLabels.html\">ListDatasetLabels</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListProjectPolicies.html\">ListProjectPolicies</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_PutProjectPolicy.html\">PutProjectPolicy</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartProjectVersion.html\">StartProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StopProjectVersion.html\">StopProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_UpdateDatasetEntries.html\">UpdateDatasetEntries</a> </p> </li> </ul> <p> <b>Amazon Rekognition Video Stored Video</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetCelebrityRecognition.html\">GetCelebrityRecognition</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetContentModeration.html\">GetContentModeration</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetFaceDetection.html\">GetFaceDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetFaceSearch.html\">GetFaceSearch</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetLabelDetection.html\">GetLabelDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetPersonTracking.html\">GetPersonTracking</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetSegmentDetection.html\">GetSegmentDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetTextDetection.html\">GetTextDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartCelebrityRecognition.html\">StartCelebrityRecognition</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartContentModeration.html\">StartContentModeration</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartFaceDetection.html\">StartFaceDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartFaceSearch.html\">StartFaceSearch</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartLabelDetection.html\">StartLabelDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartPersonTracking.html\">StartPersonTracking</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartSegmentDetection.html\">StartSegmentDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartTextDetection.html\">StartTextDetection</a> </p> </li> </ul> <p> <b>Amazon Rekognition Video Streaming Video</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateStreamProcessor.html\">CreateStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteStreamProcessor.html\">DeleteStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeStreamProcessor.html\">DescribeStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListStreamProcessors.html\">ListStreamProcessors</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartStreamProcessor.html\">StartStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StopStreamProcessor.html\">StopStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_UpdateStreamProcessor.html\">UpdateStreamProcessor</a> </p> </li> </ul>"
+  "documentation":"<p>This is the API Reference for <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/images.html\">Amazon Rekognition Image</a>, <a href=\"https://docs.aws.amazon.com/rekognition/latest/customlabels-dg/what-is.html\">Amazon Rekognition Custom Labels</a>, <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/video.html\">Amazon Rekognition Stored Video</a>, <a href=\"https://docs.aws.amazon.com/rekognition/latest/dg/streaming-video.html\">Amazon Rekognition Streaming Video</a>. It provides descriptions of actions, data types, common parameters, and common errors.</p> <p> <b>Amazon Rekognition Image</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CompareFaces.html\">CompareFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateCollection.html\">CreateCollection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteCollection.html\">DeleteCollection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteFaces.html\">DeleteFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeCollection.html\">DescribeCollection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectFaces.html\">DetectFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectLabels.html\">DetectLabels</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectModerationLabels.html\">DetectModerationLabels</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectProtectiveEquipment.html\">DetectProtectiveEquipment</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectText.html\">DetectText</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetCelebrityInfo.html\">GetCelebrityInfo</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_IndexFaces.html\">IndexFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListCollections.html\">ListCollections</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListFaces.html\">ListFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_RecognizeCelebrities.html\">RecognizeCelebrities</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_SearchFaces.html\">SearchFaces</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_SearchFacesByImage.html\">SearchFacesByImage</a> </p> </li> </ul> <p> <b>Amazon Rekognition Custom Labels</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CopyProjectVersion.html\">CopyProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateDataset.html\">CreateDataset</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateProject.html\">CreateProject</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateProjectVersion.html\">CreateProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteDataset.html\">DeleteDataset</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteProject.html\">DeleteProject</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteProjectPolicy.html\">DeleteProjectPolicy</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteProjectVersion.html\">DeleteProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeDataset.html\">DescribeDataset</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeProjects.html\">DescribeProjects</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeProjectVersions.html\">DescribeProjectVersions</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DetectCustomLabels.html\">DetectCustomLabels</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DistributeDatasetEntries.html\">DistributeDatasetEntries</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListDatasetEntries.html\">ListDatasetEntries</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListDatasetLabels.html\">ListDatasetLabels</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListProjectPolicies.html\">ListProjectPolicies</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_PutProjectPolicy.html\">PutProjectPolicy</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartProjectVersion.html\">StartProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StopProjectVersion.html\">StopProjectVersion</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_UpdateDatasetEntries.html\">UpdateDatasetEntries</a> </p> </li> </ul> <p> <b>Amazon Rekognition Video Stored Video</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetCelebrityRecognition.html\">GetCelebrityRecognition</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetContentModeration.html\">GetContentModeration</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetFaceDetection.html\">GetFaceDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetFaceSearch.html\">GetFaceSearch</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetLabelDetection.html\">GetLabelDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetPersonTracking.html\">GetPersonTracking</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetSegmentDetection.html\">GetSegmentDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_GetTextDetection.html\">GetTextDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartCelebrityRecognition.html\">StartCelebrityRecognition</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartContentModeration.html\">StartContentModeration</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartFaceDetection.html\">StartFaceDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartFaceSearch.html\">StartFaceSearch</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartLabelDetection.html\">StartLabelDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartPersonTracking.html\">StartPersonTracking</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartSegmentDetection.html\">StartSegmentDetection</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartTextDetection.html\">StartTextDetection</a> </p> </li> </ul> <p> <b>Amazon Rekognition Video Streaming Video</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_CreateStreamProcessor.html\">CreateStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DeleteStreamProcessor.html\">DeleteStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_DescribeStreamProcessor.html\">DescribeStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_ListStreamProcessors.html\">ListStreamProcessors</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StartStreamProcessor.html\">StartStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_StopStreamProcessor.html\">StopStreamProcessor</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/rekognition/latest/APIReference/API_UpdateStreamProcessor.html\">UpdateStreamProcessor</a> </p> </li> </ul>"
 }

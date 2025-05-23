@@ -249,6 +249,7 @@ class RetryPolicy:
 
 
 class ExponentialBackoff(BaseRetryBackoff):
+
     _BASE = 2
     _MAX_BACKOFF = 20
 
