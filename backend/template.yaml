@@ -20,6 +20,16 @@ Parameters:
     Default: "e5298f548bab9996676025a645c62550487694a85584db92b4d087652cd27e75"
 
 Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: MyServerlessSaaSApi
+      StageName: Prod
+      Cors:
+        AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+        AllowOrigin: "'*'"
+
   # DynamoDB Tables
   UsersTable:
     Type: AWS::DynamoDB::Table
@@ -66,6 +76,7 @@ Resources:
           Properties:
             Path: /auth/login
             Method: post
+            RestApiId: !Ref MyApi
 
   TenantSignupFunction:
     Type: AWS::Serverless::Function
@@ -78,6 +89,7 @@ Resources:
           Properties:
             Path: /auth/signup
             Method: post
+            RestApiId: !Ref MyApi
 
   GetUserDataFunction:
     Type: AWS::Serverless::Function
@@ -90,8 +102,7 @@ Resources:
           Properties:
             Path: /user
             Method: get
-            Auth:
-              Authorizer: NONE
+            RestApiId: !Ref MyApi
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref UsersTable
@@ -99,7 +110,7 @@ Resources:
 Outputs:
   ApiEndpoint:
     Description: API Gateway endpoint URL
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
 
   UsersTableName:
     Description: Name of the Users table
@@ -107,4 +118,4 @@ Outputs:
 
   TenantsTableName:
     Description: Name of the Tenants table
-    Value: !Ref TenantsTable 
+    Value: !Ref TenantsTable

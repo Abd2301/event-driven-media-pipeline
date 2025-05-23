@@ -20,6 +20,15 @@ Parameters:
     Description: Secret key for JWT token generation
     Default: e5298f548bab9996676025a645c62550487694a85584db92b4d087652cd27e75
 Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: MyServerlessSaaSApi
+      StageName: Prod
+      Cors:
+        AllowMethods: '''OPTIONS,GET,POST,PUT,DELETE'''
+        AllowHeaders: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key'''
+        AllowOrigin: '''*'''
   UsersTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -64,6 +73,8 @@ Resources:
           Properties:
             Path: /auth/login
             Method: post
+            RestApiId:
+              Ref: MyApi
     Metadata:
       SamResourceId: AuthHandlerFunction
   TenantSignupFunction:
@@ -77,6 +88,8 @@ Resources:
           Properties:
             Path: /auth/signup
             Method: post
+            RestApiId:
+              Ref: MyApi
     Metadata:
       SamResourceId: TenantSignupFunction
   GetUserDataFunction:
@@ -90,6 +103,8 @@ Resources:
           Properties:
             Path: /user
             Method: get
+            RestApiId:
+              Ref: MyApi
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -100,7 +115,7 @@ Outputs:
   ApiEndpoint:
     Description: API Gateway endpoint URL
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod
+      Fn::Sub: https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod
   UsersTableName:
     Description: Name of the Users table
     Value:
