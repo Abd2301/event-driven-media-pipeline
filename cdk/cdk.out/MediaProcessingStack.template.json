@@ -1,5 +1,14 @@
 {
  "Resources": {
+  "MediaProcessingAlarms02E7EA9C": {
+   "Type": "AWS::SNS::Topic",
+   "Properties": {
+    "TopicName": "dev-media-processing-alarms"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingAlarms/Resource"
+   }
+  },
   "OriginalMediaBucket322A29F3": {
    "Type": "AWS::S3::Bucket",
    "Properties": {
@@ -466,14 +475,14 @@
     ],
     "Content": {
      "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
-     "S3Key": "cc6e40b83c38df3ac79d6aecf260c4bd77e32451ec56a4f9689fca9fca696cab.zip"
+     "S3Key": "4b929399f5e1fcddf0929b3d54aee1a46685c965646b28cdd45cae5c24bb9c98.zip"
     },
     "Description": "Shared dependencies for media processing"
    },
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/SharedLayer/Resource",
-    "aws:asset:path": "asset.cc6e40b83c38df3ac79d6aecf260c4bd77e32451ec56a4f9689fca9fca696cab",
-    "aws:asset:is-bundled": true,
+    "aws:asset:path": "asset.4b929399f5e1fcddf0929b3d54aee1a46685c965646b28cdd45cae5c24bb9c98",
+    "aws:asset:is-bundled": false,
     "aws:asset:property": "Content"
    }
   },
@@ -679,6 +688,9 @@
       "Ref": "SharedLayer27DFABF0"
      }
     ],
+    "LoggingConfig": {
+     "LogFormat": "JSON"
+    },
     "MemorySize": 1024,
     "Role": {
      "Fn::GetAtt": [
@@ -698,6 +710,969 @@
     "aws:asset:path": "asset.ce37d2664fb5c1a52c0d68be85b396df94d32440ddb305a8b5ac60224409f0c4",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
+   }
+  },
+  "UploadHandlerFunctionServiceRole483D683C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/UploadHandlerFunction/ServiceRole/Resource"
+   }
+  },
+  "UploadHandlerFunctionServiceRoleDefaultPolicyBB324832": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "OriginalMediaBucket322A29F3",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "OriginalMediaBucket322A29F3",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:SendMessage"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "MediaProcessingQueue56039BA9",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MediaMetadataTable190A6CFD",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "MediaMetadataTable190A6CFD",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "UploadHandlerFunctionServiceRoleDefaultPolicyBB324832",
+    "Roles": [
+     {
+      "Ref": "UploadHandlerFunctionServiceRole483D683C"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/UploadHandlerFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "UploadHandlerFunction1DEB4309": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
+     "S3Key": "035fe7f13e70b1a148977f7f9534f87882faa2e839c830969f387c0bbc5e4801.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "ENVIRONMENT": "dev",
+      "ORIGINAL_BUCKET": {
+       "Ref": "OriginalMediaBucket322A29F3"
+      },
+      "PROCESSING_QUEUE_URL": {
+       "Ref": "MediaProcessingQueue56039BA9"
+      },
+      "METADATA_TABLE": {
+       "Ref": "MediaMetadataTable190A6CFD"
+      }
+     }
+    },
+    "Handler": "upload_handler.lambda_handler",
+    "Layers": [
+     {
+      "Ref": "SharedLayer27DFABF0"
+     }
+    ],
+    "LoggingConfig": {
+     "LogFormat": "JSON"
+    },
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "UploadHandlerFunctionServiceRole483D683C",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.10",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "UploadHandlerFunctionServiceRoleDefaultPolicyBB324832",
+    "UploadHandlerFunctionServiceRole483D683C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/UploadHandlerFunction/Resource",
+    "aws:asset:path": "asset.035fe7f13e70b1a148977f7f9534f87882faa2e839c830969f387c0bbc5e4801",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "StatusHandlerFunctionServiceRole1D3711A3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/StatusHandlerFunction/ServiceRole/Resource"
+   }
+  },
+  "StatusHandlerFunctionServiceRoleDefaultPolicyE96F8D49": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MediaMetadataTable190A6CFD",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "MediaMetadataTable190A6CFD",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ProcessedMediaBucket446D3976",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ProcessedMediaBucket446D3976",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StatusHandlerFunctionServiceRoleDefaultPolicyE96F8D49",
+    "Roles": [
+     {
+      "Ref": "StatusHandlerFunctionServiceRole1D3711A3"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/StatusHandlerFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "StatusHandlerFunction795904D8": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "x86_64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
+     "S3Key": "035fe7f13e70b1a148977f7f9534f87882faa2e839c830969f387c0bbc5e4801.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "ENVIRONMENT": "dev",
+      "METADATA_TABLE": {
+       "Ref": "MediaMetadataTable190A6CFD"
+      },
+      "PROCESSED_BUCKET": {
+       "Ref": "ProcessedMediaBucket446D3976"
+      }
+     }
+    },
+    "Handler": "status_handler.lambda_handler",
+    "Layers": [
+     {
+      "Ref": "SharedLayer27DFABF0"
+     }
+    ],
+    "LoggingConfig": {
+     "LogFormat": "JSON"
+    },
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "StatusHandlerFunctionServiceRole1D3711A3",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.10",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "StatusHandlerFunctionServiceRoleDefaultPolicyE96F8D49",
+    "StatusHandlerFunctionServiceRole1D3711A3"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/StatusHandlerFunction/Resource",
+    "aws:asset:path": "asset.035fe7f13e70b1a148977f7f9534f87882faa2e839c830969f387c0bbc5e4801",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "MediaProcessingApi0A9A6701": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "API for media processing pipeline",
+    "Name": "dev-media-processing-api"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Resource"
+   }
+  },
+  "MediaProcessingApiDeployment45551F9838964887e3d9c73b9931eb139694dc90": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "API for media processing pipeline",
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "DependsOn": [
+    "MediaProcessingApimediamediaId2A708D1A",
+    "MediaProcessingApimediamediaIdstatusGET5DCC9B39",
+    "MediaProcessingApimediamediaIdstatusOPTIONS7B144D01",
+    "MediaProcessingApimediamediaIdstatusBBADA4E7",
+    "MediaProcessingApimediaOPTIONS28A0275F",
+    "MediaProcessingApimedia6C6E7F08",
+    "MediaProcessingApimediauploadOPTIONS7084429D",
+    "MediaProcessingApimediauploadPOSTDEDED5BF",
+    "MediaProcessingApimediaupload7BD2FE45"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Deployment/Resource"
+   }
+  },
+  "MediaProcessingApiDeploymentStageprod81E9BDF6": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "MediaProcessingApiDeployment45551F9838964887e3d9c73b9931eb139694dc90"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    },
+    "StageName": "prod"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "MediaProcessingApimedia6C6E7F08": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "MediaProcessingApi0A9A6701",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "media",
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/Resource"
+   }
+  },
+  "MediaProcessingApimediaupload7BD2FE45": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "MediaProcessingApimedia6C6E7F08"
+    },
+    "PathPart": "upload",
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/Resource"
+   }
+  },
+  "MediaProcessingApimediauploadPOSTApiPermissionMediaProcessingStackMediaProcessingApi7CA1B650POSTmediauploadBA1359C7": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UploadHandlerFunction1DEB4309",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "MediaProcessingApi0A9A6701"
+       },
+       "/",
+       {
+        "Ref": "MediaProcessingApiDeploymentStageprod81E9BDF6"
+       },
+       "/POST/media/upload"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/POST/ApiPermission.MediaProcessingStackMediaProcessingApi7CA1B650.POST..media.upload"
+   }
+  },
+  "MediaProcessingApimediauploadPOSTApiPermissionTestMediaProcessingStackMediaProcessingApi7CA1B650POSTmediauploadE627E82D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UploadHandlerFunction1DEB4309",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "MediaProcessingApi0A9A6701"
+       },
+       "/test-invoke-stage/POST/media/upload"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/POST/ApiPermission.Test.MediaProcessingStackMediaProcessingApi7CA1B650.POST..media.upload"
+   }
+  },
+  "MediaProcessingApimediauploadPOSTDEDED5BF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "UploadHandlerFunction1DEB4309",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MediaProcessingApimediaupload7BD2FE45"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/POST/Resource"
+   }
+  },
+  "MediaProcessingApimediauploadOPTIONS7084429D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE'",
+        "method.response.header.Access-Control-Max-Age": "'86400'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "MediaProcessingApimediaupload7BD2FE45"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/OPTIONS/Resource"
+   }
+  },
+  "MediaProcessingApimediamediaId2A708D1A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "MediaProcessingApimedia6C6E7F08"
+    },
+    "PathPart": "{mediaId}",
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/Resource"
+   }
+  },
+  "MediaProcessingApimediamediaIdstatusBBADA4E7": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "MediaProcessingApimediamediaId2A708D1A"
+    },
+    "PathPart": "status",
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/Resource"
+   }
+  },
+  "MediaProcessingApimediamediaIdstatusGETApiPermissionMediaProcessingStackMediaProcessingApi7CA1B650GETmediamediaIdstatus597FBB10": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "StatusHandlerFunction795904D8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "MediaProcessingApi0A9A6701"
+       },
+       "/",
+       {
+        "Ref": "MediaProcessingApiDeploymentStageprod81E9BDF6"
+       },
+       "/GET/media/*/status"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/GET/ApiPermission.MediaProcessingStackMediaProcessingApi7CA1B650.GET..media.{mediaId}.status"
+   }
+  },
+  "MediaProcessingApimediamediaIdstatusGETApiPermissionTestMediaProcessingStackMediaProcessingApi7CA1B650GETmediamediaIdstatusBDF9190B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "StatusHandlerFunction795904D8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "MediaProcessingApi0A9A6701"
+       },
+       "/test-invoke-stage/GET/media/*/status"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/GET/ApiPermission.Test.MediaProcessingStackMediaProcessingApi7CA1B650.GET..media.{mediaId}.status"
+   }
+  },
+  "MediaProcessingApimediamediaIdstatusGET5DCC9B39": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "StatusHandlerFunction795904D8",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MediaProcessingApimediamediaIdstatusBBADA4E7"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/GET/Resource"
+   }
+  },
+  "MediaProcessingApimediamediaIdstatusOPTIONS7B144D01": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE'",
+        "method.response.header.Access-Control-Max-Age": "'86400'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "MediaProcessingApimediamediaIdstatusBBADA4E7"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/OPTIONS/Resource"
+   }
+  },
+  "MediaProcessingApimediaOPTIONS28A0275F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE'",
+        "method.response.header.Access-Control-Max-Age": "'86400'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "MediaProcessingApimedia6C6E7F08"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/OPTIONS/Resource"
+   }
+  },
+  "LambdaErrorRateAlarm35685FAA": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "MediaProcessingAlarms02E7EA9C"
+     }
+    ],
+    "AlarmDescription": "Alarm when Lambda function has errors",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "FunctionName",
+      "Value": {
+       "Ref": "ImageProcessorFunction11AF6264"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "Errors",
+    "Namespace": "AWS/Lambda",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 1
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/LambdaErrorRateAlarm/Resource"
+   }
+  },
+  "QueueAgeAlarmC3F61350": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "MediaProcessingAlarms02E7EA9C"
+     }
+    ],
+    "AlarmDescription": "Alarm when messages are stuck in queue",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "QueueName",
+      "Value": {
+       "Fn::GetAtt": [
+        "MediaProcessingQueue56039BA9",
+        "QueueName"
+       ]
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ApproximateAgeOfOldestMessage",
+    "Namespace": "AWS/SQS",
+    "Period": 300,
+    "Statistic": "Maximum",
+    "Threshold": 300
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/QueueAgeAlarm/Resource"
+   }
+  },
+  "DLQMessageCountAlarm53C9BD22": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "MediaProcessingAlarms02E7EA9C"
+     }
+    ],
+    "AlarmDescription": "Alarm when messages are sent to DLQ",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "QueueName",
+      "Value": {
+       "Fn::GetAtt": [
+        "MediaProcessingDLQ38BEDAF3",
+        "QueueName"
+       ]
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ApproximateNumberOfMessagesVisible",
+    "Namespace": "AWS/SQS",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 0
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/DLQMessageCountAlarm/Resource"
+   }
+  },
+  "MediaProcessingDashboard27393888": {
+   "Type": "AWS::CloudWatch::Dashboard",
+   "Properties": {
+    "DashboardBody": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"widgets\":[{\"type\":\"text\",\"width\":24,\"height\":1,\"x\":0,\"y\":0,\"properties\":{\"markdown\":\"# Media Processing Pipeline Overview\"}},{\"type\":\"metric\",\"width\":12,\"height\":6,\"x\":0,\"y\":1,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Lambda Function Metrics\",\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"metrics\":[[\"AWS/Lambda\",\"Invocations\",\"FunctionName\",\"",
+       {
+        "Ref": "ImageProcessorFunction11AF6264"
+       },
+       "\",{\"stat\":\"Sum\"}],[\"AWS/Lambda\",\"Errors\",\"FunctionName\",\"",
+       {
+        "Ref": "ImageProcessorFunction11AF6264"
+       },
+       "\",{\"stat\":\"Sum\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":12,\"height\":6,\"x\":12,\"y\":1,\"properties\":{\"view\":\"timeSeries\",\"title\":\"SQS Queue Metrics\",\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"metrics\":[[\"AWS/SQS\",\"ApproximateNumberOfMessagesVisible\",\"QueueName\",\"",
+       {
+        "Fn::GetAtt": [
+         "MediaProcessingQueue56039BA9",
+         "QueueName"
+        ]
+       },
+       "\",{\"stat\":\"Sum\"}],[\"AWS/SQS\",\"ApproximateAgeOfOldestMessage\",\"QueueName\",\"",
+       {
+        "Fn::GetAtt": [
+         "MediaProcessingQueue56039BA9",
+         "QueueName"
+        ]
+       },
+       "\",{\"stat\":\"Maximum\"}]],\"yAxis\":{}}},{\"type\":\"alarm\",\"width\":24,\"height\":3,\"x\":0,\"y\":7,\"properties\":{\"title\":\"Alarms\",\"alarms\":[\"",
+       {
+        "Fn::GetAtt": [
+         "LambdaErrorRateAlarm35685FAA",
+         "Arn"
+        ]
+       },
+       "\",\"",
+       {
+        "Fn::GetAtt": [
+         "QueueAgeAlarmC3F61350",
+         "Arn"
+        ]
+       },
+       "\",\"",
+       {
+        "Fn::GetAtt": [
+         "DLQMessageCountAlarm53C9BD22",
+         "Arn"
+        ]
+       },
+       "\"]}}]}"
+      ]
+     ]
+    },
+    "DashboardName": "dev-media-processing-dashboard"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingDashboard/Resource"
    }
   },
   "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC": {
@@ -786,7 +1761,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1VQzW6DMAx+Fu7BhfICW5F2mjRGp10rE9I2AxKGk1UoyrtPJKi0l3w/8Rfb2cM+y8DlCd4o5W2X9rIBdzTIO4Y3OjkqwB0s74Rh5VmtLEKle8nnzV51FAck4Rn9ErhPK6xYyiIJ55Z9kJ61s8JBtw24L2z6EArEMypOSCQMwesCrMehaRFceVbvOIvpW0wktVoSb1ZxI7XyTOIArtbxoYBb37WlZ6Ulo4dakLYTj5V3/nRVTfpPtmJaVmNhiqPBi1QX9hj+sGa0xrM8xX68ImTJy/q3uwXj3Ok4m6tWa4mrgnraI1r3Vfxq7ArIM8iSH5IynawychBQR/wHJRHGD8wBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/22SwVLDIBCGn6V3QtP6AlYdTzrG2PHqbMjaYBOILJjJMLy7A0TbOl6y37+7wM+SLd+WJfebFUxUiPZY9LLh/sWCODKY6M2TIu73epSC3b6rBIHRFfc3ThzRxuRCOVS6l2I+pRedxQ0QBkafxP2zQ4exLUP6ntaeycDaWcGg24b7PTR9WpQgsB6GpgXuH2BG84qGpFax/FffOyXswhWaQVKsxHu8ARFa4rsYmISB+1rnM1I8WfpxA6M8gMUJZu5rJLsbZepe8A7HXs8DqjSaM/Vi4ZD2zVAjaWcExpH8imWjzI9oO93GVKbARK9dO4EVHfe7HswQixnugLpGg0n9vyIEduvI6uHfAy5LldFfskWTDKVxRKNSHS7cPTk7OhvYpoB+7ICXq+vlz1nHmB+kGGfbabW0VEn8PEFgWa+v+Kbk5eqDpCyMU1YOyOscvwEx84FGlQIAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/CDKMetadata/Default"
@@ -794,6 +1769,28 @@
   }
  },
  "Outputs": {
+  "MediaProcessingApiEndpointCC7BB9EC": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "MediaProcessingApi0A9A6701"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "MediaProcessingApiDeploymentStageprod81E9BDF6"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
   "OriginalBucketName": {
    "Description": "Name of the original media bucket",
    "Value": {
@@ -817,6 +1814,33 @@
    "Value": {
     "Ref": "MediaMetadataTable190A6CFD"
    }
+  },
+  "ApiEndpoint": {
+   "Description": "API Gateway endpoint URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "MediaProcessingApi0A9A6701"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "MediaProcessingApiDeploymentStageprod81E9BDF6"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "DashboardURL": {
+   "Description": "CloudWatch Dashboard URL",
+   "Value": "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=dev-media-processing-dashboard"
   }
  },
  "Parameters": {
