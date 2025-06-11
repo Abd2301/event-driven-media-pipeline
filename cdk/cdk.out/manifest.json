@@ -1,0 +1,224 @@
+{
+  "version": "44.0.0",
+  "artifacts": {
+    "MediaProcessingStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "MediaProcessingStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "MediaProcessingStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://043309357886/us-east-1",
+      "properties": {
+        "templateFile": "MediaProcessingStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-deploy-role-043309357886-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-cfn-exec-role-043309357886-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-043309357886-us-east-1/4093f52686f6ed0b0044fdb85c366dade6e4d3dc33c8f14618b81ca6dce7bdfc.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "MediaProcessingStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-lookup-role-043309357886-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "MediaProcessingStack.assets"
+      ],
+      "metadata": {
+        "/MediaProcessingStack/OriginalMediaBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OriginalMediaBucket322A29F3"
+          }
+        ],
+        "/MediaProcessingStack/OriginalMediaBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OriginalMediaBucketPolicy14811C2A"
+          }
+        ],
+        "/MediaProcessingStack/OriginalMediaBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OriginalMediaBucketAutoDeleteObjectsCustomResourceDF558BCF"
+          }
+        ],
+        "/MediaProcessingStack/OriginalMediaBucket/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OriginalMediaBucketNotificationsF7E6D171"
+          }
+        ],
+        "/MediaProcessingStack/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/MediaProcessingStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/MediaProcessingStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/MediaProcessingStack/ProcessedMediaBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProcessedMediaBucket446D3976"
+          }
+        ],
+        "/MediaProcessingStack/ProcessedMediaBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProcessedMediaBucketPolicyC0D174F9"
+          }
+        ],
+        "/MediaProcessingStack/ProcessedMediaBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProcessedMediaBucketAutoDeleteObjectsCustomResourceCFB57D7D"
+          }
+        ],
+        "/MediaProcessingStack/MediaProcessingDLQ/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaProcessingDLQ38BEDAF3"
+          }
+        ],
+        "/MediaProcessingStack/MediaProcessingQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaProcessingQueue56039BA9"
+          }
+        ],
+        "/MediaProcessingStack/MediaProcessingQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaProcessingQueuePolicy2D0F0068"
+          }
+        ],
+        "/MediaProcessingStack/MediaMetadataTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "MediaMetadataTable190A6CFD"
+            }
+          }
+        ],
+        "/MediaProcessingStack/MediaMetadataTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaMetadataTable190A6CFD"
+          }
+        ],
+        "/MediaProcessingStack/SharedLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SharedLayer27DFABF0"
+          }
+        ],
+        "/MediaProcessingStack/ImageProcessorFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageProcessorFunctionServiceRoleBF4C20FC"
+          }
+        ],
+        "/MediaProcessingStack/ImageProcessorFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageProcessorFunctionServiceRoleDefaultPolicy3F61B55D"
+          }
+        ],
+        "/MediaProcessingStack/ImageProcessorFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageProcessorFunction11AF6264"
+          }
+        ],
+        "/MediaProcessingStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/MediaProcessingStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
+          }
+        ],
+        "/MediaProcessingStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+          }
+        ],
+        "/MediaProcessingStack/OriginalBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OriginalBucketName"
+          }
+        ],
+        "/MediaProcessingStack/ProcessedBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProcessedBucketName"
+          }
+        ],
+        "/MediaProcessingStack/ProcessingQueueURL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProcessingQueueURL"
+          }
+        ],
+        "/MediaProcessingStack/MetadataTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MetadataTableName"
+          }
+        ],
+        "/MediaProcessingStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/MediaProcessingStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/MediaProcessingStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "MediaProcessingStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  },
+  "minimumCliVersion": "2.1018.0"
+}
