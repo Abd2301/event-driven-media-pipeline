@@ -50,6 +50,7 @@ from aws_cdk.aws_sns import Topic
 from aws_cdk.aws_sns_subscriptions import EmailSubscription
 from constructs import Construct
 import secrets
+import time
 
 class MediaProcessingStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -206,6 +207,12 @@ class MediaProcessingStack(Stack):
             default_method_options=MethodOptions(
                 api_key_required=True,
             ),
+            default_cors_preflight_options=CorsOptions(
+                allow_origins=["*"],
+                allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                allow_headers=["*"],
+                max_age=Duration.days(1),
+            ),
         )
 
         # Create request validator
@@ -280,6 +287,8 @@ class MediaProcessingStack(Stack):
                         status_code="200",
                         response_parameters={
                             "method.response.header.Access-Control-Allow-Origin": "'*'",
+                            "method.response.header.Access-Control-Allow-Headers": "'*'",
+                            "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'",
                         },
                     ),
                 ],
@@ -289,6 +298,8 @@ class MediaProcessingStack(Stack):
                     status_code="200",
                     response_parameters={
                         "method.response.header.Access-Control-Allow-Origin": True,
+                        "method.response.header.Access-Control-Allow-Headers": True,
+                        "method.response.header.Access-Control-Allow-Methods": True,
                     },
                     response_models={
                         "application/json": status_model,
@@ -313,6 +324,8 @@ class MediaProcessingStack(Stack):
                         status_code="200",
                         response_parameters={
                             "method.response.header.Access-Control-Allow-Origin": "'*'",
+                            "method.response.header.Access-Control-Allow-Headers": "'*'",
+                            "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'",
                         },
                     ),
                 ],
@@ -322,6 +335,8 @@ class MediaProcessingStack(Stack):
                     status_code="200",
                     response_parameters={
                         "method.response.header.Access-Control-Allow-Origin": True,
+                        "method.response.header.Access-Control-Allow-Headers": True,
+                        "method.response.header.Access-Control-Allow-Methods": True,
                     },
                     response_models={
                         "application/json": status_model,
@@ -332,20 +347,15 @@ class MediaProcessingStack(Stack):
         )
 
         # Add CORS to all resources
-        for resource in [media, upload, status]:
-            resource.add_cors_preflight(
-                allow_origins=["*"],
-                allow_methods=["GET", "POST", "PUT", "DELETE"],
-                allow_headers=["*"],
-                max_age=Duration.days(1),
-            )
+        # Note: CORS is already configured at the API level with default_cors_preflight_options
+        # No need to add it again at the resource level
 
         # Create API Key and Usage Plan
         api_key_value = secrets.token_urlsafe(32)
         api_key = ApiKey(
             self,
             "MediaProcessingApiKey",
-            api_key_name="MediaProcessingKey",
+            api_key_name=f"MediaProcessingKey-{int(time.time())}",
             value=api_key_value,
             description="API Key for media processing access",
             enabled=True,

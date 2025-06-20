@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-deploy-role-043309357886-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-cfn-exec-role-043309357886-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-043309357886-us-east-1/53fdceefde99d64e90d28bc3b363bba7c14efc3aac8257f3205c8def6d15a335.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-043309357886-us-east-1/eeb9503b40771ab86517ec17e33fa651d1c8cc4f60232bc95314e185c9d23a30.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -201,7 +201,7 @@
         "/MediaProcessingStack/MediaProcessingApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MediaProcessingApiDeployment45551F98dbf14a7de685be1fe3022347e9d65ebf"
+            "data": "MediaProcessingApiDeployment45551F9880c63b18bbdcf973c89167b50c87a495"
           }
         ],
         "/MediaProcessingStack/MediaProcessingApi/DeploymentStage.prod/Resource": [
@@ -216,16 +216,34 @@
             "data": "MediaProcessingApiEndpointCC7BB9EC"
           }
         ],
+        "/MediaProcessingStack/MediaProcessingApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaProcessingApiOPTIONS623A1DAB"
+          }
+        ],
         "/MediaProcessingStack/MediaProcessingApi/Default/media/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MediaProcessingApimedia6C6E7F08"
           }
         ],
+        "/MediaProcessingStack/MediaProcessingApi/Default/media/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaProcessingApimediaOPTIONS28A0275F"
+          }
+        ],
         "/MediaProcessingStack/MediaProcessingApi/Default/media/upload/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MediaProcessingApimediaupload7BD2FE45"
+          }
+        ],
+        "/MediaProcessingStack/MediaProcessingApi/Default/media/upload/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaProcessingApimediauploadOPTIONS7084429D"
           }
         ],
         "/MediaProcessingStack/MediaProcessingApi/Default/media/upload/POST/ApiPermission.MediaProcessingStackMediaProcessingApi7CA1B650.POST..media.upload": [
@@ -246,22 +264,28 @@
             "data": "MediaProcessingApimediauploadPOSTDEDED5BF"
           }
         ],
-        "/MediaProcessingStack/MediaProcessingApi/Default/media/upload/OPTIONS/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MediaProcessingApimediauploadOPTIONS7084429D"
-          }
-        ],
         "/MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MediaProcessingApimediamediaId2A708D1A"
           }
         ],
+        "/MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaProcessingApimediamediaIdOPTIONSA451DB36"
+          }
+        ],
         "/MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "MediaProcessingApimediamediaIdstatusBBADA4E7"
+          }
+        ],
+        "/MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MediaProcessingApimediamediaIdstatusOPTIONS7B144D01"
           }
         ],
         "/MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/GET/ApiPermission.MediaProcessingStackMediaProcessingApi7CA1B650.GET..media.{mediaId}.status": [
@@ -280,18 +304,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "MediaProcessingApimediamediaIdstatusGET5DCC9B39"
-          }
-        ],
-        "/MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/OPTIONS/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MediaProcessingApimediamediaIdstatusOPTIONS7B144D01"
-          }
-        ],
-        "/MediaProcessingStack/MediaProcessingApi/Default/media/OPTIONS/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MediaProcessingApimediaOPTIONS28A0275F"
           }
         ],
         "/MediaProcessingStack/RequestValidator/Resource": [

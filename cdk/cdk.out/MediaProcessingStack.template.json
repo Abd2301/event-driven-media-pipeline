@@ -863,7 +863,7 @@
     ],
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
-     "S3Key": "035fe7f13e70b1a148977f7f9534f87882faa2e839c830969f387c0bbc5e4801.zip"
+     "S3Key": "34308fdf379e136d2a47508340d7dfd50d9be66e09f35910175005e1d429fdaf.zip"
     },
     "Environment": {
      "Variables": {
@@ -904,7 +904,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/UploadHandlerFunction/Resource",
-    "aws:asset:path": "asset.035fe7f13e70b1a148977f7f9534f87882faa2e839c830969f387c0bbc5e4801",
+    "aws:asset:path": "asset.34308fdf379e136d2a47508340d7dfd50d9be66e09f35910175005e1d429fdaf",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -1035,7 +1035,7 @@
     ],
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
-     "S3Key": "035fe7f13e70b1a148977f7f9534f87882faa2e839c830969f387c0bbc5e4801.zip"
+     "S3Key": "34308fdf379e136d2a47508340d7dfd50d9be66e09f35910175005e1d429fdaf.zip"
     },
     "Environment": {
      "Variables": {
@@ -1073,7 +1073,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/StatusHandlerFunction/Resource",
-    "aws:asset:path": "asset.035fe7f13e70b1a148977f7f9534f87882faa2e839c830969f387c0bbc5e4801",
+    "aws:asset:path": "asset.34308fdf379e136d2a47508340d7dfd50d9be66e09f35910175005e1d429fdaf",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -1089,7 +1089,7 @@
     "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Resource"
    }
   },
-  "MediaProcessingApiDeployment45551F98dbf14a7de685be1fe3022347e9d65ebf": {
+  "MediaProcessingApiDeployment45551F9880c63b18bbdcf973c89167b50c87a495": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "API for media processing pipeline",
@@ -1098,6 +1098,7 @@
     }
    },
    "DependsOn": [
+    "MediaProcessingApimediamediaIdOPTIONSA451DB36",
     "MediaProcessingApimediamediaId2A708D1A",
     "MediaProcessingApimediamediaIdstatusGET5DCC9B39",
     "MediaProcessingApimediamediaIdstatusOPTIONS7B144D01",
@@ -1107,6 +1108,7 @@
     "MediaProcessingApimediauploadOPTIONS7084429D",
     "MediaProcessingApimediauploadPOSTDEDED5BF",
     "MediaProcessingApimediaupload7BD2FE45",
+    "MediaProcessingApiOPTIONS623A1DAB",
     "RequestValidatorB6FDBF18",
     "StatusModel9A2AB4BA",
     "UploadModelAE3998CE"
@@ -1119,7 +1121,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "MediaProcessingApiDeployment45551F98dbf14a7de685be1fe3022347e9d65ebf"
+     "Ref": "MediaProcessingApiDeployment45551F9880c63b18bbdcf973c89167b50c87a495"
     },
     "RestApiId": {
      "Ref": "MediaProcessingApi0A9A6701"
@@ -1128,6 +1130,54 @@
    },
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "MediaProcessingApiOPTIONS623A1DAB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'",
+        "method.response.header.Access-Control-Max-Age": "'86400'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "MediaProcessingApi0A9A6701",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/OPTIONS/Resource"
    }
   },
   "MediaProcessingApimedia6C6E7F08": {
@@ -1148,6 +1198,51 @@
     "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/Resource"
    }
   },
+  "MediaProcessingApimediaOPTIONS28A0275F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'",
+        "method.response.header.Access-Control-Max-Age": "'86400'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "MediaProcessingApimedia6C6E7F08"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/OPTIONS/Resource"
+   }
+  },
   "MediaProcessingApimediaupload7BD2FE45": {
    "Type": "AWS::ApiGateway::Resource",
    "Properties": {
@@ -1161,6 +1256,51 @@
    },
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/Resource"
+   }
+  },
+  "MediaProcessingApimediauploadOPTIONS7084429D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'",
+        "method.response.header.Access-Control-Max-Age": "'86400'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "MediaProcessingApimediaupload7BD2FE45"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/OPTIONS/Resource"
    }
   },
   "MediaProcessingApimediauploadPOSTApiPermissionMediaProcessingStackMediaProcessingApi7CA1B650POSTmediauploadBA1359C7": {
@@ -1234,7 +1374,9 @@
      "IntegrationResponses": [
       {
        "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Origin": "'*'"
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'"
        },
        "StatusCode": "200"
       }
@@ -1264,7 +1406,9 @@
        }
       },
       "ResponseParameters": {
-       "method.response.header.Access-Control-Allow-Origin": true
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Methods": true
       },
       "StatusCode": "200"
      }
@@ -1288,7 +1432,22 @@
     "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/POST/Resource"
    }
   },
-  "MediaProcessingApimediauploadOPTIONS7084429D": {
+  "MediaProcessingApimediamediaId2A708D1A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "MediaProcessingApimedia6C6E7F08"
+    },
+    "PathPart": "{mediaId}",
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/Resource"
+   }
+  },
+  "MediaProcessingApimediamediaIdOPTIONSA451DB36": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
     "ApiKeyRequired": false,
@@ -1300,7 +1459,7 @@
        "ResponseParameters": {
         "method.response.header.Access-Control-Allow-Headers": "'*'",
         "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'",
         "method.response.header.Access-Control-Max-Age": "'86400'"
        },
        "StatusCode": "204"
@@ -1323,29 +1482,14 @@
      }
     ],
     "ResourceId": {
-     "Ref": "MediaProcessingApimediaupload7BD2FE45"
+     "Ref": "MediaProcessingApimediamediaId2A708D1A"
     },
     "RestApiId": {
      "Ref": "MediaProcessingApi0A9A6701"
     }
    },
    "Metadata": {
-    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/upload/OPTIONS/Resource"
-   }
-  },
-  "MediaProcessingApimediamediaId2A708D1A": {
-   "Type": "AWS::ApiGateway::Resource",
-   "Properties": {
-    "ParentId": {
-     "Ref": "MediaProcessingApimedia6C6E7F08"
-    },
-    "PathPart": "{mediaId}",
-    "RestApiId": {
-     "Ref": "MediaProcessingApi0A9A6701"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/Resource"
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/OPTIONS/Resource"
    }
   },
   "MediaProcessingApimediamediaIdstatusBBADA4E7": {
@@ -1361,6 +1505,51 @@
    },
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/Resource"
+   }
+  },
+  "MediaProcessingApimediamediaIdstatusOPTIONS7B144D01": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'",
+        "method.response.header.Access-Control-Max-Age": "'86400'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "MediaProcessingApimediamediaIdstatusBBADA4E7"
+    },
+    "RestApiId": {
+     "Ref": "MediaProcessingApi0A9A6701"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/OPTIONS/Resource"
    }
   },
   "MediaProcessingApimediamediaIdstatusGETApiPermissionMediaProcessingStackMediaProcessingApi7CA1B650GETmediamediaIdstatus597FBB10": {
@@ -1434,7 +1623,9 @@
      "IntegrationResponses": [
       {
        "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Origin": "'*'"
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'"
        },
        "StatusCode": "200"
       }
@@ -1464,7 +1655,9 @@
        }
       },
       "ResponseParameters": {
-       "method.response.header.Access-Control-Allow-Origin": true
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Methods": true
       },
       "StatusCode": "200"
      }
@@ -1481,96 +1674,6 @@
    },
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/GET/Resource"
-   }
-  },
-  "MediaProcessingApimediamediaIdstatusOPTIONS7B144D01": {
-   "Type": "AWS::ApiGateway::Method",
-   "Properties": {
-    "ApiKeyRequired": false,
-    "AuthorizationType": "NONE",
-    "HttpMethod": "OPTIONS",
-    "Integration": {
-     "IntegrationResponses": [
-      {
-       "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'*'",
-        "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE'",
-        "method.response.header.Access-Control-Max-Age": "'86400'"
-       },
-       "StatusCode": "204"
-      }
-     ],
-     "RequestTemplates": {
-      "application/json": "{ statusCode: 200 }"
-     },
-     "Type": "MOCK"
-    },
-    "MethodResponses": [
-     {
-      "ResponseParameters": {
-       "method.response.header.Access-Control-Allow-Headers": true,
-       "method.response.header.Access-Control-Allow-Origin": true,
-       "method.response.header.Access-Control-Allow-Methods": true,
-       "method.response.header.Access-Control-Max-Age": true
-      },
-      "StatusCode": "204"
-     }
-    ],
-    "ResourceId": {
-     "Ref": "MediaProcessingApimediamediaIdstatusBBADA4E7"
-    },
-    "RestApiId": {
-     "Ref": "MediaProcessingApi0A9A6701"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/{mediaId}/status/OPTIONS/Resource"
-   }
-  },
-  "MediaProcessingApimediaOPTIONS28A0275F": {
-   "Type": "AWS::ApiGateway::Method",
-   "Properties": {
-    "ApiKeyRequired": false,
-    "AuthorizationType": "NONE",
-    "HttpMethod": "OPTIONS",
-    "Integration": {
-     "IntegrationResponses": [
-      {
-       "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'*'",
-        "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE'",
-        "method.response.header.Access-Control-Max-Age": "'86400'"
-       },
-       "StatusCode": "204"
-      }
-     ],
-     "RequestTemplates": {
-      "application/json": "{ statusCode: 200 }"
-     },
-     "Type": "MOCK"
-    },
-    "MethodResponses": [
-     {
-      "ResponseParameters": {
-       "method.response.header.Access-Control-Allow-Headers": true,
-       "method.response.header.Access-Control-Allow-Origin": true,
-       "method.response.header.Access-Control-Allow-Methods": true,
-       "method.response.header.Access-Control-Max-Age": true
-      },
-      "StatusCode": "204"
-     }
-    ],
-    "ResourceId": {
-     "Ref": "MediaProcessingApimedia6C6E7F08"
-    },
-    "RestApiId": {
-     "Ref": "MediaProcessingApi0A9A6701"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "MediaProcessingStack/MediaProcessingApi/Default/media/OPTIONS/Resource"
    }
   },
   "RequestValidatorB6FDBF18": {
@@ -1669,8 +1772,8 @@
    "Properties": {
     "Description": "API Key for media processing access",
     "Enabled": true,
-    "Name": "MediaProcessingKey",
-    "Value": "4M6vpzYRc2YGUl1kN2MWVrupwypB0g6o0Kknz2Due-o"
+    "Name": "MediaProcessingKey-1750434117",
+    "Value": "YpQSIu1h3yx_b3MjwlFrKljd3YSVMk4akKEfuX0cGaA"
    },
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/MediaProcessingApiKey/Resource"
@@ -1966,7 +2069,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/22S207kMAyGn2Xu09CBF9gBxA2LtlsOt8htvNPspEmJE0ZVlHdHOcAA4qb+fsd2bKfn/Lxtedhu4EjNKA6NkgMP9w7GA4MjPQfSxMODWeTIrv7pDJHRBQ+XfjygS85KxXRGyXE9uasu4hIII6MX4uGvR48prED+nnI/ycjEqmE2YuDhAQaVkzJEpmAeBPDwG1a0T2hJGp2Ov+sbr0dXuUM7S0onaY5nIEJHfJcMkzDz0JtyR7anlt67gUXuweERVh56JLdbZI6ueI2LMuuMOq/mk7p3sM91C/RIxtsR00o+RC1U+A7dZERyVerxxSO5J1BSgDO2RH/z3RmBKidl2C3yFnP/lR4J9tgpyLv4WdziGtmojBdHcOPEw06BnXONDNdA02DA5t4+RIzsypMz84/DfD3qrHmVAm0ePq8+LUXq/ZdN/PFu8S6ybQNqmYC3m1/1Lz1Ltjx+s6xuMrqGdFm8P3dkRZ9d8G3L281/krKxXjs5I++LfQPc9lO9AQMAAA=="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/22SUVPkIAzHP8u+U+zqF7hV5148x1o9X50U4pZbCpXA7XQYvvsN0L1Vx5fm909CSEIv+WXb8rjdwJEaIQ+NVgOPTx7EgcGRXiMZ4vHZzkqwmzdTIDG64vE6iAP67Fypms5qJZaze9VVXANhYvROPD4GDJjTKpTv+ewHmZhcDExWDjw+w6DLoQKJaZgGCTz+ggXdCzpS1uTwV/0zGOFX7tBNinIkz/EKROiJ77JhCiYee1vvKPbc0qkbmNUePB5h4bFH8rtZlewVb3HWdpnQlNV8UE8e9qVuhR7JBicwr4Tdox+tzMGVTtG1cuUe3wOSfwGtJHjravCL795K1KVSgd2s7rD0v9Jvgj12Gsouvhd3uCQmtA3yCF6MPO40uKnUKHALNA4WXGn4v0iJ3QTydvq298+hztm/SqIrw5fV56Uos/80+EPwc/CJbRvQ8wi83fxY/9KLbOvjN/PiR2vWlK6I03MnVvXFFd+2vN38IaUaF4xXE/K+2n/t6U4sAQMAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "MediaProcessingStack/CDKMetadata/Default"
@@ -2049,7 +2152,7 @@
   },
   "ApiKeyValue": {
    "Description": "API Key Value for authentication",
-   "Value": "4M6vpzYRc2YGUl1kN2MWVrupwypB0g6o0Kknz2Due-o"
+   "Value": "YpQSIu1h3yx_b3MjwlFrKljd3YSVMk4akKEfuX0cGaA"
   }
  },
  "Parameters": {

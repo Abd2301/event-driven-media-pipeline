@@ -23,8 +23,8 @@ interface MediaItem {
 function App() {
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([])
   const [isUploading, setIsUploading] = useState(false)
-  const [apiKey, setApiKey] = useState('')
-  const [apiEndpoint, setApiEndpoint] = useState('')
+  const [apiKey, setApiKey] = useState('cy5UvlgMGpFRcqDMBWEXdhtn66oW4VmyoMle1ktdH7k')
+  const [apiEndpoint, setApiEndpoint] = useState('https://g9boudcf01.execute-api.us-east-1.amazonaws.com/prod/')
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (!apiKey || !apiEndpoint) {
