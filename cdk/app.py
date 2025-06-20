@@ -548,13 +548,7 @@ class MediaProcessingStack(Stack):
             value=api_key_value,
             description="API Key Value for authentication",
         )
-
-        CfnOutput(
-            self, "ApiKeyValue",
-            value=api_key.key_value,
-            description="API Key Value for authentication",
-        )
-
+        
 app = App()
 MediaProcessingStack(
     app, "MediaProcessingStack",
