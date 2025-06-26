@@ -135,7 +135,7 @@ class ApiStack(Stack):
                 stage_name=self.env_name,
                 throttling_rate_limit=1000,
                 throttling_burst_limit=2000,
-                logging_level=apigateway.MethodLoggingLevel.INFO,
+                logging_level=apigateway.MethodLoggingLevel.OFF,
                 data_trace_enabled=False
             )
         )

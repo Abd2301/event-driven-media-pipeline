@@ -1,0 +1,356 @@
+{
+  "version": "44.0.0",
+  "artifacts": {
+    "TaskAPI-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "TaskAPI-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "TaskAPI-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://043309357886/us-east-1",
+      "properties": {
+        "templateFile": "TaskAPI-dev.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-deploy-role-043309357886-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-cfn-exec-role-043309357886-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-043309357886-us-east-1/5485f8683d73deccbbf93882075fc60bbab1442f73f90938746b9a487db0a456.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "TaskAPI-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-lookup-role-043309357886-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "TaskAPI-dev.assets"
+      ],
+      "metadata": {
+        "/TaskAPI-dev/TasksTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "TasksTable88911DC5"
+            }
+          }
+        ],
+        "/TaskAPI-dev/TasksTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TasksTable88911DC5"
+          }
+        ],
+        "/TaskAPI-dev/SharedLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SharedLayer27DFABF0"
+          }
+        ],
+        "/TaskAPI-dev/TaskHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskHandlerServiceRole4B48C24D"
+          }
+        ],
+        "/TaskAPI-dev/TaskHandler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskHandlerServiceRoleDefaultPolicy6A78693C"
+          }
+        ],
+        "/TaskAPI-dev/TaskHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskHandlerE5C6B6D2"
+          }
+        ],
+        "/TaskAPI-dev/TaskHandler/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskHandlerLogRetention11EA54AA"
+          }
+        ],
+        "/TaskAPI-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+          }
+        ],
+        "/TaskAPI-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB"
+          }
+        ],
+        "/TaskAPI-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A"
+          }
+        ],
+        "/TaskAPI-dev/HealthHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HealthHandlerServiceRole2FE1C1C8"
+          }
+        ],
+        "/TaskAPI-dev/HealthHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HealthHandler164742B2"
+          }
+        ],
+        "/TaskAPI-dev/HealthHandler/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HealthHandlerLogRetentionB4F1C426"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIDD3E4B28"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIDeploymentBF49184E7283c5fef367cfc2d367bc1bc0618137"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/DeploymentStage.dev/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIDeploymentStagedev13A212FB"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIEndpoint46645F85"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIOPTIONSAC772D3D"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksD099E2B5"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksOPTIONSF6237E87"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/POST/ApiPermission.TaskAPIdevTaskAPI531770D7.POST..tasks": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksPOSTApiPermissionTaskAPIdevTaskAPI531770D7POSTtasks17C88FE7"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/POST/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.POST..tasks": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksPOSTApiPermissionTestTaskAPIdevTaskAPI531770D7POSTtasksDEBCB5B3"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksPOST9C7F3B11"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/GET/ApiPermission.TaskAPIdevTaskAPI531770D7.GET..tasks": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksGETApiPermissionTaskAPIdevTaskAPI531770D7GETtasks498DD4B2"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/GET/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.GET..tasks": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksGETApiPermissionTestTaskAPIdevTaskAPI531770D7GETtasksD2FBDD2B"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksGET348CD5A1"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidF82B9575"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidOPTIONS837FDC4F"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/GET/ApiPermission.TaskAPIdevTaskAPI531770D7.GET..tasks.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidGETApiPermissionTaskAPIdevTaskAPI531770D7GETtasksidD5D1639C"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/GET/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.GET..tasks.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidGETApiPermissionTestTaskAPIdevTaskAPI531770D7GETtasksid98D5BB2C"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidGETD8D6D2BA"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/PUT/ApiPermission.TaskAPIdevTaskAPI531770D7.PUT..tasks.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidPUTApiPermissionTaskAPIdevTaskAPI531770D7PUTtasksidF82D87DD"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/PUT/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.PUT..tasks.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidPUTApiPermissionTestTaskAPIdevTaskAPI531770D7PUTtasksid28AEDF69"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidPUT7B3CC870"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/DELETE/ApiPermission.TaskAPIdevTaskAPI531770D7.DELETE..tasks.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidDELETEApiPermissionTaskAPIdevTaskAPI531770D7DELETEtasksid2F23D9C2"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/DELETE/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.DELETE..tasks.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidDELETEApiPermissionTestTaskAPIdevTaskAPI531770D7DELETEtasksidFEC5C8B2"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/tasks/{id}/DELETE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPItasksidDELETE61896DB6"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/health/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIhealthEC8D55CD"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/health/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIhealthOPTIONSEE40C73F"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/health/GET/ApiPermission.TaskAPIdevTaskAPI531770D7.GET..health": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIhealthGETApiPermissionTaskAPIdevTaskAPI531770D7GEThealth35CA853A"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/health/GET/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.GET..health": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIhealthGETApiPermissionTestTaskAPIdevTaskAPI531770D7GEThealth1F89003A"
+          }
+        ],
+        "/TaskAPI-dev/TaskAPI/Default/health/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskAPIhealthGET7BC18E2A"
+          }
+        ],
+        "/TaskAPI-dev/CreateTaskValidator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateTaskValidator31656D8D"
+          }
+        ],
+        "/TaskAPI-dev/UpdateTaskValidator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UpdateTaskValidator46BBD038"
+          }
+        ],
+        "/TaskAPI-dev/APIEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "APIEndpoint"
+          }
+        ],
+        "/TaskAPI-dev/TasksTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TasksTableName"
+          }
+        ],
+        "/TaskAPI-dev/TaskHandlerFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskHandlerFunction"
+          }
+        ],
+        "/TaskAPI-dev/HealthHandlerFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HealthHandlerFunction"
+          }
+        ],
+        "/TaskAPI-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/TaskAPI-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/TaskAPI-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "TaskAPI-dev"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  },
+  "minimumCliVersion": "2.1018.0"
+}

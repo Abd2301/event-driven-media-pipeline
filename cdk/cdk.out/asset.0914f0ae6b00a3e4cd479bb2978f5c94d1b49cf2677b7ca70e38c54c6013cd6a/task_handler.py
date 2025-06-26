@@ -154,28 +154,22 @@ def update_task(task_id: str, event: Dict[str, Any]) -> Dict[str, Any]:
         existing_task = existing_response['Item']
         
         # Update fields
-        update_expression = "SET #updated_at = :updated_at"
+        update_expression = "SET updated_at = :updated_at"
         expression_values = {':updated_at': datetime.now(timezone.utc).isoformat()}
-        expression_names = {'#updated_at': 'updated_at'}
         
         # Fields that can be updated
         updatable_fields = ['title', 'description', 'status', 'priority', 'due_date']
         
         for field in updatable_fields:
             if field in body:
-                # Use expression attribute names for reserved keywords
-                attr_name = f"#{field}"
-                attr_value = f":{field}"
-                update_expression += f", {attr_name} = {attr_value}"
-                expression_values[attr_value] = body[field]
-                expression_names[attr_name] = field
+                update_expression += f", {field} = :{field}"
+                expression_values[f':{field}'] = body[field]
         
         # Update in DynamoDB
         table.update_item(
             Key={'id': task_id},
             UpdateExpression=update_expression,
             ExpressionAttributeValues=expression_values,
-            ExpressionAttributeNames=expression_names,
             ReturnValues="ALL_NEW"
         )
         

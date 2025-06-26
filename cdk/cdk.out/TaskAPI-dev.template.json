@@ -1,0 +1,1475 @@
+{
+ "Description": "Serverless Task Management API - dev environment",
+ "Resources": {
+  "TasksTable88911DC5": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "status",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "created_at",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "StatusIndex",
+      "KeySchema": [
+       {
+        "AttributeName": "status",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "created_at",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "tasks-dev",
+    "TimeToLiveSpecification": {
+     "AttributeName": "ttl",
+     "Enabled": true
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TasksTable/Resource"
+   }
+  },
+  "SharedLayer27DFABF0": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "CompatibleRuntimes": [
+     "python3.9"
+    ],
+    "Content": {
+     "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
+     "S3Key": "2cd4a7aa8a25e00d428ea69ddfac215c57e5d27d0eefa9b455cfe7c97880f99b.zip"
+    },
+    "Description": "Shared utilities for task API Lambda functions",
+    "LayerName": "task-api-shared-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/SharedLayer/Resource",
+    "aws:asset:path": "asset.2cd4a7aa8a25e00d428ea69ddfac215c57e5d27d0eefa9b455cfe7c97880f99b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "TaskHandlerServiceRole4B48C24D": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskHandler/ServiceRole/Resource"
+   }
+  },
+  "TaskHandlerServiceRoleDefaultPolicy6A78693C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "TasksTable88911DC5",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "TasksTable88911DC5",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "TaskHandlerServiceRoleDefaultPolicy6A78693C",
+    "Roles": [
+     {
+      "Ref": "TaskHandlerServiceRole4B48C24D"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "TaskHandlerE5C6B6D2": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
+     "S3Key": "702a4ddb9475a16bc40e991fd4089fe481a1400acabc46c5d09f81307a4a0fb9.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TASKS_TABLE": {
+       "Ref": "TasksTable88911DC5"
+      },
+      "ENVIRONMENT": "dev"
+     }
+    },
+    "FunctionName": "task-handler-dev",
+    "Handler": "task_handler.lambda_handler",
+    "Layers": [
+     {
+      "Ref": "SharedLayer27DFABF0"
+     }
+    ],
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "TaskHandlerServiceRole4B48C24D",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "TaskHandlerServiceRoleDefaultPolicy6A78693C",
+    "TaskHandlerServiceRole4B48C24D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskHandler/Resource",
+    "aws:asset:path": "asset.702a4ddb9475a16bc40e991fd4089fe481a1400acabc46c5d09f81307a4a0fb9",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "TaskHandlerLogRetention11EA54AA": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "TaskHandlerE5C6B6D2"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskHandler/LogRetention/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:DeleteRetentionPolicy",
+        "logs:PutRetentionPolicy"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "Roles": [
+     {
+      "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Handler": "index.handler",
+    "Runtime": "nodejs22.x",
+    "Timeout": 900,
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
+     "S3Key": "2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource",
+    "aws:asset:path": "asset.2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "HealthHandlerServiceRole2FE1C1C8": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/HealthHandler/ServiceRole/Resource"
+   }
+  },
+  "HealthHandler164742B2": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-043309357886-us-east-1",
+     "S3Key": "702a4ddb9475a16bc40e991fd4089fe481a1400acabc46c5d09f81307a4a0fb9.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "ENVIRONMENT": "dev"
+     }
+    },
+    "FunctionName": "health-handler-dev",
+    "Handler": "health_handler.lambda_handler",
+    "Layers": [
+     {
+      "Ref": "SharedLayer27DFABF0"
+     }
+    ],
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "HealthHandlerServiceRole2FE1C1C8",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "HealthHandlerServiceRole2FE1C1C8"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/HealthHandler/Resource",
+    "aws:asset:path": "asset.702a4ddb9475a16bc40e991fd4089fe481a1400acabc46c5d09f81307a4a0fb9",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "HealthHandlerLogRetentionB4F1C426": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "HealthHandler164742B2"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/HealthHandler/LogRetention/Resource"
+   }
+  },
+  "TaskAPIDD3E4B28": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "Serverless Task Management API",
+    "Name": "task-management-api-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Resource"
+   }
+  },
+  "TaskAPIDeploymentBF49184E7283c5fef367cfc2d367bc1bc0618137": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Serverless Task Management API",
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "DependsOn": [
+    "CreateTaskValidator31656D8D",
+    "TaskAPIhealthGET7BC18E2A",
+    "TaskAPIhealthOPTIONSEE40C73F",
+    "TaskAPIhealthEC8D55CD",
+    "TaskAPIOPTIONSAC772D3D",
+    "TaskAPItasksidDELETE61896DB6",
+    "TaskAPItasksidGETD8D6D2BA",
+    "TaskAPItasksidOPTIONS837FDC4F",
+    "TaskAPItasksidPUT7B3CC870",
+    "TaskAPItasksidF82B9575",
+    "TaskAPItasksGET348CD5A1",
+    "TaskAPItasksOPTIONSF6237E87",
+    "TaskAPItasksPOST9C7F3B11",
+    "TaskAPItasksD099E2B5",
+    "UpdateTaskValidator46BBD038"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Deployment/Resource"
+   }
+  },
+  "TaskAPIDeploymentStagedev13A212FB": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "TaskAPIDeploymentBF49184E7283c5fef367cfc2d367bc1bc0618137"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "LoggingLevel": "OFF",
+      "ResourcePath": "/*",
+      "ThrottlingBurstLimit": 2000,
+      "ThrottlingRateLimit": 1000
+     }
+    ],
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    },
+    "StageName": "dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/DeploymentStage.dev/Resource"
+   }
+  },
+  "TaskAPIOPTIONSAC772D3D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Max-Age": "'300'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "TaskAPIDD3E4B28",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/OPTIONS/Resource"
+   }
+  },
+  "TaskAPItasksD099E2B5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "TaskAPIDD3E4B28",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "tasks",
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/Resource"
+   }
+  },
+  "TaskAPItasksOPTIONSF6237E87": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Max-Age": "'300'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "TaskAPItasksD099E2B5"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/OPTIONS/Resource"
+   }
+  },
+  "TaskAPItasksPOSTApiPermissionTaskAPIdevTaskAPI531770D7POSTtasks17C88FE7": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/",
+       {
+        "Ref": "TaskAPIDeploymentStagedev13A212FB"
+       },
+       "/POST/tasks"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/POST/ApiPermission.TaskAPIdevTaskAPI531770D7.POST..tasks"
+   }
+  },
+  "TaskAPItasksPOSTApiPermissionTestTaskAPIdevTaskAPI531770D7POSTtasksDEBCB5B3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/test-invoke-stage/POST/tasks"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/POST/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.POST..tasks"
+   }
+  },
+  "TaskAPItasksPOST9C7F3B11": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "RequestTemplates": {
+      "application/json": "{\"body\": $input.json(\"$\")}"
+     },
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "TaskHandlerE5C6B6D2",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "RequestModels": {
+     "application/json": "Empty"
+    },
+    "RequestValidatorId": {
+     "Ref": "CreateTaskValidator31656D8D"
+    },
+    "ResourceId": {
+     "Ref": "TaskAPItasksD099E2B5"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/POST/Resource"
+   }
+  },
+  "TaskAPItasksGETApiPermissionTaskAPIdevTaskAPI531770D7GETtasks498DD4B2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/",
+       {
+        "Ref": "TaskAPIDeploymentStagedev13A212FB"
+       },
+       "/GET/tasks"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/GET/ApiPermission.TaskAPIdevTaskAPI531770D7.GET..tasks"
+   }
+  },
+  "TaskAPItasksGETApiPermissionTestTaskAPIdevTaskAPI531770D7GETtasksD2FBDD2B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/test-invoke-stage/GET/tasks"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/GET/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.GET..tasks"
+   }
+  },
+  "TaskAPItasksGET348CD5A1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "RequestTemplates": {
+      "application/json": "{\"body\": $input.json(\"$\")}"
+     },
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "TaskHandlerE5C6B6D2",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "TaskAPItasksD099E2B5"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/GET/Resource"
+   }
+  },
+  "TaskAPItasksidF82B9575": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "TaskAPItasksD099E2B5"
+    },
+    "PathPart": "{id}",
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/Resource"
+   }
+  },
+  "TaskAPItasksidOPTIONS837FDC4F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Max-Age": "'300'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "TaskAPItasksidF82B9575"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/OPTIONS/Resource"
+   }
+  },
+  "TaskAPItasksidGETApiPermissionTaskAPIdevTaskAPI531770D7GETtasksidD5D1639C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/",
+       {
+        "Ref": "TaskAPIDeploymentStagedev13A212FB"
+       },
+       "/GET/tasks/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/GET/ApiPermission.TaskAPIdevTaskAPI531770D7.GET..tasks.{id}"
+   }
+  },
+  "TaskAPItasksidGETApiPermissionTestTaskAPIdevTaskAPI531770D7GETtasksid98D5BB2C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/test-invoke-stage/GET/tasks/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/GET/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.GET..tasks.{id}"
+   }
+  },
+  "TaskAPItasksidGETD8D6D2BA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "RequestTemplates": {
+      "application/json": "{\"body\": $input.json(\"$\")}"
+     },
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "TaskHandlerE5C6B6D2",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "TaskAPItasksidF82B9575"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/GET/Resource"
+   }
+  },
+  "TaskAPItasksidPUTApiPermissionTaskAPIdevTaskAPI531770D7PUTtasksidF82D87DD": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/",
+       {
+        "Ref": "TaskAPIDeploymentStagedev13A212FB"
+       },
+       "/PUT/tasks/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/PUT/ApiPermission.TaskAPIdevTaskAPI531770D7.PUT..tasks.{id}"
+   }
+  },
+  "TaskAPItasksidPUTApiPermissionTestTaskAPIdevTaskAPI531770D7PUTtasksid28AEDF69": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/test-invoke-stage/PUT/tasks/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/PUT/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.PUT..tasks.{id}"
+   }
+  },
+  "TaskAPItasksidPUT7B3CC870": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "RequestTemplates": {
+      "application/json": "{\"body\": $input.json(\"$\")}"
+     },
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "TaskHandlerE5C6B6D2",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "RequestModels": {
+     "application/json": "Empty"
+    },
+    "RequestValidatorId": {
+     "Ref": "UpdateTaskValidator46BBD038"
+    },
+    "ResourceId": {
+     "Ref": "TaskAPItasksidF82B9575"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/PUT/Resource"
+   }
+  },
+  "TaskAPItasksidDELETEApiPermissionTaskAPIdevTaskAPI531770D7DELETEtasksid2F23D9C2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/",
+       {
+        "Ref": "TaskAPIDeploymentStagedev13A212FB"
+       },
+       "/DELETE/tasks/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/DELETE/ApiPermission.TaskAPIdevTaskAPI531770D7.DELETE..tasks.{id}"
+   }
+  },
+  "TaskAPItasksidDELETEApiPermissionTestTaskAPIdevTaskAPI531770D7DELETEtasksidFEC5C8B2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "TaskHandlerE5C6B6D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/test-invoke-stage/DELETE/tasks/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/DELETE/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.DELETE..tasks.{id}"
+   }
+  },
+  "TaskAPItasksidDELETE61896DB6": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "RequestTemplates": {
+      "application/json": "{\"body\": $input.json(\"$\")}"
+     },
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "TaskHandlerE5C6B6D2",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "TaskAPItasksidF82B9575"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/tasks/{id}/DELETE/Resource"
+   }
+  },
+  "TaskAPIhealthEC8D55CD": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "TaskAPIDD3E4B28",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "health",
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/health/Resource"
+   }
+  },
+  "TaskAPIhealthOPTIONSEE40C73F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Max-Age": "'300'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Max-Age": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "TaskAPIhealthEC8D55CD"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/health/OPTIONS/Resource"
+   }
+  },
+  "TaskAPIhealthGETApiPermissionTaskAPIdevTaskAPI531770D7GEThealth35CA853A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "HealthHandler164742B2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/",
+       {
+        "Ref": "TaskAPIDeploymentStagedev13A212FB"
+       },
+       "/GET/health"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/health/GET/ApiPermission.TaskAPIdevTaskAPI531770D7.GET..health"
+   }
+  },
+  "TaskAPIhealthGETApiPermissionTestTaskAPIdevTaskAPI531770D7GEThealth1F89003A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "HealthHandler164742B2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:043309357886:",
+       {
+        "Ref": "TaskAPIDD3E4B28"
+       },
+       "/test-invoke-stage/GET/health"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/health/GET/ApiPermission.Test.TaskAPIdevTaskAPI531770D7.GET..health"
+   }
+  },
+  "TaskAPIhealthGET7BC18E2A": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "RequestTemplates": {
+      "application/json": "{\"body\": {}}"
+     },
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "HealthHandler164742B2",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "TaskAPIhealthEC8D55CD"
+    },
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/TaskAPI/Default/health/GET/Resource"
+   }
+  },
+  "CreateTaskValidator31656D8D": {
+   "Type": "AWS::ApiGateway::RequestValidator",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    },
+    "ValidateRequestBody": true,
+    "ValidateRequestParameters": false
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/CreateTaskValidator/Resource"
+   }
+  },
+  "UpdateTaskValidator46BBD038": {
+   "Type": "AWS::ApiGateway::RequestValidator",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "TaskAPIDD3E4B28"
+    },
+    "ValidateRequestBody": true,
+    "ValidateRequestParameters": false
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/UpdateTaskValidator/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WP0W6DMAxFv6XvqUfLF7Sd9tRpiE59rQy4NCUkDDtCCPHvE4Fp5cnHvvG9zh72UQS7DXa8zYtqa3QGw0UwrxR2fBuK3mLtigyGb8wMqdPdBhiVwTorEIYz9tReqWXt7CSv+g9vc1mEV06orTVPT0bF8Q2ZSRgOU1Ecw9HnFckRmZTGGobUzdGhJs7ovA8ugUZlXMlwdmVKQjZEYKNLFOqwhyEllkOjw/6C79QY19dkZZq+dBfBMiTNkBI73+YULvkkebhiEhf6UxfnmVP68cRyRaMLFNfO4no2jv+74c9Tmrblyuh0t19eGi+jSnp5OPsWwy6CaPNkrbett6JrgnSuv4NdpRjHAQAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "TaskAPI-dev/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "TaskAPIEndpoint46645F85": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "TaskAPIDD3E4B28"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "TaskAPIDeploymentStagedev13A212FB"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "APIEndpoint": {
+   "Description": "API Gateway endpoint URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "TaskAPIDD3E4B28"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "TaskAPIDeploymentStagedev13A212FB"
+      },
+      "/"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "TaskAPI-dev-APIEndpoint"
+   }
+  },
+  "TasksTableName": {
+   "Description": "DynamoDB table for tasks",
+   "Value": {
+    "Ref": "TasksTable88911DC5"
+   },
+   "Export": {
+    "Name": "TaskAPI-dev-TasksTable"
+   }
+  },
+  "TaskHandlerFunction": {
+   "Description": "Lambda function for task operations",
+   "Value": {
+    "Ref": "TaskHandlerE5C6B6D2"
+   },
+   "Export": {
+    "Name": "TaskAPI-dev-TaskHandler"
+   }
+  },
+  "HealthHandlerFunction": {
+   "Description": "Lambda function for health checks",
+   "Value": {
+    "Ref": "HealthHandler164742B2"
+   },
+   "Export": {
+    "Name": "TaskAPI-dev-HealthHandler"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
