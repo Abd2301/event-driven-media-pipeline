@@ -345,6 +345,174 @@
       },
       "displayName": "TaskAPI-dev"
     },
+    "TaskFrontend-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "TaskFrontend-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "TaskFrontend-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://043309357886/us-east-1",
+      "properties": {
+        "templateFile": "TaskFrontend-dev.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-deploy-role-043309357886-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-cfn-exec-role-043309357886-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-043309357886-us-east-1/4044fd87c5c39f8bf11dedd1c233bd86a3dff25d3d488556c79491f0a8ca1d52.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "TaskFrontend-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::043309357886:role/cdk-hnb659fds-lookup-role-043309357886-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "TaskFrontend-dev.assets"
+      ],
+      "metadata": {
+        "/TaskFrontend-dev/WebsiteBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebsiteBucket75C24D94"
+          }
+        ],
+        "/TaskFrontend-dev/WebsiteBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebsiteBucketPolicyE10E3262"
+          }
+        ],
+        "/TaskFrontend-dev/WebsiteBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebsiteBucketAutoDeleteObjectsCustomResource8750E461"
+          }
+        ],
+        "/TaskFrontend-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/TaskFrontend-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/TaskFrontend-dev/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/TaskFrontend-dev/OriginAccessIdentity/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OriginAccessIdentityDF1E3CAC"
+          }
+        ],
+        "/TaskFrontend-dev/CloudFrontLogBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudFrontLogBucketE75E505A"
+          }
+        ],
+        "/TaskFrontend-dev/CloudFrontLogBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudFrontLogBucketPolicy300B6FAE"
+          }
+        ],
+        "/TaskFrontend-dev/CloudFrontLogBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudFrontLogBucketAutoDeleteObjectsCustomResource795D54EB"
+          }
+        ],
+        "/TaskFrontend-dev/Distribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Distribution830FAC52"
+          }
+        ],
+        "/TaskFrontend-dev/FrontendDeploymentUser/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FrontendDeploymentUser9A87B4C1"
+          }
+        ],
+        "/TaskFrontend-dev/DeploymentAccessKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeploymentAccessKeyC86B5636"
+          }
+        ],
+        "/TaskFrontend-dev/DeploymentAccessKeyId/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeploymentAccessKeyIdF8F5A8E0"
+          }
+        ],
+        "/TaskFrontend-dev/DeploymentSecretAccessKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeploymentSecretAccessKey6B95B8F9"
+          }
+        ],
+        "/TaskFrontend-dev/CloudFrontDistributionId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudFrontDistributionId"
+          }
+        ],
+        "/TaskFrontend-dev/CloudFrontDomainName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudFrontDomainName"
+          }
+        ],
+        "/TaskFrontend-dev/S3BucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3BucketName"
+          }
+        ],
+        "/TaskFrontend-dev/WebsiteURL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebsiteURL"
+          }
+        ],
+        "/TaskFrontend-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/TaskFrontend-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/TaskFrontend-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "TaskFrontend-dev"
+    },
     "Tree": {
       "type": "cdk:tree",
       "properties": {
