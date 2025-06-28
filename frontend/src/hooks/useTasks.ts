@@ -65,7 +65,7 @@ export const useUpdateTask = () => {
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
     },
     onError: (error: Error) => {
-      console.error('Failed to update task:', error);
+      console.error('Failed to update', error);
     },
   });
 };
