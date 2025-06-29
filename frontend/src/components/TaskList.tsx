@@ -13,9 +13,7 @@ import {
   Stack,
   Card,
   CardContent,
-  IconButton,
   InputAdornment,
-  Divider,
   Fade,
 } from '@mui/material';
 import {
@@ -55,10 +53,6 @@ const TaskList: React.FC = () => {
 
   const getStatusCount = (status: string) => {
     return tasks.filter((task: Task) => task.status === status).length;
-  };
-
-  const getPriorityCount = (priority: string) => {
-    return tasks.filter((task: Task) => task.priority === priority).length;
   };
 
   const handleCreateTask = (data: CreateTaskRequest | UpdateTaskRequest) => {

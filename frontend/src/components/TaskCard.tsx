@@ -14,7 +14,6 @@ import {
   DialogActions,
   Button,
   Box,
-  Avatar,
   LinearProgress,
   Tooltip,
   Fade,
