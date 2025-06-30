@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Container, Alert, Box, Paper } from '@mui/material';
 import TaskList from './components/TaskList';
-import { useHealthCheck } from './hooks/useTasks';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -158,53 +157,6 @@ const theme = createTheme({
   },
 });
 
-// Health check component with modern styling
-const HealthStatus: React.FC = () => {
-  const { data: health, isLoading, error } = useHealthCheck();
-
-  if (isLoading) return null;
-  
-  if (error) {
-    return (
-      <Alert 
-        severity="warning" 
-        sx={{ 
-          mb: 3,
-          borderRadius: 2,
-          background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
-          border: '1px solid #f59e0b',
-          '& .MuiAlert-icon': {
-            color: '#d97706',
-          },
-        }}
-      >
-        API connection issue. Some features may not work properly.
-      </Alert>
-    );
-  }
-
-  if (health) {
-    return (
-      <Alert 
-        severity="success" 
-        sx={{ 
-          mb: 3,
-          borderRadius: 2,
-          background: 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)',
-          border: '1px solid #10b981',
-          '& .MuiAlert-icon': {
-            color: '#059669',
-          },
-        }}
-      >
-        API Status: {health.status} | Environment: {health.environment}
-      </Alert>
-    );
-  }
-
-  return null;
-};
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -218,7 +170,6 @@ function App() {
           }}
         >
           <Container maxWidth="xl">
-            <HealthStatus />
             <Paper
               elevation={0}
               sx={{
