@@ -1,7 +1,7 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Container, Alert, Box, Paper } from '@mui/material';
+import { CssBaseline, Container, Box, Paper } from '@mui/material';
 import TaskList from './components/TaskList';
 
 // Create a client
